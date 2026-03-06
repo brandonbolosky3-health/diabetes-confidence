@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(git init)",
+      "Bash(git add app/page.tsx app/globals.css app/layout.tsx app/not-found.tsx next.config.ts .claude/launch.json)"
+    ]
+  }
+}
