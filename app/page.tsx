@@ -33,7 +33,7 @@ function Navbar() {
           <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
         </nav>
         <Link
-          href="/signup"
+          href="/onboarding"
           className="bg-[color:var(--primary)] text-white text-[0.9rem] px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >
@@ -74,11 +74,11 @@ function Hero() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <Link
-              href="/signup"
+              href="/onboarding"
               className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-7 py-3 rounded-full text-[0.95rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
-              Join — $9.99/month <ArrowRight className="w-4 h-4" />
+              Start Your Journey <ArrowRight className="w-4 h-4" />
             </Link>
             <a
               href="#whatsinside"
@@ -432,7 +432,7 @@ function FinalCTA() {
           nurse-led education.
         </p>
         <Link
-          href="/signup"
+          href="/onboarding"
           className="inline-flex items-center gap-2 mt-8 bg-white text-[color:var(--primary)] px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >
