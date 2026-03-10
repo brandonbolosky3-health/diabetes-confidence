@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { Heart, Check } from "lucide-react";
 
@@ -17,7 +17,12 @@ export default function SignupPage() {
     setLoading(true);
     setMessage(null);
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    const supabase = createClient();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
 
     setLoading(false);
     if (error) return setMessage(error.message);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 
 export default function TestPage() {
   const [status, setStatus] = useState("Checking Supabase connection...");
@@ -9,6 +9,7 @@ export default function TestPage() {
   useEffect(() => {
     const run = async () => {
       try {
+        const supabase = createClient();
         const { data, error } = await supabase.auth.getSession();
 
         if (error) setStatus("❌ Supabase error: " + error.message);
