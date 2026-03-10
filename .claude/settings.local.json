@@ -3,7 +3,14 @@
     "allow": [
       "mcp__Claude_Preview__preview_start",
       "Bash(git init)",
-      "Bash(git add app/page.tsx app/globals.css app/layout.tsx app/not-found.tsx next.config.ts .claude/launch.json)"
+      "Bash(git add app/page.tsx app/globals.css app/layout.tsx app/not-found.tsx next.config.ts .claude/launch.json)",
+      "Bash(vercel env add NEXT_PUBLIC_SUPABASE_ANON_KEY production --scope brandonbolosky3-3420s-projects)",
+      "Bash(vercel --yes --prod --scope brandonbolosky3-3420s-projects)",
+      "Bash(npm run build)",
+      "Bash(git add lib/supabase/client.ts lib/supabase/server.ts app/auth/callback/route.ts proxy.ts app/login/page.tsx app/signup/page.tsx app/member/page.tsx src/app/test/page.tsx)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git add -A)"
     ]
   }
 }
