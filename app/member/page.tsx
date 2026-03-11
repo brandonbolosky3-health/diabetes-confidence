@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Heart, BookOpen, Video, FileText, Users, Bot, LogOut } from "lucide-react";
+import { Heart, BookOpen, Video, FileText, Users, Bot, LogOut, Menu, X } from "lucide-react";
 
 const features = [
-  { icon: BookOpen, title: "Lesson Library", desc: "Step-by-step education modules", href: "#" },
-  { icon: Video, title: "Weekly Videos", desc: "Bite-sized lessons on your schedule", href: "#" },
-  { icon: FileText, title: "Printable Guides", desc: "Checklists and resources to download", href: "#" },
-  { icon: Users, title: "Community", desc: "Private support group", href: "#" },
+  { icon: BookOpen, title: "Lesson Library", desc: "Step-by-step education modules", href: "/lessons" },
+  { icon: Video, title: "Weekly Videos", desc: "Bite-sized lessons on your schedule", href: "/videos" },
+  { icon: FileText, title: "Printable Guides", desc: "Checklists and resources to download", href: "/guides" },
+  { icon: Users, title: "Community", desc: "Private support group", href: "/community" },
   { icon: Bot, title: "AI Coach", desc: "Ask diabetes education questions", href: "/ai" },
 ];
 
@@ -19,6 +19,7 @@ export default function MemberPage() {
   const [email, setEmail] = useState<string | null>(null);
   const [plan, setPlan] = useState<string>("essential");
   const [loading, setLoading] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     const run = async () => {
@@ -57,18 +58,44 @@ export default function MemberPage() {
   return (
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Nav */}
-      <header className="sticky top-0 z-50 h-16 flex items-center justify-between px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
-        <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
-        </Link>
-        <button
-          onClick={logout}
-          className="flex items-center gap-2 text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors"
-        >
-          <LogOut className="w-4 h-4" />
-          Log out
-        </button>
+      <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
+        <div className="h-16 flex items-center justify-between px-4 sm:px-6">
+          <Link href="/member" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
+            <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
+            <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
+          </Link>
+          <div className="hidden md:flex items-center gap-4">
+            <Link href="/lessons" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Lessons</Link>
+            <Link href="/videos" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Videos</Link>
+            <Link href="/guides" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Guides</Link>
+            <Link href="/community" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Community</Link>
+            <button onClick={logout} className="flex items-center gap-2 text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">
+              <LogOut className="w-4 h-4" />
+              Log out
+            </button>
+          </div>
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden text-[color:var(--foreground)] p-1"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-3 flex flex-col gap-1">
+            <Link href="/lessons" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Lessons</Link>
+            <Link href="/videos" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Videos</Link>
+            <Link href="/guides" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Guides</Link>
+            <Link href="/community" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Community</Link>
+            <button onClick={() => { setMobileOpen(false); logout(); }} className="flex items-center gap-2 text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2 text-left">
+              <LogOut className="w-4 h-4" />
+              Log out
+            </button>
+          </div>
+        )}
       </header>
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-10">
@@ -95,7 +122,7 @@ export default function MemberPage() {
             return (
               <a
                 key={f.title}
-                href={locked ? undefined : f.href}
+                href={f.href === "#" ? undefined : f.href}
                 className={`relative bg-white rounded-2xl p-6 border border-[color:var(--border)] transition-shadow ${
                   locked ? "opacity-60 cursor-default" : "hover:shadow-md"
                 }`}

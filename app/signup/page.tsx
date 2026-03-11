@@ -32,7 +32,7 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Nav */}
-      <header className="h-16 flex items-center px-6 border-b border-[color:var(--border)] bg-white/95">
+      <header className="h-16 flex items-center px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95">
         <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
           <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
           <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>

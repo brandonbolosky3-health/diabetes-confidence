@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -13,6 +16,8 @@ import {
   Check,
   Shield,
   Award,
+  Menu,
+  X,
 } from "lucide-react";
 
 const NURSE_IMG =
@@ -20,6 +25,8 @@ const NURSE_IMG =
 
 // ─── Nav ───────────────────────────────────────────────
 function Navbar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[color:var(--border)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
@@ -32,14 +39,50 @@ function Navbar() {
           <a href="#faq" className="hover:text-[color:var(--foreground)] transition-colors">FAQ</a>
           <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
         </nav>
-        <Link
-          href="/onboarding"
-          className="bg-[color:var(--primary)] text-white text-[0.9rem] px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
-          style={{ fontWeight: 600 }}
-        >
-          Join Now
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/onboarding"
+            className="bg-[color:var(--primary)] text-white text-[0.9rem] px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
+            style={{ fontWeight: 600 }}
+          >
+            Join Now
+          </Link>
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="md:hidden text-[color:var(--foreground)] p-1"
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
+          <a
+            href="#pricing"
+            onClick={() => setMobileOpen(false)}
+            className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
+          >
+            Pricing
+          </a>
+          <a
+            href="#faq"
+            onClick={() => setMobileOpen(false)}
+            className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
+          >
+            FAQ
+          </a>
+          <Link
+            href="/login"
+            onClick={() => setMobileOpen(false)}
+            className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
+          >
+            Log in
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
