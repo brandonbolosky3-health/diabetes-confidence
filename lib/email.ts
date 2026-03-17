@@ -1,6 +1,12 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+function getResend(): Resend {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY || "");
+  }
+  return _resend;
+}
 const from = process.env.RESEND_FROM_EMAIL || "noreply@diabetesconfidence.com";
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
@@ -55,7 +61,7 @@ export async function sendWelcomeEmail(
   firstName: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from,
       to,
       subject: "Welcome to DiabetesConfidence 🩺",
@@ -83,7 +89,7 @@ export async function sendOnboardingCompleteEmail(
 ): Promise<{ success: boolean; error?: string }> {
   const interestsList = topInterests.map((i) => `<li style="color:#1e3a3a;font-size:14px;padding:2px 0;">${i.replace(/_/g, " ")}</li>`).join("");
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from,
       to,
       subject: "Your personalized curriculum is ready",
@@ -137,7 +143,7 @@ export async function sendPaymentConfirmationEmail(
   });
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from,
       to,
       subject: `Payment confirmed — welcome to DiabetesConfidence ${tierName}`,
@@ -170,7 +176,7 @@ export async function sendSubscriptionCanceledEmail(
   });
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from,
       to,
       subject: "Your DiabetesConfidence subscription has been canceled",
@@ -203,7 +209,7 @@ export async function sendUsageLimitWarningEmail(
   });
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from,
       to,
       subject: "You're running low on AI coaching messages",
@@ -228,7 +234,7 @@ export async function sendMonthlyResetEmail(
   limit: number
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from,
       to,
       subject: "Your AI coaching messages have reset",
