@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(
+    event = stripe().webhooks.constructEvent(
       body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
       if (!userId) break;
 
       // Retrieve the subscription to get period end from items
-      const subscription = await stripe.subscriptions.retrieve(
+      const subscription = await stripe().subscriptions.retrieve(
         session.subscription as string
       );
       const periodEnd = subscription.items.data[0]?.current_period_end;

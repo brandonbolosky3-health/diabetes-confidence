@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
   if (!stripeCustomerId) {
     // Create new Stripe customer
-    const customer = await stripe.customers.create({
+    const customer = await stripe().customers.create({
       email: user.email!,
       metadata: { user_id: user.id },
     });
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
   }
 
   // Create checkout session
-  const session = await stripe.checkout.sessions.create({
+  const session = await stripe().checkout.sessions.create({
     customer: stripeCustomerId,
     mode: "subscription",
     line_items: [{ price: PLANS[tier].priceId, quantity: 1 }],
