@@ -1,0 +1,248 @@
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const from = process.env.RESEND_FROM_EMAIL || "noreply@diabetesconfidence.com";
+const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
+// ─── Shared Layout ─────────────────────────────────────────────────────────
+
+function emailLayout(body: string): string {
+  return `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
+<body style="margin:0;padding:0;background-color:#f0f7f7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0f7f7;padding:32px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+        <!-- Header -->
+        <tr><td style="background-color:#2a9d8f;padding:24px 32px;border-radius:12px 12px 0 0;">
+          <span style="color:#ffffff;font-size:18px;font-weight:700;">DiabetesConfidence</span>
+        </td></tr>
+        <!-- Body -->
+        <tr><td style="background-color:#ffffff;padding:32px;border-radius:0 0 12px 12px;">
+          ${body}
+        </td></tr>
+        <!-- Footer -->
+        <tr><td style="padding:24px 32px;text-align:center;">
+          <p style="color:#6b7280;font-size:12px;margin:0 0 4px;">DiabetesConfidence — Personalized metabolic health education</p>
+          <p style="color:#9ca3af;font-size:11px;margin:0;">You're receiving this because you have an account at DiabetesConfidence.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+function ctaButton(href: string, text: string): string {
+  return `<table width="100%" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+    <tr><td align="center">
+      <a href="${href}" style="display:inline-block;background-color:#2a9d8f;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 32px;border-radius:9999px;">
+        ${text}
+      </a>
+    </td></tr>
+  </table>`;
+}
+
+function p(text: string): string {
+  return `<p style="color:#1e3a3a;font-size:15px;line-height:1.6;margin:0 0 16px;">${text}</p>`;
+}
+
+// ─── Email Functions ────────────────────────────────────────────────────────
+
+export async function sendWelcomeEmail(
+  to: string,
+  firstName: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    await resend.emails.send({
+      from,
+      to,
+      subject: "Welcome to DiabetesConfidence 🩺",
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`Welcome to <strong>DiabetesConfidence</strong> — your personalized diabetes and metabolic health education platform powered by functional medicine.`)}
+        ${p(`We're here to help you understand your numbers, optimize your nutrition, and build lasting confidence in managing your health.`)}
+        ${p(`Your first step is completing a short health assessment so we can personalize your curriculum to your specific goals and needs.`)}
+        ${ctaButton(`${appUrl}/onboarding`, "Start My Health Assessment")}
+        ${p(`We're excited to have you here.`)}
+        ${p(`— The DiabetesConfidence Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+export async function sendOnboardingCompleteEmail(
+  to: string,
+  firstName: string,
+  primaryTrack: string,
+  topInterests: string[]
+): Promise<{ success: boolean; error?: string }> {
+  const interestsList = topInterests.map((i) => `<li style="color:#1e3a3a;font-size:14px;padding:2px 0;">${i.replace(/_/g, " ")}</li>`).join("");
+  try {
+    await resend.emails.send({
+      from,
+      to,
+      subject: "Your personalized curriculum is ready",
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`Congratulations on completing your health assessment! 🎉`)}
+        ${p(`Based on your answers, your <strong>primary learning track</strong> is: <strong>${primaryTrack.replace(/_/g, " ")}</strong>.`)}
+        ${topInterests.length > 0 ? `${p(`Your top interests:`)}
+        <ul style="margin:0 0 16px;padding-left:20px;">${interestsList}</ul>` : ""}
+        ${p(`Your dashboard now shows personalized lessons chosen specifically for your health goals. We've curated the best content to get you started.`)}
+        ${ctaButton(`${appUrl}/dashboard`, "View My Dashboard")}
+        ${p(`— The DiabetesConfidence Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+export async function sendPaymentConfirmationEmail(
+  to: string,
+  firstName: string,
+  tier: string,
+  amount: number,
+  nextBillingDate: string
+): Promise<{ success: boolean; error?: string }> {
+  const tierName = tier.charAt(0).toUpperCase() + tier.slice(1);
+  const features =
+    tier === "premium"
+      ? `<ul style="margin:0 0 16px;padding-left:20px;">
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Full educational curriculum</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Personalized learning path</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Anti-inflammatory meal plans</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Community access</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Unlimited AI health coach</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Personalized lab interpretation</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Peptide &amp; advanced optimization content</li>
+        </ul>`
+      : `<ul style="margin:0 0 16px;padding-left:20px;">
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Full educational curriculum</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Personalized learning path</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Anti-inflammatory meal plans</li>
+          <li style="color:#1e3a3a;font-size:14px;padding:2px 0;">Community access</li>
+        </ul>`;
+
+  const formattedDate = new Date(nextBillingDate).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  try {
+    await resend.emails.send({
+      from,
+      to,
+      subject: `Payment confirmed — welcome to DiabetesConfidence ${tierName}`,
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`Your payment of <strong>$${amount.toFixed(2)}</strong> for the <strong>${tierName}</strong> plan has been confirmed.`)}
+        ${p(`Here's what's included in your plan:`)}
+        ${features}
+        ${p(`Your next billing date is <strong>${formattedDate}</strong>.`)}
+        ${ctaButton(`${appUrl}/dashboard`, "Go to Dashboard")}
+        ${p(`Thank you for investing in your health.`)}
+        ${p(`— The DiabetesConfidence Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+export async function sendSubscriptionCanceledEmail(
+  to: string,
+  firstName: string,
+  accessUntil: string
+): Promise<{ success: boolean; error?: string }> {
+  const formattedDate = new Date(accessUntil).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+
+  try {
+    await resend.emails.send({
+      from,
+      to,
+      subject: "Your DiabetesConfidence subscription has been canceled",
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`We've confirmed the cancellation of your subscription.`)}
+        ${p(`You'll retain access to your current plan features until <strong>${formattedDate}</strong>.`)}
+        ${p(`Your progress, profile, and all completed lessons are saved — they'll be right where you left them if you decide to come back.`)}
+        ${ctaButton(`${appUrl}/pricing`, "Resubscribe Anytime")}
+        ${p(`We hope to see you again soon.`)}
+        ${p(`— The DiabetesConfidence Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+export async function sendUsageLimitWarningEmail(
+  to: string,
+  firstName: string,
+  used: number,
+  limit: number,
+  resetDate: string
+): Promise<{ success: boolean; error?: string }> {
+  const formattedDate = new Date(resetDate).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
+
+  try {
+    await resend.emails.send({
+      from,
+      to,
+      subject: "You're running low on AI coaching messages",
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`You've used <strong>${used}</strong> out of <strong>${limit}</strong> AI coaching messages this month.`)}
+        ${p(`Your messages will reset on <strong>${formattedDate}</strong>.`)}
+        ${p(`In the meantime, you still have full access to all of your educational content, lessons, and community features.`)}
+        ${ctaButton(`${appUrl}/dashboard`, "Go to Dashboard")}
+        ${p(`— The DiabetesConfidence Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+export async function sendMonthlyResetEmail(
+  to: string,
+  firstName: string,
+  limit: number
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    await resend.emails.send({
+      from,
+      to,
+      subject: "Your AI coaching messages have reset",
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`Great news — your <strong>${limit}</strong> AI coaching messages have refreshed for the new month! 🎉`)}
+        ${p(`Your AI health coach is ready to help you with anything — whether it's understanding your latest lab results, optimizing your nutrition, or building better daily habits.`)}
+        ${ctaButton(`${appUrl}/dashboard`, "Ask the AI Coach")}
+        ${p(`Here's to another great month of progress.`)}
+        ${p(`— The DiabetesConfidence Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}

@@ -28,11 +28,37 @@ export async function proxy(request: NextRequest) {
   // Refresh session — keeps the user logged in across tab navigations
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Protect /member — redirect unauthenticated users to /login
-  if (!user && request.nextUrl.pathname.startsWith("/member")) {
+  // Protect member routes — redirect unauthenticated users to /login
+  const pathname = request.nextUrl.pathname;
+  if (
+    !user &&
+    (pathname.startsWith("/member") ||
+      pathname.startsWith("/dashboard") ||
+      pathname.startsWith("/lessons") ||
+      pathname.startsWith("/learn") ||
+      pathname.startsWith("/ai") ||
+      pathname.startsWith("/videos") ||
+      pathname.startsWith("/guides") ||
+      pathname.startsWith("/community") ||
+      pathname.startsWith("/admin"))
+  ) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     return NextResponse.redirect(url);
+  }
+
+  // Protect admin routes — only allow whitelisted emails
+  if (pathname.startsWith("/admin") && user) {
+    const adminEmails = (process.env.ADMIN_EMAILS || "")
+      .split(",")
+      .map((e) => e.trim().toLowerCase())
+      .filter(Boolean);
+    const userEmail = (user.email || "").toLowerCase();
+    if (!adminEmails.includes(userEmail)) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      return NextResponse.redirect(url);
+    }
   }
 
   return supabaseResponse;
