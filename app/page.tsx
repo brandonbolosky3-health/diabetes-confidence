@@ -113,7 +113,7 @@ function Hero() {
             <span className="text-[color:var(--primary)]">Without the Overwhelm</span>
           </h1>
           <p className="text-[1.05rem] text-[color:var(--muted-foreground)] mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">
-            Practical education to help you understand your numbers, food, and daily habits.
+            Practical education, which includes natural modalities to improving glucose levels and individualizing care that focuses on lifestyle changes. In addition, we focus on prediabetes management and ways to reverse it.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <Link
