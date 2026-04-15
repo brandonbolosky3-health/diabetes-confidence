@@ -11,7 +11,7 @@ import {
   type MemberProfile,
   type KnowledgeChunk,
 } from "@/lib/onboarding";
-import { getUserSubscription, isPremium, type Subscription } from "@/lib/subscription";
+import { getUserSubscription, isPremium, isTrialExpired, getTrialTimeRemaining, type Subscription } from "@/lib/subscription";
 import { hasSubmittedConsultationForm } from "@/lib/consultation";
 import {
   Heart, LogOut, Menu, X, Clock, Lock, Droplets,
@@ -118,6 +118,8 @@ function DashboardContent() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showFormBanner, setShowFormBanner] = useState(false);
   const [showSubmittedMessage, setShowSubmittedMessage] = useState(false);
+  const [trialEndsAt, setTrialEndsAt] = useState<string | null>(null);
+  const [showTrialBanner, setShowTrialBanner] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -165,6 +167,20 @@ function DashboardContent() {
         setChunks(personalizedChunks);
       } catch (err) {
         console.error("Failed to fetch personalized chunks:", err);
+      }
+
+      // Check trial status
+      if (sub && (sub.tier === "free_trial" || sub.status === "trialing")) {
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("trial_ends_at")
+          .eq("id", user.id)
+          .single();
+        if (profileData?.trial_ends_at) {
+          setTrialEndsAt(profileData.trial_ends_at);
+          const remaining = getTrialTimeRemaining(profileData.trial_ends_at);
+          if (remaining.isUrgent) setShowTrialBanner(true);
+        }
       }
 
       // Check consultation form status
@@ -302,6 +318,63 @@ function DashboardContent() {
             </div>
           </div>
         )}
+
+        {/* Trial expired modal */}
+        {subscription && isTrialExpired(subscription, trialEndsAt) && (
+          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl">
+              <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+                <AlertTriangle className="w-8 h-8 text-amber-600" />
+              </div>
+              <h2 className="text-[1.5rem] font-bold text-[color:var(--foreground)] mb-2">
+                Your Free Trial Has Ended
+              </h2>
+              <p className="text-[0.95rem] text-[color:var(--muted-foreground)] mb-6">
+                Upgrade to continue accessing your lessons, AI coach, and live sessions.
+              </p>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[color:var(--primary)] text-white text-[0.95rem] font-semibold hover:opacity-90 transition-opacity"
+              >
+                Choose a Plan <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Trial expiry warning banner */}
+        {showTrialBanner && !isTrialExpired(subscription, trialEndsAt) && (() => {
+          const remaining = getTrialTimeRemaining(trialEndsAt);
+          const timeText = remaining.days > 0
+            ? `${remaining.days} day${remaining.days !== 1 ? "s" : ""}`
+            : `${remaining.hours} hour${remaining.hours !== 1 ? "s" : ""}`;
+          return (
+            <div className="mb-6 rounded-xl bg-amber-50 border border-amber-200 p-4 flex items-start gap-3 relative">
+              <button
+                onClick={() => setShowTrialBanner(false)}
+                className="absolute top-3 right-3 text-amber-400 hover:text-amber-600 transition-colors"
+                aria-label="Dismiss"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <Clock className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="text-[0.875rem] font-semibold text-amber-800">
+                  Your free trial ends in {timeText}
+                </p>
+                <p className="text-[0.8rem] text-amber-700 mt-0.5">
+                  Upgrade to Essential to keep your access.
+                </p>
+                <Link
+                  href="/pricing"
+                  className="inline-flex items-center gap-1 text-[0.8rem] font-semibold text-[color:var(--primary)] mt-2 hover:underline"
+                >
+                  Upgrade Now <ArrowRight className="w-3 h-3" />
+                </Link>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* Consultation submitted success toast */}
         {showSubmittedMessage && (

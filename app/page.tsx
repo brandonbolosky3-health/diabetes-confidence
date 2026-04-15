@@ -45,7 +45,7 @@ function Navbar() {
             className="bg-[color:var(--primary)] text-white text-[0.9rem] px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
             style={{ fontWeight: 600 }}
           >
-            Join Now
+            Try Free for 7 Days
           </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -120,7 +120,7 @@ function Hero() {
               className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-7 py-3 rounded-full text-[0.95rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
-              Start Your Health Journey <ArrowRight className="w-4 h-4" />
+              Start Free — 7 Days on Us <ArrowRight className="w-4 h-4" />
             </Link>
             <a
               href="#about"
@@ -307,6 +307,23 @@ function HowItWorks() {
 // ─── Pricing ───────────────────────────────────────────
 const plans = [
   {
+    name: "7-Day Free Trial",
+    slug: "free_trial",
+    price: "$0",
+    priceSubtext: "No credit card required",
+    popular: false,
+    trial: true,
+    features: [
+      "Full lesson library",
+      "Monthly new content",
+      "Printable resources",
+      "AI Health Coach (50 messages/month)",
+      "1 free live meet",
+    ],
+    cta: "Try Free for 7 Days",
+    description: "Try everything in the Essential plan free for 7 days.",
+  },
+  {
     name: "Essential",
     slug: "essential",
     price: "$9.99",
@@ -351,19 +368,29 @@ function PricingPreview() {
           Choose Your Plan
         </h3>
         <p className="mt-3 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[0.95rem]">
-          Both plans include access to our AI health coach, trained on clinical functional medicine content by a certified practitioner.
+          Start free for 7 days — no credit card required. Then choose the plan that fits your health journey.
         </p>
 
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`rounded-2xl p-8 border-2 text-left transition-shadow ${
-                plan.popular
-                  ? "border-[color:var(--primary)] shadow-lg bg-white relative"
+              className={`rounded-2xl p-8 border-2 text-left transition-shadow relative ${
+                plan.trial
+                  ? "border-[color:var(--primary)] shadow-md bg-white"
+                  : plan.popular
+                  ? "border-[color:var(--primary)] shadow-lg bg-white"
                   : "border-[color:var(--border)] bg-[color:var(--card)] shadow-sm"
               }`}
             >
+              {plan.trial && (
+                <span
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[color:var(--primary)] text-white text-[0.75rem] px-4 py-1 rounded-full"
+                  style={{ fontWeight: 600 }}
+                >
+                  Best way to start
+                </span>
+              )}
               {plan.popular && (
                 <span
                   className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[color:var(--primary)] text-white text-[0.75rem] px-4 py-1 rounded-full"
@@ -385,8 +412,20 @@ function PricingPreview() {
                 >
                   {plan.price}
                 </span>
-                <span className="text-[color:var(--muted-foreground)] text-[0.9rem]">/month</span>
+                {!plan.trial && (
+                  <span className="text-[color:var(--muted-foreground)] text-[0.9rem]">/month</span>
+                )}
               </div>
+              {plan.priceSubtext && (
+                <p className="text-[0.8rem] text-[color:var(--primary)] mt-1" style={{ fontWeight: 500 }}>
+                  {plan.priceSubtext}
+                </p>
+              )}
+              {plan.description && (
+                <p className="text-[0.85rem] text-[color:var(--muted-foreground)] mt-2">
+                  {plan.description}
+                </p>
+              )}
               <ul className="mt-6 space-y-3">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-start gap-2 text-[0.9rem] text-[color:var(--foreground)]">
@@ -398,13 +437,15 @@ function PricingPreview() {
               <Link
                 href={`/signup?plan=${plan.slug}`}
                 className={`mt-8 w-full py-3 rounded-full transition-opacity text-[0.95rem] flex items-center justify-center ${
-                  plan.popular
+                  plan.trial
+                    ? "bg-[color:var(--primary)] text-white hover:opacity-90"
+                    : plan.popular
                     ? "bg-[color:var(--primary)] text-white hover:opacity-90"
                     : "bg-[color:var(--foreground)] text-white hover:opacity-80"
                 }`}
                 style={{ fontWeight: 600 }}
               >
-                Get Started
+                {plan.cta || "Get Started"}
               </Link>
             </div>
           ))}

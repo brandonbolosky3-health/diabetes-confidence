@@ -42,6 +42,12 @@ export default function PricingPage() {
     }
   };
 
+  const tierConfig: Record<string, { badge?: string; isTrial?: boolean; isPopular?: boolean; cta: string }> = {
+    free_trial: { badge: "Best way to start", isTrial: true, cta: "Try Free for 7 Days" },
+    essential: { cta: "Get Essential" },
+    premium: { badge: "Most Popular", isPopular: true, cta: "Get Premium" },
+  };
+
   return (
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Nav */}
@@ -88,42 +94,54 @@ export default function PricingPage() {
             Choose your plan
           </h1>
           <p className="text-[1rem] text-[color:var(--muted-foreground)] max-w-lg mx-auto">
-            Start your journey to better health with personalized education and AI-powered coaching.
+            Start free for 7 days — no credit card required. Then choose the plan that fits your health journey.
           </p>
         </div>
 
         {/* Plan cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {(Object.entries(PLANS) as [PlanTier, (typeof PLANS)[PlanTier]][]).map(
             ([tier, plan]) => {
-              const isRecommended = tier === "premium";
+              const config = tierConfig[tier] || { cta: `Get ${plan.name}` };
 
               return (
                 <div
                   key={tier}
                   className={`relative bg-white rounded-2xl p-6 sm:p-8 flex flex-col ${
-                    isRecommended
+                    config.isTrial || config.isPopular
                       ? "border-2 border-[color:var(--primary)] shadow-lg"
                       : "border border-[color:var(--border)]"
                   }`}
                 >
-                  {isRecommended && (
+                  {config.badge && (
                     <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[color:var(--primary)] text-white text-[0.75rem] font-semibold px-4 py-1 rounded-full">
-                      Most Popular
+                      {config.badge}
                     </span>
                   )}
 
                   <h2 className="text-[1.25rem] font-bold text-[color:var(--foreground)] mb-1">
                     {plan.name}
                   </h2>
-                  <div className="mb-5">
+                  <div className="mb-1">
                     <span className="text-[2rem] font-bold text-[color:var(--foreground)]">
-                      ${plan.price}
+                      {config.isTrial ? "$0" : `$${plan.price}`}
                     </span>
-                    <span className="text-[0.875rem] text-[color:var(--muted-foreground)]">
-                      /month
-                    </span>
+                    {!config.isTrial && (
+                      <span className="text-[0.875rem] text-[color:var(--muted-foreground)]">
+                        /month
+                      </span>
+                    )}
                   </div>
+                  {config.isTrial && (
+                    <p className="text-[0.8rem] text-[color:var(--primary)] font-medium mb-1">
+                      No credit card required
+                    </p>
+                  )}
+                  {config.isTrial && (
+                    <p className="text-[0.85rem] text-[color:var(--muted-foreground)] mb-4">
+                      Try everything in the Essential plan free for 7 days.
+                    </p>
+                  )}
 
                   <ul className="flex-1 space-y-3 mb-6">
                     {plan.features.map((feature) => (
@@ -138,7 +156,7 @@ export default function PricingPage() {
                     onClick={() => handleSubscribe(tier)}
                     disabled={loadingTier !== null}
                     className={`w-full py-3 rounded-full text-[0.875rem] font-semibold transition-all flex items-center justify-center gap-2 ${
-                      isRecommended
+                      config.isTrial || config.isPopular
                         ? "bg-[color:var(--primary)] text-white hover:opacity-90"
                         : "bg-[color:var(--foreground)] text-white hover:opacity-90"
                     } disabled:opacity-60`}
@@ -147,7 +165,7 @@ export default function PricingPage() {
                       <Loader2 className="w-4 h-4 animate-spin" />
                     ) : (
                       <>
-                        Get {plan.name} <ArrowRight className="w-4 h-4" />
+                        {config.cta} <ArrowRight className="w-4 h-4" />
                       </>
                     )}
                   </button>

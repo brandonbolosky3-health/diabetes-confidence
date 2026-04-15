@@ -49,13 +49,14 @@ export async function POST(request: NextRequest) {
       );
       const periodEnd = subscription.items.data[0]?.current_period_end;
 
+      const isTrialCheckout = tier === "free_trial";
       await supabase.from("subscriptions").upsert(
         {
           user_id: userId,
           stripe_customer_id: session.customer as string,
           stripe_subscription_id: session.subscription as string,
-          tier,
-          status: "active",
+          tier: isTrialCheckout ? "free_trial" : tier,
+          status: isTrialCheckout ? "trialing" : "active",
           current_period_end: periodEnd
             ? new Date(periodEnd * 1000).toISOString()
             : null,
@@ -63,6 +64,19 @@ export async function POST(request: NextRequest) {
         },
         { onConflict: "user_id" }
       );
+
+      // Set trial tracking on profiles if free trial
+      if (isTrialCheckout) {
+        const now = new Date();
+        const trialEnd = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+        await supabase
+          .from("profiles")
+          .update({
+            trial_started_at: now.toISOString(),
+            trial_ends_at: trialEnd.toISOString(),
+          })
+          .eq("id", userId);
+      }
 
       // Send payment confirmation email
       try {

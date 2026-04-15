@@ -45,15 +45,29 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Create checkout session
-  const session = await stripe().checkout.sessions.create({
+  // Build checkout session options
+  const isFreeTrial = tier === "free_trial";
+  const priceId = isFreeTrial ? PLANS.essential.priceId : PLANS[tier].priceId;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const sessionParams: any = {
     customer: stripeCustomerId,
     mode: "subscription",
-    line_items: [{ price: PLANS[tier].priceId, quantity: 1 }],
+    line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgrade=success`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
     metadata: { user_id: user.id, tier },
-  });
+    payment_method_collection: "always",
+  };
+
+  if (isFreeTrial) {
+    sessionParams.subscription_data = {
+      trial_period_days: 7,
+      metadata: { user_id: user.id, tier: "free_trial" },
+    };
+  }
+
+  const session = await stripe().checkout.sessions.create(sessionParams);
 
   return NextResponse.json({ url: session.url });
 }
