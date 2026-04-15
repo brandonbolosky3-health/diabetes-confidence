@@ -274,8 +274,8 @@ const features = [
   },
   {
     icon: UtensilsCrossed,
-    title: "Functional Wellness Cookbook",
-    desc: "Anti-inflammatory recipes and meal plans designed to support gut health, blood sugar balance, and energy.",
+    title: "Free Functional Wellness Cookbook",
+    desc: "Included free with your first consultation — anti-inflammatory recipes and meal plans designed to support gut health, blood sugar balance, and energy.",
   },
   {
     icon: Users,
