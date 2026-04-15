@@ -103,7 +103,7 @@ function Hero() {
             className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1 rounded-full text-[0.8rem] mb-5"
             style={{ fontWeight: 500 }}
           >
-            Led by a 20+ Year RN Diabetes Educator
+            Led by a Certified Functional Medicine Practitioner
           </span>
           <h1
             className="text-[2rem] md:text-[2.75rem] tracking-tight text-[color:var(--foreground)] leading-tight mb-4"
@@ -164,7 +164,7 @@ const benefits = [
   {
     icon: BookOpen,
     title: "Step-by-step education modules",
-    desc: "Structured lessons that build your diabetes knowledge progressively.",
+    desc: "Structured lessons that build your functional medicine knowledge progressively — from root cause thinking to personalized nutrition.",
   },
   {
     icon: Video,
@@ -315,7 +315,7 @@ const plans = [
       "Full lesson library",
       "Monthly new content",
       "Printable resources",
-      "AI Coach (5 questions/day)",
+      "AI Health Coach (50 messages/month)",
       "1 free live meet",
     ],
   },
@@ -336,13 +336,13 @@ const plans = [
 
 function PricingPreview() {
   return (
-    <section id="pricing" className="py-16 md:py-24 bg-[color:var(--background)]">
+    <section id="pricing" className="pt-8 pb-16 md:pt-12 md:pb-24 bg-[color:var(--background)]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
         <h2
           className="text-[1.5rem] md:text-[2rem] text-[color:var(--foreground)] max-w-2xl mx-auto leading-tight"
           style={{ fontWeight: 700 }}
         >
-          Our functional nutrition and lifestyle program is designed to educate and support diabetic patients towards better health and function in a natural way.
+          Our functional medicine platform is designed to help you identify the root causes of your symptoms and build a personalized path to lasting health — naturally.
         </h2>
         <h3
           className="mt-6 text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
@@ -443,16 +443,16 @@ function Trust() {
         </h2>
         <p className="mt-4 text-[color:var(--muted-foreground)] max-w-2xl mx-auto text-[1rem] leading-relaxed">
           Every lesson is grounded in evidence-based teaching and real clinical experience. You&apos;ll
-          learn from a Registered Nurse who has dedicated their career to diabetes education — not
+          learn from a Certified Functional Medicine Practitioner with 20+ years of clinical experience — not
           generic internet advice.
         </p>
         <div className="mt-8 bg-white rounded-2xl p-6 border border-[color:var(--border)] max-w-xl mx-auto">
           <p className="text-[0.9rem] text-[color:var(--muted-foreground)] italic leading-relaxed">
-            &ldquo;This program is for{" "}
+            &ldquo;Saryn Health is an{" "}
             <span style={{ fontWeight: 600 }} className="text-[color:var(--foreground)]">
-              educational purposes only
-            </span>{" "}
-            and does not replace individualized medical advice from your healthcare provider. We do not diagnose, treat, or cure diseases.&rdquo;
+              educational and coaching platform only
+            </span>
+            . Our content does not replace individualized medical advice from your healthcare provider. We do not diagnose, treat, or cure any condition.&rdquo;
           </p>
         </div>
       </div>
@@ -561,11 +561,11 @@ function FinalCTA() {
           className="text-[1.75rem] md:text-[2.5rem] text-white"
           style={{ fontWeight: 700 }}
         >
-          Feel Confident Managing Diabetes
+          Take Control of Your Health
         </h2>
         <p className="mt-4 text-white/80 max-w-lg mx-auto text-[1.05rem] leading-relaxed">
           Join a growing community of people taking control of their health with clear,
-          nurse-led education.
+          personalized functional medicine coaching.
         </p>
         <Link
           href="/onboarding"
