@@ -433,7 +433,7 @@ function Trust() {
           className="text-[1.5rem] md:text-[1.75rem] text-[color:var(--foreground)]"
           style={{ fontWeight: 700 }}
         >
-          Built on 15 Years of Real-World RN Experience
+          Built on over 20 Years of Real-World RN Experience
         </h2>
         <p className="mt-4 text-[color:var(--muted-foreground)] max-w-2xl mx-auto text-[1rem] leading-relaxed">
           Every lesson is grounded in evidence-based teaching and real clinical experience. You&apos;ll
