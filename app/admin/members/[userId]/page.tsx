@@ -10,7 +10,9 @@ import {
   BookOpen,
   Bot,
   ExternalLink,
+  ClipboardList,
 } from "lucide-react";
+import { SYMPTOMS_LIST, SUFFERING_LIST, IMPACT_LIST } from "@/types/consultation";
 
 interface PageProps {
   params: Promise<{ userId: string }>;
@@ -44,6 +46,7 @@ export default async function MemberDetailPage({ params }: PageProps) {
     { data: aiUsageRows },
     { data: progressRows },
     { data: sessionRows },
+    { data: consultationRow },
   ] = await Promise.all([
     admin.auth.admin.getUserById(userId),
     admin
@@ -72,6 +75,13 @@ export default async function MemberDetailPage({ params }: PageProps) {
       .eq("user_id", userId)
       .order("created_at", { ascending: false })
       .limit(5),
+    admin
+      .from("consultation_forms")
+      .select("*")
+      .eq("member_id", userId)
+      .order("submitted_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ]);
 
   const authUser = userAuth?.user;
@@ -79,6 +89,7 @@ export default async function MemberDetailPage({ params }: PageProps) {
 
   const profile = memberProfile as Record<string, unknown> | null;
   const sub = subscriptionRow as Record<string, unknown> | null;
+  const consultation = consultationRow as Record<string, unknown> | null;
 
   return (
     <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 py-8">
@@ -391,6 +402,162 @@ export default async function MemberDetailPage({ params }: PageProps) {
           ) : (
             <p className="text-[0.8rem] text-[color:var(--muted-foreground)]">
               No coaching sessions yet.
+            </p>
+          )}
+        </Section>
+
+        {/* Consultation Form Section */}
+        <Section icon={<ClipboardList className="w-4 h-4" />} title="Pre-Consultation Form">
+          {consultation ? (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <Field
+                  label="Status"
+                  value={String(consultation.status || "pending")}
+                  badge={consultation.status === "submitted" ? "green" : "amber"}
+                />
+                <Field
+                  label="Submitted"
+                  value={
+                    consultation.submitted_at
+                      ? new Date(String(consultation.submitted_at)).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })
+                      : "—"
+                  }
+                />
+                <Field
+                  label="Pain Scale"
+                  value={consultation.pain_scale ? `${consultation.pain_scale} / 10` : "—"}
+                />
+              </div>
+
+              <div>
+                <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                  Worst Symptom
+                </p>
+                <p className="text-[0.8rem] text-[color:var(--foreground)]">
+                  {String(consultation.worst_symptom || "—")}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                  Symptoms
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {SYMPTOMS_LIST.filter(
+                    (s) => consultation[s.key] === true
+                  ).map((s) => (
+                    <span
+                      key={s.key}
+                      className="text-[0.7rem] font-medium px-2 py-0.5 rounded-full bg-teal-100 text-teal-700"
+                    >
+                      {s.label}
+                    </span>
+                  ))}
+                  {SYMPTOMS_LIST.filter((s) => consultation[s.key] === true)
+                    .length === 0 && (
+                    <span className="text-[0.8rem] text-[color:var(--muted-foreground)]">
+                      None selected
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                  Suffering From
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {SUFFERING_LIST.filter(
+                    (s) => consultation[s.key] === true
+                  ).map((s) => (
+                    <span
+                      key={s.key}
+                      className="text-[0.7rem] font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-700"
+                    >
+                      {s.label}
+                    </span>
+                  ))}
+                  {SUFFERING_LIST.filter((s) => consultation[s.key] === true)
+                    .length === 0 && (
+                    <span className="text-[0.8rem] text-[color:var(--muted-foreground)]">
+                      None selected
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                  Life Impact Areas
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {IMPACT_LIST.filter(
+                    (s) => consultation[s.key] === true
+                  ).map((s) => (
+                    <span
+                      key={s.key}
+                      className="text-[0.7rem] font-medium px-2 py-0.5 rounded-full bg-blue-100 text-blue-700"
+                    >
+                      {s.label}
+                    </span>
+                  ))}
+                  {IMPACT_LIST.filter((s) => consultation[s.key] === true)
+                    .length === 0 && (
+                    <span className="text-[0.8rem] text-[color:var(--muted-foreground)]">
+                      None selected
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {Boolean(consultation.condition_duration) && (
+                <div className="grid grid-cols-2 gap-4">
+                  <Field label="Duration" value={String(consultation.condition_duration)} />
+                  <Field label="Frequency" value={String(consultation.condition_frequency || "—")} />
+                </div>
+              )}
+
+              {Boolean(consultation.what_has_not_helped) && (
+                <div>
+                  <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                    What Has Not Helped
+                  </p>
+                  <p className="text-[0.8rem] text-[color:var(--foreground)]">
+                    {String(consultation.what_has_not_helped)}
+                  </p>
+                </div>
+              )}
+
+              {Boolean(consultation.life_in_3_years_if_worse) && (
+                <div>
+                  <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                    Life in 3 Years if Worse
+                  </p>
+                  <p className="text-[0.8rem] text-[color:var(--foreground)]">
+                    {String(consultation.life_in_3_years_if_worse)}
+                  </p>
+                </div>
+              )}
+
+              {Boolean(consultation.life_if_resolved) && (
+                <div>
+                  <p className="text-[0.7rem] text-[color:var(--muted-foreground)] mb-1">
+                    Life if Resolved
+                  </p>
+                  <p className="text-[0.8rem] text-[color:var(--foreground)]">
+                    {String(consultation.life_if_resolved)}
+                  </p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <p className="text-[0.8rem] text-[color:var(--muted-foreground)]">
+              No consultation form submitted yet.
             </p>
           )}
         </Section>

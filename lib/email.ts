@@ -252,3 +252,27 @@ export async function sendMonthlyResetEmail(
     return { success: false, error: (err as Error).message };
   }
 }
+
+export async function sendPreConsultationReminderEmail(
+  to: string,
+  firstName: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    await getResend().emails.send({
+      from,
+      to,
+      subject:
+        "Your call is coming up — please complete your pre-consultation form",
+      html: emailLayout(`
+        ${p(`Hi ${firstName},`)}
+        ${p(`Your upcoming consultation is approaching! To make the most of your time together, please complete your pre-consultation form so your practitioner can review your health history beforehand.`)}
+        ${ctaButton(`${appUrl}/consultation-form`, "Complete Your Form")}
+        ${p(`Taking a few minutes to fill this out will help us personalize your session and focus on what matters most to you.`)}
+        ${p(`— The Saryn Health Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}

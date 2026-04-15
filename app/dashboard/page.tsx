@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState, useCallback, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -12,9 +12,11 @@ import {
   type KnowledgeChunk,
 } from "@/lib/onboarding";
 import { getUserSubscription, isPremium, type Subscription } from "@/lib/subscription";
+import { hasSubmittedConsultationForm } from "@/lib/consultation";
 import {
   Heart, LogOut, Menu, X, Clock, Lock, Droplets,
   BookOpen, ArrowRight, Sparkles, Bot, AlertTriangle, MessageCircle,
+  ClipboardList, CheckCircle2,
 } from "lucide-react";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -104,7 +106,7 @@ function ChunkCard({
 
 // ─── Page ────────────────────────────────────────────────────────────────────
 
-export default function DashboardPage() {
+function DashboardContent() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<MemberProfile | null>(null);
@@ -114,6 +116,8 @@ export default function DashboardPage() {
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [aiUsage, setAiUsage] = useState<{ used: number; limit: number; remaining: number; reset_date: string } | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showFormBanner, setShowFormBanner] = useState(false);
+  const [showSubmittedMessage, setShowSubmittedMessage] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -163,6 +167,14 @@ export default function DashboardPage() {
         console.error("Failed to fetch personalized chunks:", err);
       }
 
+      // Check consultation form status
+      try {
+        const hasForm = await hasSubmittedConsultationForm(supabase, user.id);
+        if (!hasForm) setShowFormBanner(true);
+      } catch {
+        // non-critical
+      }
+
       // Fetch AI usage for premium members
       if (sub && sub.tier === "premium" && sub.status === "active") {
         try {
@@ -180,6 +192,16 @@ export default function DashboardPage() {
     };
     load();
   }, [router]);
+
+  // Check for consultation submitted param
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("consultation") === "submitted") {
+      setShowSubmittedMessage(true);
+      const timer = setTimeout(() => setShowSubmittedMessage(false), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams]);
 
   const handleChunkClick = useCallback(
     async (chunk: KnowledgeChunk) => {
@@ -276,6 +298,49 @@ export default function DashboardPage() {
                 className="inline-flex items-center gap-1 text-[0.8rem] font-semibold text-[color:var(--primary)] mt-2 hover:underline"
               >
                 {subscription.status === "past_due" ? "Update payment" : "View plans"} <ArrowRight className="w-3 h-3" />
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Consultation submitted success toast */}
+        {showSubmittedMessage && (
+          <div className="mb-6 rounded-xl bg-green-50 border border-green-200 p-4 flex items-start gap-3">
+            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-[0.875rem] font-semibold text-green-800">
+                Your pre-consultation form has been submitted.
+              </p>
+              <p className="text-[0.8rem] text-green-700 mt-0.5">
+                Your practitioner will review it before your call.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Consultation form banner */}
+        {showFormBanner && (
+          <div className="mb-6 rounded-xl bg-teal-50 border border-teal-200 p-4 flex items-start gap-3 relative">
+            <button
+              onClick={() => setShowFormBanner(false)}
+              className="absolute top-3 right-3 text-teal-400 hover:text-teal-600 transition-colors"
+              aria-label="Dismiss"
+            >
+              <X className="w-4 h-4" />
+            </button>
+            <ClipboardList className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-[0.875rem] font-semibold text-teal-800">
+                Complete your pre-consultation form
+              </p>
+              <p className="text-[0.8rem] text-teal-700 mt-0.5">
+                Complete your pre-consultation form so your practitioner is prepared for your call.
+              </p>
+              <Link
+                href="/consultation-form"
+                className="inline-flex items-center gap-1 text-[0.8rem] font-semibold text-[color:var(--primary)] mt-2 hover:underline"
+              >
+                Complete Now <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
           </div>
@@ -409,5 +474,19 @@ export default function DashboardPage() {
         )}
       </main>
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[color:var(--background)] flex items-center justify-center">
+          <div className="w-8 h-8 rounded-full border-2 border-[color:var(--primary)] border-t-transparent animate-spin" />
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
   );
 }
