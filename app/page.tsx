@@ -20,8 +20,7 @@ import {
   X,
 } from "lucide-react";
 
-const NURSE_IMG =
-  "https://images.unsplash.com/photo-1734002886107-168181bcd6a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=600";
+const NURSE_IMG = "/hero-photo.jpg";
 
 // ─── Nav ───────────────────────────────────────────────
 function Navbar() {
