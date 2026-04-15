@@ -135,8 +135,8 @@ function Hero() {
         <div className="flex-1 flex justify-center">
           <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-xl ring-4 ring-white">
             <Image
-              src={SARINA_IMG}
-              alt="Sarina — Certified Functional Medicine Practitioner"
+              src="/hero-functional.jpg"
+              alt="Healthy functional medicine nutrition"
               fill
               className="object-cover"
               priority
