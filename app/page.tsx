@@ -18,6 +18,7 @@ import {
   Award,
   Menu,
   X,
+  ChevronDown,
 } from "lucide-react";
 
 const NURSE_IMG = "/hero-photo.jpg";
@@ -456,6 +457,92 @@ function Trust() {
   );
 }
 
+// ─── FAQ ──────────────────────────────────────────────
+
+const FAQ_ITEMS = [
+  {
+    q: "What is functional medicine and how is it different from conventional medicine?",
+    a: "Functional medicine looks for the root cause of your symptoms rather than just treating them. Instead of managing a diagnosis with medication alone, we investigate your biology, lifestyle, nutrition, environment, and history to understand why your body is struggling — and build a personalized plan to address it.",
+  },
+  {
+    q: "Who is Saryn Health for?",
+    a: "Saryn Health is for anyone who feels like conventional medicine hasn't given them real answers. Whether you've been recently diagnosed with a chronic condition, told you're \"pre-diabetic,\" dealing with fatigue, gut issues, hormonal imbalances, or simply want to be proactive about your long-term health — this platform was built for you.",
+  },
+  {
+    q: "What does the AI health coach actually do?",
+    a: "Our AI coach is trained on clinical functional medicine content developed by a certified functional medicine practitioner. It answers your health questions, explains root cause concepts, walks you through your personalized education curriculum, and helps you prepare for your live calls — available to you 24/7 between appointments.",
+  },
+  {
+    q: "Are the live consultations with real medical professionals?",
+    a: "Yes. Live calls are conducted with our certified functional medicine practitioner. These sessions are personalized to your health history, your goals, and the pre-consultation form you complete before each appointment.",
+  },
+  {
+    q: "Is this a replacement for my doctor?",
+    a: "No. Saryn Health is an education and coaching platform, not a medical practice. We do not diagnose or prescribe. Our role is to help you understand your health more deeply, ask better questions, and make more informed decisions — ideally alongside your existing care team.",
+  },
+  {
+    q: "What's the difference between the Essential and Premium plans?",
+    a: "Both plans include access to the AI health coach and your personalized education curriculum. Premium unlocks higher AI coaching usage, priority access to live call scheduling, and deeper curriculum content across all functional medicine topics.",
+  },
+  {
+    q: "How is my health information kept private?",
+    a: "Your data is encrypted and stored securely. We follow strict confidentiality standards in line with local and federal privacy guidelines. Your health information is never sold or shared with third parties.",
+  },
+  {
+    q: "How do I get started?",
+    a: "Create your account, complete a short onboarding questionnaire so we can personalize your experience, and you'll have immediate access to your AI health coach and education curriculum. When you're ready, schedule your first live consultation with our practitioner.",
+  },
+];
+
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-[color:var(--border)] last:border-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between py-5 text-left gap-4"
+      >
+        <span
+          className="text-[0.95rem] text-[color:var(--foreground)]"
+          style={{ fontWeight: 600 }}
+        >
+          {q}
+        </span>
+        <ChevronDown
+          className={`w-5 h-5 text-[color:var(--muted-foreground)] shrink-0 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+      {open && (
+        <p className="pb-5 text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed pr-8">
+          {a}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function FAQ() {
+  return (
+    <section id="faq" className="py-16 md:py-24 bg-[color:var(--background)]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <h2
+          className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)] text-center mb-10"
+          style={{ fontWeight: 700 }}
+        >
+          Frequently Asked Questions
+        </h2>
+        <div className="bg-white rounded-2xl border border-[color:var(--border)] px-6 sm:px-8">
+          {FAQ_ITEMS.map((item) => (
+            <FAQItem key={item.q} q={item.q} a={item.a} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 // ─── Final CTA ─────────────────────────────────────────
 function FinalCTA() {
   return (
@@ -516,6 +603,7 @@ export default function Home() {
         <WhatsInside />
         <HowItWorks />
         <Trust />
+        <FAQ />
         <FinalCTA />
       </main>
       <Footer />
