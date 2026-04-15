@@ -122,6 +122,7 @@ const QUESTIONS: Question[] = [
       { id: "self_paced", label: "Self-paced — let me explore on my own", icon: BookOpen },
       { id: "ai_guided", label: "AI-guided — coach me through it", icon: Bot },
       { id: "both", label: "A mix of both", icon: Sparkles },
+      { id: "live_professional", label: "Live with a medical professional", icon: Stethoscope },
       { id: "unsure", label: "I'm not sure yet", icon: HelpCircle },
     ],
   },
