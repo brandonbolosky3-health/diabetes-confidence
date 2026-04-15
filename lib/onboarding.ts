@@ -108,14 +108,22 @@ export async function saveOnboardingProfile(
 ) {
   const profile = buildMemberProfile(answers);
 
+  const payload = { user_id: userId, ...profile };
+  console.log("Saving onboarding profile payload:", JSON.stringify(payload, null, 2));
+
   const { error } = await supabase
     .from("member_profiles")
-    .upsert(
-      { user_id: userId, ...profile },
-      { onConflict: "user_id" }
-    );
+    .upsert(payload, { onConflict: "user_id" });
 
-  if (error) throw error;
+  if (error) {
+    console.error("Supabase upsert error:", {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+    });
+    throw new Error(`${error.message}${error.hint ? ` (${error.hint})` : ""}${error.code ? ` [${error.code}]` : ""}`);
+  }
 
   // Send onboarding complete email
   try {
