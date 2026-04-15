@@ -207,20 +207,27 @@ function MeetSarina() {
               className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1.5 rounded-full text-[0.8rem] mb-5"
               style={{ fontWeight: 600 }}
             >
-              Sarina — Certified Functional Medicine Practitioner
+              Sarina Deharo — Certified Functional Medicine Practitioner
             </span>
             <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
-              With over 20 years of hands-on clinical experience as a Registered Nurse and Certified Functional Medicine Practitioner, Sarina has helped hundreds of patients discover the root causes behind their chronic symptoms — and actually fix them.
+              My name is Sarina Deharo and I am a Certified Functional Medicine Practitioner and Registered Nurse with over 20 years of clinical experience. My clinical focus is on diabetes management.
+            </p>
+            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+              I have additional training in functional nutrition, lifestyle medicine, and therapeutic nutrition protocols including anti-inflammatory and root-cause-based dietary approaches.
+            </p>
+            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+              I am very passionate about helping patients with chronic conditions — especially diabetes including pre-diabetes — to make meaningful dietary and lifestyle changes that help reduce inflammation, restore function, and lower the risk of progressive chronic disease.
             </p>
             <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-6">
-              Unlike conventional medicine, Sarina&apos;s approach looks at the whole person — nutrition, gut health, hormones, toxins, stress, and lifestyle — to build a personalized path to lasting health.
+              My approach goes beyond symptom management. I use nutrient therapy and personalized care plans to understand why your body is struggling — and build a path to lasting health that is tailored specifically to your body&apos;s own needs.
             </p>
 
             <div className="space-y-3">
               {[
                 "Registered Nurse (RN) — 20+ years clinical practice",
                 "Certified Functional Medicine Practitioner",
-                "Specialized in diabetes management",
+                "Specialized in diabetes & pre-diabetes management",
+                "Trained in functional nutrition & lifestyle medicine",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-2.5">
                   <Check className="w-5 h-5 text-[color:var(--primary)] mt-0.5 shrink-0" />
