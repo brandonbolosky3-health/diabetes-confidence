@@ -102,7 +102,7 @@ export default function LearnChunkPage() {
       <header className="sticky top-0 z-50 h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
         <Link href="/dashboard" className="flex items-center gap-2 font-bold">
           <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
+          <span className="text-[color:var(--foreground)]">Saryn Health</span>
         </Link>
         <button
           onClick={() => router.back()}

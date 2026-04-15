@@ -184,7 +184,7 @@ export function buildAICoachSystemPrompt(
     .map((c) => `- ${c.chunk_title} (${c.doc_title}): ${c.content.slice(0, 200)}...`)
     .join("\n");
 
-  return `You are a supportive, knowledgeable AI health coach for DiabetesConfidence, a diabetes education platform led by a Registered Nurse diabetes educator with 15+ years of experience.
+  return `You are a supportive, knowledgeable AI health coach for Saryn Health, a diabetes education platform led by a Registered Nurse diabetes educator with 15+ years of experience.
 
 ## Member Profile
 - Primary goal: ${profile.primary_goal}

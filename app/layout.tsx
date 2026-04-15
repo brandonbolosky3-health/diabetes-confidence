@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "DiabetesConfidence — Manage Diabetes Without the Overwhelm",
+  title: "Saryn Health — Manage Diabetes Without the Overwhelm",
   description:
     "Practical education led by a 15-year RN Diabetes Educator to help you understand your numbers, food, and daily habits.",
 };

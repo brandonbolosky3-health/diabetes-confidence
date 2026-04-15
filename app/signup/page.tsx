@@ -35,7 +35,7 @@ export default function SignupPage() {
       <header className="h-16 flex items-center px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95">
         <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
           <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
+          <span className="text-[color:var(--foreground)]">Saryn Health</span>
         </Link>
       </header>
 
@@ -69,7 +69,7 @@ export default function SignupPage() {
                 Create your account
               </h1>
               <p className="text-[color:var(--muted-foreground)] text-[0.95rem] mb-8">
-                Join DiabetesConfidence and start learning today.
+                Join Saryn Health and start learning today.
               </p>
 
               <form onSubmit={onSignup} className="flex flex-col gap-4">

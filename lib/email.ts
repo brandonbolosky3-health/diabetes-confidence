@@ -22,7 +22,7 @@ function emailLayout(body: string): string {
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
         <!-- Header -->
         <tr><td style="background-color:#2a9d8f;padding:24px 32px;border-radius:12px 12px 0 0;">
-          <span style="color:#ffffff;font-size:18px;font-weight:700;">DiabetesConfidence</span>
+          <span style="color:#ffffff;font-size:18px;font-weight:700;">Saryn Health</span>
         </td></tr>
         <!-- Body -->
         <tr><td style="background-color:#ffffff;padding:32px;border-radius:0 0 12px 12px;">
@@ -30,8 +30,8 @@ function emailLayout(body: string): string {
         </td></tr>
         <!-- Footer -->
         <tr><td style="padding:24px 32px;text-align:center;">
-          <p style="color:#6b7280;font-size:12px;margin:0 0 4px;">DiabetesConfidence — Personalized metabolic health education</p>
-          <p style="color:#9ca3af;font-size:11px;margin:0;">You're receiving this because you have an account at DiabetesConfidence.</p>
+          <p style="color:#6b7280;font-size:12px;margin:0 0 4px;">Saryn Health — Personalized metabolic health education</p>
+          <p style="color:#9ca3af;font-size:11px;margin:0;">You're receiving this because you have an account at Saryn Health.</p>
         </td></tr>
       </table>
     </td></tr>
@@ -64,15 +64,15 @@ export async function sendWelcomeEmail(
     await getResend().emails.send({
       from,
       to,
-      subject: "Welcome to DiabetesConfidence 🩺",
+      subject: "Welcome to Saryn Health 🩺",
       html: emailLayout(`
         ${p(`Hi ${firstName},`)}
-        ${p(`Welcome to <strong>DiabetesConfidence</strong> — your personalized diabetes and metabolic health education platform powered by functional medicine.`)}
+        ${p(`Welcome to <strong>Saryn Health</strong> — your personalized diabetes and metabolic health education platform powered by functional medicine.`)}
         ${p(`We're here to help you understand your numbers, optimize your nutrition, and build lasting confidence in managing your health.`)}
         ${p(`Your first step is completing a short health assessment so we can personalize your curriculum to your specific goals and needs.`)}
         ${ctaButton(`${appUrl}/onboarding`, "Start My Health Assessment")}
         ${p(`We're excited to have you here.`)}
-        ${p(`— The DiabetesConfidence Team`)}
+        ${p(`— The Saryn Health Team`)}
       `),
     });
     return { success: true };
@@ -101,7 +101,7 @@ export async function sendOnboardingCompleteEmail(
         <ul style="margin:0 0 16px;padding-left:20px;">${interestsList}</ul>` : ""}
         ${p(`Your dashboard now shows personalized lessons chosen specifically for your health goals. We've curated the best content to get you started.`)}
         ${ctaButton(`${appUrl}/dashboard`, "View My Dashboard")}
-        ${p(`— The DiabetesConfidence Team`)}
+        ${p(`— The Saryn Health Team`)}
       `),
     });
     return { success: true };
@@ -146,7 +146,7 @@ export async function sendPaymentConfirmationEmail(
     await getResend().emails.send({
       from,
       to,
-      subject: `Payment confirmed — welcome to DiabetesConfidence ${tierName}`,
+      subject: `Payment confirmed — welcome to Saryn Health ${tierName}`,
       html: emailLayout(`
         ${p(`Hi ${firstName},`)}
         ${p(`Your payment of <strong>$${amount.toFixed(2)}</strong> for the <strong>${tierName}</strong> plan has been confirmed.`)}
@@ -155,7 +155,7 @@ export async function sendPaymentConfirmationEmail(
         ${p(`Your next billing date is <strong>${formattedDate}</strong>.`)}
         ${ctaButton(`${appUrl}/dashboard`, "Go to Dashboard")}
         ${p(`Thank you for investing in your health.`)}
-        ${p(`— The DiabetesConfidence Team`)}
+        ${p(`— The Saryn Health Team`)}
       `),
     });
     return { success: true };
@@ -179,7 +179,7 @@ export async function sendSubscriptionCanceledEmail(
     await getResend().emails.send({
       from,
       to,
-      subject: "Your DiabetesConfidence subscription has been canceled",
+      subject: "Your Saryn Health subscription has been canceled",
       html: emailLayout(`
         ${p(`Hi ${firstName},`)}
         ${p(`We've confirmed the cancellation of your subscription.`)}
@@ -187,7 +187,7 @@ export async function sendSubscriptionCanceledEmail(
         ${p(`Your progress, profile, and all completed lessons are saved — they'll be right where you left them if you decide to come back.`)}
         ${ctaButton(`${appUrl}/pricing`, "Resubscribe Anytime")}
         ${p(`We hope to see you again soon.`)}
-        ${p(`— The DiabetesConfidence Team`)}
+        ${p(`— The Saryn Health Team`)}
       `),
     });
     return { success: true };
@@ -219,7 +219,7 @@ export async function sendUsageLimitWarningEmail(
         ${p(`Your messages will reset on <strong>${formattedDate}</strong>.`)}
         ${p(`In the meantime, you still have full access to all of your educational content, lessons, and community features.`)}
         ${ctaButton(`${appUrl}/dashboard`, "Go to Dashboard")}
-        ${p(`— The DiabetesConfidence Team`)}
+        ${p(`— The Saryn Health Team`)}
       `),
     });
     return { success: true };
@@ -244,7 +244,7 @@ export async function sendMonthlyResetEmail(
         ${p(`Your AI health coach is ready to help you with anything — whether it's understanding your latest lab results, optimizing your nutrition, or building better daily habits.`)}
         ${ctaButton(`${appUrl}/dashboard`, "Ask the AI Coach")}
         ${p(`Here's to another great month of progress.`)}
-        ${p(`— The DiabetesConfidence Team`)}
+        ${p(`— The Saryn Health Team`)}
       `),
     });
     return { success: true };

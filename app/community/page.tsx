@@ -169,7 +169,7 @@ export default function CommunityPage() {
       <header className="sticky top-0 z-40 h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
         <Link href="/member" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
           <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
+          <span className="text-[color:var(--foreground)]">Saryn Health</span>
         </Link>
         <div className="flex items-center gap-3 sm:gap-4">
           <Link

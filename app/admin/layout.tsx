@@ -33,7 +33,7 @@ export default async function AdminLayout({
               className="flex items-center gap-2 font-bold text-[color:var(--foreground)]"
             >
               <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-              DiabetesConfidence
+              Saryn Health
             </Link>
             <span className="flex items-center gap-1 bg-gray-900 text-white text-[0.65rem] font-semibold px-2 py-0.5 rounded">
               <Shield className="w-3 h-3" />

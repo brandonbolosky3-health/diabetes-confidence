@@ -33,7 +33,7 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     key: "primary_goal",
-    title: "What brings you to DiabetesConfidence today?",
+    title: "What brings you to Saryn Health today?",
     subtitle: "Choose the one that resonates most with you.",
     options: [
       { id: "blood_sugar", label: "Understand and manage my blood sugar", icon: Droplets },
@@ -191,6 +191,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
 
@@ -282,14 +283,19 @@ export default function OnboardingPage() {
       setStep((s) => s + 1);
     } else {
       // Final step — save and redirect
-      if (!userId) return;
+      if (!userId) {
+        router.push("/login");
+        return;
+      }
       setSaving(true);
+      setSaveError(null);
       try {
         const supabase = createClient();
         await saveOnboardingProfile(supabase, userId, answers);
         router.push("/dashboard");
       } catch (err) {
         console.error("Failed to save onboarding profile:", err);
+        setSaveError("Something went wrong saving your profile. Please try again.");
         setSaving(false);
       }
     }
@@ -316,7 +322,7 @@ export default function OnboardingPage() {
       <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
         <Link href="/" className="flex items-center gap-2 font-bold">
           <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
+          <span className="text-[color:var(--foreground)]">Saryn Health</span>
         </Link>
         <span className="text-[0.8rem] text-[color:var(--muted-foreground)] font-medium">
           Step {step + 1} of {QUESTIONS.length}
@@ -371,6 +377,10 @@ export default function OnboardingPage() {
                 );
               })}
             </div>
+
+            {saveError && (
+              <p className="text-red-600 text-sm text-center mt-4">{saveError}</p>
+            )}
 
             {/* Navigation */}
             <div className="flex items-center justify-between mt-8">

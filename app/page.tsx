@@ -31,7 +31,7 @@ function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
           <Heart className="w-6 h-6 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)] text-[1.1rem]">DiabetesConfidence</span>
+          <span className="text-[color:var(--foreground)] text-[1.1rem]">Saryn Health</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
           <a href="#pricing" className="hover:text-[color:var(--foreground)] transition-colors">Pricing</a>
@@ -494,9 +494,9 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-center gap-2 mb-3">
           <Heart className="w-4 h-4 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-white" style={{ fontWeight: 600 }}>DiabetesConfidence</span>
+          <span className="text-white" style={{ fontWeight: 600 }}>Saryn Health</span>
         </div>
-        <p>© {new Date().getFullYear()} DiabetesConfidence. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Saryn Health. All rights reserved.</p>
       </div>
     </footer>
   );

@@ -62,7 +62,7 @@ export default function MemberPage() {
         <div className="h-16 flex items-center justify-between px-4 sm:px-6">
           <Link href="/member" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
             <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-            <span className="text-[color:var(--foreground)]">DiabetesConfidence</span>
+            <span className="text-[color:var(--foreground)]">Saryn Health</span>
           </Link>
           <div className="hidden md:flex items-center gap-4">
             <Link href="/lessons" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Lessons</Link>
