@@ -106,7 +106,7 @@ const QUESTIONS: Question[] = [
     options: [
       { id: "sugar_inflammation", label: "Sugar & inflammation", icon: Flame },
       { id: "gut_health", label: "Gut health & microbiome", icon: Apple },
-      { id: "hormones_adrenals", label: "Hormones & adrenals", icon: Zap },
+      { id: "adrenals", label: "Adrenals", icon: Zap },
       { id: "detox_liver", label: "Detox & liver support", icon: Shield },
       { id: "brain_cognition", label: "Brain health & cognition", icon: Brain },
       { id: "peptides_advanced", label: "Peptides & advanced protocols", icon: Microscope },
