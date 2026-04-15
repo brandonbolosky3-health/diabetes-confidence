@@ -294,8 +294,9 @@ export default function OnboardingPage() {
         await saveOnboardingProfile(supabase, userId, answers);
         router.push("/dashboard");
       } catch (err) {
-        console.error("Failed to save onboarding profile:", err);
-        setSaveError("Something went wrong saving your profile. Please try again.");
+        const msg = err instanceof Error ? err.message : String(err);
+        console.error("Failed to save onboarding profile:", msg, err);
+        setSaveError(`Something went wrong saving your profile: ${msg}`);
         setSaving(false);
       }
     }
