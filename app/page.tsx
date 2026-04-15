@@ -643,9 +643,9 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <PricingPreview />
         <WhatsInside />
         <HowItWorks />
+        <PricingPreview />
         <Trust />
         <FAQ />
         <FinalCTA />
