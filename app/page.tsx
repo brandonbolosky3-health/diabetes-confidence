@@ -5,10 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BookOpen,
-  Video,
+  Bot,
   FileText,
   Users,
-  Bot,
   ArrowRight,
   UserPlus,
   GraduationCap,
@@ -19,9 +18,12 @@ import {
   Menu,
   X,
   ChevronDown,
+  Calendar,
+  Brain,
+  UtensilsCrossed,
 } from "lucide-react";
 
-const NURSE_IMG = "/hero-photo.jpg";
+const SARINA_IMG = "/hero-photo.jpg";
 
 // ─── Nav ───────────────────────────────────────────────
 function Navbar() {
@@ -35,13 +37,13 @@ function Navbar() {
           <span className="text-[color:var(--foreground)] text-[1.1rem]">Saryn Health</span>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-          <a href="#pricing" className="hover:text-[color:var(--foreground)] transition-colors">Pricing</a>
+          <Link href="/work-with-me" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
           <a href="#faq" className="hover:text-[color:var(--foreground)] transition-colors">FAQ</a>
           <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
         </nav>
         <div className="flex items-center gap-3">
           <Link
-            href="/onboarding"
+            href="/signup"
             className="bg-[color:var(--primary)] text-white text-[0.9rem] px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
             style={{ fontWeight: 600 }}
           >
@@ -57,16 +59,15 @@ function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
-          <a
-            href="#pricing"
+          <Link
+            href="/work-with-me"
             onClick={() => setMobileOpen(false)}
             className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
           >
-            Pricing
-          </a>
+            Work With Me
+          </Link>
           <a
             href="#faq"
             onClick={() => setMobileOpen(false)}
@@ -97,7 +98,6 @@ function Hero() {
       }}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 flex flex-col-reverse md:flex-row items-center gap-10 md:gap-16">
-        {/* Text */}
         <div className="flex-1 text-center md:text-left">
           <span
             className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1 rounded-full text-[0.8rem] mb-5"
@@ -116,28 +116,27 @@ function Hero() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <Link
-              href="/onboarding"
+              href="/signup"
               className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-7 py-3 rounded-full text-[0.95rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
-              Start Free — 7 Days on Us <ArrowRight className="w-4 h-4" />
+              Try It Free for 7 Days <ArrowRight className="w-4 h-4" />
             </Link>
             <a
-              href="#about"
+              href="#how-it-works"
               className="inline-flex items-center justify-center gap-2 border-2 border-[color:var(--primary)] text-[color:var(--primary)] px-7 py-3 rounded-full text-[0.95rem] hover:bg-[color:var(--primary)]/5 transition-colors"
               style={{ fontWeight: 600 }}
             >
-              Learn More
+              See How It Works
             </a>
           </div>
         </div>
 
-        {/* Image */}
         <div className="flex-1 flex justify-center">
           <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-xl ring-4 ring-white">
             <Image
-              src={NURSE_IMG}
-              alt="Diabetes Educator RN"
+              src={SARINA_IMG}
+              alt="Sarina — Certified Functional Medicine Practitioner"
               fill
               className="object-cover"
               priority
@@ -146,7 +145,6 @@ function Hero() {
         </div>
       </div>
 
-      {/* Wave */}
       <div className="absolute bottom-0 left-0 w-full">
         <svg viewBox="0 0 1440 60" fill="none" className="w-full">
           <path
@@ -159,73 +157,163 @@ function Hero() {
   );
 }
 
-// ─── What's Inside ─────────────────────────────────────
-const benefits = [
+// ─── Social Proof Bar ─────────────────────────────────
+const stats = [
+  { value: "20+", label: "Years Clinical Experience" },
+  { value: "500+", label: "Patients Helped Personally" },
+  { value: "Certified", label: "Functional Medicine Practitioner" },
+  { value: "Evidence-Based", label: "Root Cause Approach" },
+];
+
+function SocialProof() {
+  return (
+    <section className="bg-[color:var(--primary)]/5 border-y border-[color:var(--primary)]/10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          {stats.map((s) => (
+            <div key={s.label} className="text-center">
+              <p
+                className="text-[1.5rem] md:text-[1.75rem] text-[color:var(--primary)]"
+                style={{ fontWeight: 800 }}
+              >
+                {s.value}
+              </p>
+              <p className="text-[0.8rem] text-[color:var(--muted-foreground)] mt-1">
+                {s.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Meet Sarina ──────────────────────────────────────
+function MeetSarina() {
+  return (
+    <section className="py-16 md:py-24 bg-[color:var(--background)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <h2
+          className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)] text-center mb-12"
+          style={{ fontWeight: 700 }}
+        >
+          Meet Your Practitioner
+        </h2>
+
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+          <div className="flex-1">
+            <span
+              className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1.5 rounded-full text-[0.8rem] mb-5"
+              style={{ fontWeight: 600 }}
+            >
+              Sarina — Certified Functional Medicine Practitioner
+            </span>
+            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+              With over 20 years of hands-on clinical experience as a Registered Nurse and Certified Functional Medicine Practitioner, Sarina has helped hundreds of patients discover the root causes behind their chronic symptoms — and actually fix them.
+            </p>
+            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-6">
+              Unlike conventional medicine, Sarina&apos;s approach looks at the whole person — nutrition, gut health, hormones, toxins, stress, and lifestyle — to build a personalized path to lasting health.
+            </p>
+
+            <div className="space-y-3">
+              {[
+                "Registered Nurse (RN) — 20+ years clinical practice",
+                "Certified Functional Medicine Practitioner",
+                "Specialized in diabetes management",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <Check className="w-5 h-5 text-[color:var(--primary)] mt-0.5 shrink-0" />
+                  <span className="text-[0.95rem] text-[color:var(--foreground)]" style={{ fontWeight: 500 }}>
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex-shrink-0">
+            <div className="relative w-72 h-72 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-lg" style={{ boxShadow: "0 8px 32px rgba(42, 157, 143, 0.15)" }}>
+              <Image
+                src={SARINA_IMG}
+                alt="Sarina"
+                fill
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── What You'll Get ──────────────────────────────────
+const features = [
   {
-    icon: BookOpen,
-    title: "Step-by-step education modules",
-    desc: "Structured lessons that build your functional medicine knowledge progressively — from root cause thinking to personalized nutrition.",
+    icon: Brain,
+    title: "Root Cause Education",
+    desc: "Structured lessons built on functional medicine principles — explaining the why behind your symptoms.",
   },
   {
-    icon: Video,
-    title: "Weekly short video lessons",
-    desc: "Bite-sized videos you can watch on your schedule, anytime.",
-  },
-  {
-    icon: FileText,
-    title: "Printable guides + checklists",
-    desc: "Downloadable resources to keep you organized and on track.",
-  },
-  {
-    icon: Users,
-    title: "Private community",
-    desc: "A supportive space to connect with others on the same journey.",
+    icon: Calendar,
+    title: "1-on-1 Live Coaching Calls",
+    desc: "Book private consultations with Sarina. Get personalized guidance for your specific health situation.",
   },
   {
     icon: Bot,
-    title: "AI Education Coach",
-    desc: "Get answers to your education questions — 5/day on Essential, unlimited on Premium.",
-    premium: true,
+    title: "AI Health Coach",
+    desc: "Instant answers to your health questions, 24/7 — trained on clinical functional medicine content.",
+  },
+  {
+    icon: UtensilsCrossed,
+    title: "Functional Wellness Cookbook",
+    desc: "Anti-inflammatory recipes and meal plans designed to support gut health, blood sugar balance, and energy.",
+  },
+  {
+    icon: Users,
+    title: "Private Community",
+    desc: "Connect with others on the same journey. Share wins, ask questions, and stay accountable.",
+  },
+  {
+    icon: FileText,
+    title: "Printable Guides & Resources",
+    desc: "Downloadable checklists, trackers, and reference sheets to keep you organized and on track.",
   },
 ];
 
-function WhatsInside() {
+function WhatYoullGet() {
   return (
-    <section id="whatsinside" className="py-16 md:py-24 bg-[color:var(--background)]">
+    <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
           <h2
             className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
             style={{ fontWeight: 700 }}
           >
-            What&apos;s Inside the Membership
+            Everything You Need to Take Control of Your Health
           </h2>
           <p className="mt-3 text-[color:var(--muted-foreground)] text-[1.05rem] max-w-lg mx-auto">
-            Everything you need to feel informed, empowered, and supported.
+            Not just information — a full coaching experience.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {benefits.map((b) => {
-            const Icon = b.icon;
+          {features.map((f) => {
+            const Icon = f.icon;
             return (
               <div
-                key={b.title}
-                className="relative bg-[color:var(--card)] rounded-2xl p-6 shadow-sm border border-[color:var(--border)] hover:shadow-md transition-shadow"
+                key={f.title}
+                className="bg-white rounded-2xl p-6 shadow-sm border border-[color:var(--border)] hover:shadow-md transition-shadow"
               >
-                {b.premium && (
-                  <span className="absolute top-4 right-4 bg-amber-100 text-amber-700 text-[0.7rem] px-2 py-0.5 rounded-full" style={{ fontWeight: 600 }}>
-                    Premium
-                  </span>
-                )}
                 <div className="w-12 h-12 rounded-xl bg-[color:var(--primary)]/10 flex items-center justify-center mb-4">
                   <Icon className="w-6 h-6 text-[color:var(--primary)]" />
                 </div>
                 <h3 className="text-[1.05rem] text-[color:var(--foreground)] mb-2" style={{ fontWeight: 600 }}>
-                  {b.title}
+                  {f.title}
                 </h3>
                 <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
-                  {b.desc}
+                  {f.desc}
                 </p>
               </div>
             );
@@ -241,26 +329,26 @@ const steps = [
   {
     icon: UserPlus,
     num: "1",
-    title: "Join",
-    desc: "Pick a plan that fits your needs and get instant access.",
+    title: "Sign up free",
+    desc: "Start your 7-day free trial — no credit card required.",
   },
   {
     icon: GraduationCap,
     num: "2",
-    title: "Follow the lessons",
-    desc: "Work through bite-sized modules at your own pace.",
+    title: "Get personalized",
+    desc: "Complete a short questionnaire and get a tailored education plan.",
   },
   {
     icon: Heart,
     num: "3",
-    title: "Build consistent habits",
-    desc: "Apply what you learn and see real improvements in your daily life.",
+    title: "Start healing",
+    desc: "Learn, coach with Sarina, and build lasting health habits.",
   },
 ];
 
 function HowItWorks() {
   return (
-    <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
+    <section id="how-it-works" className="py-16 md:py-24 bg-[color:var(--background)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
         <h2
           className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
@@ -304,165 +392,6 @@ function HowItWorks() {
   );
 }
 
-// ─── Pricing ───────────────────────────────────────────
-const plans = [
-  {
-    name: "7-Day Free Trial",
-    slug: "free_trial",
-    price: "$0",
-    priceSubtext: "No credit card required",
-    popular: false,
-    trial: true,
-    features: [
-      "Full lesson library",
-      "Monthly new content",
-      "Printable resources",
-      "AI Health Coach (50 messages/month)",
-      "1 free live meet",
-    ],
-    cta: "Try Free for 7 Days",
-    description: "Try everything in the Essential plan free for 7 days.",
-  },
-  {
-    name: "Essential",
-    slug: "essential",
-    price: "$9.99",
-    popular: false,
-    features: [
-      "Full lesson library",
-      "Monthly new content",
-      "Printable resources",
-      "AI Health Coach (50 messages/month)",
-      "1 free live meet",
-    ],
-  },
-  {
-    name: "Premium",
-    slug: "premium",
-    price: "$19.99",
-    popular: true,
-    features: [
-      "Everything in Essential",
-      "Unlimited AI Coach",
-      "Monthly live Q&A sessions",
-      "Priority support (~2hr)",
-      "4 live monthly meets (up to 30 min)",
-    ],
-  },
-];
-
-function PricingPreview() {
-  return (
-    <section id="pricing" className="pt-8 pb-16 md:pt-12 md:pb-24 bg-[color:var(--background)]">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
-        <h2
-          className="text-[1.5rem] md:text-[2rem] text-[color:var(--foreground)] max-w-2xl mx-auto leading-tight"
-          style={{ fontWeight: 700 }}
-        >
-          Our functional medicine platform is designed to help you identify the root causes of your symptoms and build a personalized path to lasting health — naturally.
-        </h2>
-        <h3
-          className="mt-6 text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
-          style={{ fontWeight: 700 }}
-        >
-          Choose Your Plan
-        </h3>
-        <p className="mt-3 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[0.95rem]">
-          Start free for 7 days — no credit card required. Then choose the plan that fits your health journey.
-        </p>
-
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-          {plans.map((plan) => (
-            <div
-              key={plan.name}
-              className={`rounded-2xl p-8 border-2 text-left transition-shadow relative ${
-                plan.trial
-                  ? "border-[color:var(--primary)] shadow-md bg-white"
-                  : plan.popular
-                  ? "border-[color:var(--primary)] shadow-lg bg-white"
-                  : "border-[color:var(--border)] bg-[color:var(--card)] shadow-sm"
-              }`}
-            >
-              {plan.trial && (
-                <span
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[color:var(--primary)] text-white text-[0.75rem] px-4 py-1 rounded-full"
-                  style={{ fontWeight: 600 }}
-                >
-                  Best way to start
-                </span>
-              )}
-              {plan.popular && (
-                <span
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[color:var(--primary)] text-white text-[0.75rem] px-4 py-1 rounded-full"
-                  style={{ fontWeight: 600 }}
-                >
-                  Most Popular
-                </span>
-              )}
-              <h3
-                className="text-[1.15rem] text-[color:var(--foreground)]"
-                style={{ fontWeight: 600 }}
-              >
-                {plan.name}
-              </h3>
-              <div className="mt-3 flex items-baseline gap-1">
-                <span
-                  className="text-[2.5rem] text-[color:var(--foreground)]"
-                  style={{ fontWeight: 700 }}
-                >
-                  {plan.price}
-                </span>
-                {!plan.trial && (
-                  <span className="text-[color:var(--muted-foreground)] text-[0.9rem]">/month</span>
-                )}
-              </div>
-              {plan.priceSubtext && (
-                <p className="text-[0.8rem] text-[color:var(--primary)] mt-1" style={{ fontWeight: 500 }}>
-                  {plan.priceSubtext}
-                </p>
-              )}
-              {plan.description && (
-                <p className="text-[0.85rem] text-[color:var(--muted-foreground)] mt-2">
-                  {plan.description}
-                </p>
-              )}
-              <ul className="mt-6 space-y-3">
-                {plan.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2 text-[0.9rem] text-[color:var(--foreground)]">
-                    <Check className="w-5 h-5 text-[color:var(--primary)] mt-0.5 shrink-0" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href={`/signup?plan=${plan.slug}`}
-                className={`mt-8 w-full py-3 rounded-full transition-opacity text-[0.95rem] flex items-center justify-center ${
-                  plan.trial
-                    ? "bg-[color:var(--primary)] text-white hover:opacity-90"
-                    : plan.popular
-                    ? "bg-[color:var(--primary)] text-white hover:opacity-90"
-                    : "bg-[color:var(--foreground)] text-white hover:opacity-80"
-                }`}
-                style={{ fontWeight: 600 }}
-              >
-                {plan.cta || "Get Started"}
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        <a
-          href="#pricing"
-          className="mt-8 inline-flex items-center gap-1 text-[color:var(--primary)] text-[0.9rem] hover:underline"
-          style={{ fontWeight: 500 }}
-        >
-          View full pricing details <ArrowRight className="w-4 h-4" />
-        </a>
-      </div>
-    </section>
-  );
-}
-
 // ─── Trust ─────────────────────────────────────────────
 function Trust() {
   return (
@@ -480,7 +409,7 @@ function Trust() {
           className="text-[1.5rem] md:text-[1.75rem] text-[color:var(--foreground)]"
           style={{ fontWeight: 700 }}
         >
-          Built on over 20 Years of Real-World RN Experience
+          Built on over 20 Years of Real-World Clinical Experience
         </h2>
         <p className="mt-4 text-[color:var(--muted-foreground)] max-w-2xl mx-auto text-[1rem] leading-relaxed">
           Every lesson is grounded in evidence-based teaching and real clinical experience. You&apos;ll
@@ -605,15 +534,15 @@ function FinalCTA() {
           Take Control of Your Health
         </h2>
         <p className="mt-4 text-white/80 max-w-lg mx-auto text-[1.05rem] leading-relaxed">
-          Join a growing community of people taking control of their health with clear,
-          personalized functional medicine coaching.
+          Join a growing community of people discovering the root causes behind
+          their symptoms with personalized functional medicine coaching.
         </p>
         <Link
-          href="/onboarding"
+          href="/signup"
           className="inline-flex items-center gap-2 mt-8 bg-white text-[color:var(--primary)] px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >
-          Join Today <ArrowRight className="w-4 h-4" />
+          Start Free for 7 Days <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </section>
@@ -643,9 +572,10 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
-        <WhatsInside />
+        <SocialProof />
+        <MeetSarina />
+        <WhatYoullGet />
         <HowItWorks />
-        <PricingPreview />
         <Trust />
         <FAQ />
         <FinalCTA />
