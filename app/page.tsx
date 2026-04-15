@@ -313,9 +313,10 @@ const plans = [
     popular: false,
     features: [
       "Full lesson library",
-      "Weekly new content",
+      "Monthly new content",
       "Printable resources",
       "AI Coach (5 questions/day)",
+      "1 free consultation",
     ],
   },
   {
@@ -328,6 +329,7 @@ const plans = [
       "Unlimited AI Coach",
       "Monthly live Q&A sessions",
       "Priority support (~2hr)",
+      "4 consultations (up to 30 min)",
     ],
   },
 ];
