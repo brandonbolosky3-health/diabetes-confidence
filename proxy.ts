@@ -34,6 +34,8 @@ export async function proxy(request: NextRequest) {
     !user &&
     (pathname.startsWith("/member") ||
       pathname.startsWith("/dashboard") ||
+      pathname.startsWith("/onboarding") ||
+      pathname.startsWith("/consultation-form") ||
       pathname.startsWith("/lessons") ||
       pathname.startsWith("/learn") ||
       pathname.startsWith("/ai") ||
