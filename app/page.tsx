@@ -102,7 +102,7 @@ function Hero() {
             className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1 rounded-full text-[0.8rem] mb-5"
             style={{ fontWeight: 500 }}
           >
-            Led by a 15-Year RN Diabetes Educator
+            Led by a 20+ Year RN Diabetes Educator
           </span>
           <h1
             className="text-[2rem] md:text-[2.75rem] tracking-tight text-[color:var(--foreground)] leading-tight mb-4"
