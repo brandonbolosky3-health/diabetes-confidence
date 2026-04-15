@@ -445,7 +445,7 @@ function Trust() {
             <span style={{ fontWeight: 600 }} className="text-[color:var(--foreground)]">
               educational purposes only
             </span>{" "}
-            and does not replace individualized medical advice from your healthcare provider.&rdquo;
+            and does not replace individualized medical advice from your healthcare provider. We do not diagnose, treat, or cure diseases.&rdquo;
           </p>
         </div>
       </div>
