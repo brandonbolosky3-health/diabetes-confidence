@@ -53,7 +53,7 @@ const QUESTIONS: Question[] = [
       { id: "blood_sugar_crashes", label: "Blood sugar crashes or spikes", icon: Activity },
       { id: "fatigue", label: "Constant fatigue or low energy", icon: BatteryLow },
       { id: "gut", label: "Gut issues (bloating, digestion)", icon: Apple },
-      { id: "hormones", label: "Hormone imbalances", icon: Zap },
+
       { id: "brain_fog", label: "Brain fog or poor focus", icon: Brain },
       { id: "pain", label: "Chronic pain or inflammation", icon: Flame },
       { id: "weight_loss", label: "Difficulty losing weight", icon: Scale },
