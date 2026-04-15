@@ -67,11 +67,10 @@ const QUESTIONS: Question[] = [
     multiSelect: true,
     options: [
       { id: "t2dm", label: "Type 2 Diabetes", icon: Droplets },
+      { id: "t1dm", label: "Type 1 Diabetes", icon: Droplets },
       { id: "prediabetes", label: "Pre-diabetes", icon: Activity },
       { id: "hypertension", label: "High blood pressure", icon: Stethoscope },
       { id: "cholesterol", label: "High cholesterol", icon: Microscope },
-      { id: "thyroid", label: "Thyroid condition", icon: Zap },
-      { id: "autoimmune", label: "Autoimmune condition", icon: Shield },
       { id: "none", label: "None of the above", icon: CheckCircle2 },
     ],
   },
