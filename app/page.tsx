@@ -343,7 +343,10 @@ function PricingPreview() {
         >
           Choose Your Plan
         </h2>
-        <p className="mt-3 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[1.05rem]">
+        <p className="mt-3 text-[color:var(--muted-foreground)] max-w-2xl mx-auto text-[1.05rem] leading-relaxed">
+          Our functional nutrition and lifestyle program is designed to educate and support diabetic patients towards better health and function in a natural way.
+        </p>
+        <p className="mt-2 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[0.95rem]">
           Both plans include access to our AI health coach, trained on clinical functional medicine content by a certified practitioner.
         </p>
 
@@ -428,9 +431,6 @@ function Trust() {
             <Award className="w-6 h-6 text-[color:var(--primary)]" />
           </div>
         </div>
-        <p className="text-[1.05rem] text-[color:var(--muted-foreground)] max-w-2xl mx-auto leading-relaxed mb-6">
-          Our functional nutrition and lifestyle program is designed to educate and support diabetic patients towards better health and function in a natural way.
-        </p>
         <h2
           className="text-[1.5rem] md:text-[1.75rem] text-[color:var(--foreground)]"
           style={{ fontWeight: 700 }}
