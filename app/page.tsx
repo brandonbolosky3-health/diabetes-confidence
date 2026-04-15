@@ -339,15 +339,18 @@ function PricingPreview() {
     <section id="pricing" className="py-16 md:py-24 bg-[color:var(--background)]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center">
         <h2
-          className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
+          className="text-[1.5rem] md:text-[2rem] text-[color:var(--foreground)] max-w-2xl mx-auto leading-tight"
+          style={{ fontWeight: 700 }}
+        >
+          Our functional nutrition and lifestyle program is designed to educate and support diabetic patients towards better health and function in a natural way.
+        </h2>
+        <h3
+          className="mt-6 text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
           style={{ fontWeight: 700 }}
         >
           Choose Your Plan
-        </h2>
-        <p className="mt-3 text-[color:var(--muted-foreground)] max-w-2xl mx-auto text-[1.05rem] leading-relaxed">
-          Our functional nutrition and lifestyle program is designed to educate and support diabetic patients towards better health and function in a natural way.
-        </p>
-        <p className="mt-2 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[0.95rem]">
+        </h3>
+        <p className="mt-3 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[0.95rem]">
           Both plans include access to our AI health coach, trained on clinical functional medicine content by a certified practitioner.
         </p>
 
