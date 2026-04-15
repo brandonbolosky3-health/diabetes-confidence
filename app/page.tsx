@@ -122,7 +122,7 @@ function Hero() {
               Start Your Health Journey <ArrowRight className="w-4 h-4" />
             </Link>
             <a
-              href="#whatsinside"
+              href="#about"
               className="inline-flex items-center justify-center gap-2 border-2 border-[color:var(--primary)] text-[color:var(--primary)] px-7 py-3 rounded-full text-[0.95rem] hover:bg-[color:var(--primary)]/5 transition-colors"
               style={{ fontWeight: 600 }}
             >
@@ -418,7 +418,7 @@ function PricingPreview() {
 // ─── Trust ─────────────────────────────────────────────
 function Trust() {
   return (
-    <section className="py-16 md:py-20 bg-[color:var(--secondary)]">
+    <section id="about" className="py-16 md:py-20 bg-[color:var(--secondary)]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
         <div className="flex justify-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-full bg-[color:var(--primary)]/10 flex items-center justify-center">
@@ -428,6 +428,9 @@ function Trust() {
             <Award className="w-6 h-6 text-[color:var(--primary)]" />
           </div>
         </div>
+        <p className="text-[1.05rem] text-[color:var(--muted-foreground)] max-w-2xl mx-auto leading-relaxed mb-6">
+          Our functional nutrition and lifestyle program is designed to educate and support diabetic patients towards better health and function in a natural way.
+        </p>
         <h2
           className="text-[1.5rem] md:text-[1.75rem] text-[color:var(--foreground)]"
           style={{ fontWeight: 700 }}
