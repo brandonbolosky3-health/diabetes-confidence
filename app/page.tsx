@@ -316,7 +316,7 @@ const plans = [
       "Monthly new content",
       "Printable resources",
       "AI Coach (5 questions/day)",
-      "1 free consultation",
+      "1 free live meet",
     ],
   },
   {
@@ -329,7 +329,7 @@ const plans = [
       "Unlimited AI Coach",
       "Monthly live Q&A sessions",
       "Priority support (~2hr)",
-      "4 consultations (up to 30 min)",
+      "4 live monthly meets (up to 30 min)",
     ],
   },
 ];
