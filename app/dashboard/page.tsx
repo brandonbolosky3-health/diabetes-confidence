@@ -284,8 +284,11 @@ export default function DashboardPage() {
         {/* Welcome */}
         <div className="mb-8">
           <h1 className="text-[1.75rem] sm:text-[2rem] font-bold text-[color:var(--foreground)]">
-            {getGreeting()}, {getFirstName(email)}
+            Welcome to Saryn Health, {getFirstName(email)}
           </h1>
+          <p className="text-[0.95rem] text-[color:var(--muted-foreground)] mt-1 mb-2">
+            Your personalized functional medicine coaching experience is ready. Let&apos;s start exploring the root causes behind your health and building a plan that works for your body.
+          </p>
           <div className="flex items-center gap-3 mt-2">
             <span className="inline-flex items-center gap-1.5 text-[0.85rem] text-[color:var(--primary)] font-medium">
               <BookOpen className="w-4 h-4" />

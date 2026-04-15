@@ -13,9 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Saryn Health — Manage Diabetes Without the Overwhelm",
+  title: "Saryn Health — Personalized Functional Medicine Coaching",
   description:
-    "Practical education led by a 15-year RN Diabetes Educator to help you understand your numbers, food, and daily habits.",
+    "AI-powered functional medicine coaching and education that goes beyond symptoms to address root causes — personalized to you.",
+  openGraph: {
+    title: "Saryn Health",
+    description: "Personalized functional medicine coaching built around your biology, lifestyle, and goals.",
+    siteName: "Saryn Health",
+  },
 };
 
 export default function RootLayout({

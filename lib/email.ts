@@ -7,7 +7,7 @@ function getResend(): Resend {
   }
   return _resend;
 }
-const from = process.env.RESEND_FROM_EMAIL || "noreply@diabetesconfidence.com";
+const from = process.env.RESEND_FROM_EMAIL || "Saryn Health <hello@sarynhealth.com>";
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
 // ─── Shared Layout ─────────────────────────────────────────────────────────

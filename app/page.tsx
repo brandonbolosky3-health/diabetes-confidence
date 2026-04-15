@@ -108,11 +108,10 @@ function Hero() {
             className="text-[2rem] md:text-[2.75rem] tracking-tight text-[color:var(--foreground)] leading-tight mb-4"
             style={{ fontWeight: 800 }}
           >
-            Confidently Manage Diabetes —{" "}
-            <span className="text-[color:var(--primary)]">Without the Overwhelm</span>
+            Finally Understand Why You Feel the Way You Do
           </h1>
           <p className="text-[1.05rem] text-[color:var(--muted-foreground)] mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">
-            Practical education, which includes natural modalities to improving glucose levels and individualizing care that focuses on lifestyle changes. In addition, we focus on prediabetes management and ways to reverse it.
+            Personalized functional medicine coaching and education — built around your biology, your lifestyle, and your goals.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <Link
@@ -120,7 +119,7 @@ function Hero() {
               className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-7 py-3 rounded-full text-[0.95rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
-              Start Your Journey <ArrowRight className="w-4 h-4" />
+              Start Your Health Journey <ArrowRight className="w-4 h-4" />
             </Link>
             <a
               href="#whatsinside"
@@ -342,10 +341,10 @@ function PricingPreview() {
           className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
           style={{ fontWeight: 700 }}
         >
-          Simple, Transparent Pricing
+          Choose Your Plan
         </h2>
         <p className="mt-3 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[1.05rem]">
-          Choose the plan that&apos;s right for you. Cancel anytime.
+          Both plans include access to our AI health coach, trained on clinical functional medicine content by a certified practitioner.
         </p>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -496,6 +495,7 @@ function Footer() {
           <Heart className="w-4 h-4 text-[color:var(--primary)] fill-[color:var(--primary)]" />
           <span className="text-white" style={{ fontWeight: 600 }}>Saryn Health</span>
         </div>
+        <p className="mb-1">Saryn Health — Functional medicine education &amp; coaching, personalized to you.</p>
         <p>© {new Date().getFullYear()} Saryn Health. All rights reserved.</p>
       </div>
     </footer>

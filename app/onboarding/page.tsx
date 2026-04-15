@@ -33,8 +33,8 @@ interface Question {
 const QUESTIONS: Question[] = [
   {
     key: "primary_goal",
-    title: "What brings you to Saryn Health today?",
-    subtitle: "Choose the one that resonates most with you.",
+    title: "Tell Us About Your Health Goals",
+    subtitle: "We'll use your answers to personalize your coaching experience and surface the most relevant functional medicine education for you.",
     options: [
       { id: "blood_sugar", label: "Understand and manage my blood sugar", icon: Droplets },
       { id: "diagnosed", label: "I've been told I'm pre-diabetic or diabetic", icon: Stethoscope },
