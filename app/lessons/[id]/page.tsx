@@ -289,7 +289,7 @@ export default function LessonDetailPage() {
                 className="mt-2 px-6 py-2.5 rounded-full bg-[color:var(--primary)] text-white text-[0.875rem] hover:opacity-90 transition-opacity"
                 style={{ fontWeight: 600 }}
               >
-                Upgrade — $19.99/mo
+                Upgrade — $49/mo
               </Link>
             </div>
           ) : (

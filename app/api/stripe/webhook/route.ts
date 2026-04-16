@@ -90,8 +90,8 @@ export async function POST(request: NextRequest) {
           const amount = session.amount_total
             ? session.amount_total / 100
             : tier === "premium"
-              ? 19.99
-              : 9.99;
+              ? 49
+              : 29;
           const nextBilling = periodEnd
             ? new Date(periodEnd * 1000).toISOString()
             : new Date().toISOString();

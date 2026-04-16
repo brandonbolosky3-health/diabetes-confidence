@@ -541,7 +541,7 @@ function DashboardContent() {
               href="/pricing"
               className="shrink-0 bg-white text-[color:var(--primary)] px-6 py-2.5 rounded-full text-[0.875rem] font-semibold hover:opacity-90 transition-opacity flex items-center gap-2"
             >
-              Upgrade — $19.99/mo <ArrowRight className="w-4 h-4" />
+              Upgrade — $49/mo <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         )}

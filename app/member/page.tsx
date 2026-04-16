@@ -156,7 +156,7 @@ export default function MemberPage() {
               className="shrink-0 bg-white text-[color:var(--primary)] px-6 py-2.5 rounded-full text-[0.875rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
-              Upgrade — $19.99/mo
+              Upgrade — $49/mo
             </Link>
           </div>
         )}

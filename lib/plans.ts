@@ -13,7 +13,7 @@ export const PLANS = {
   },
   essential: {
     priceId: process.env.NEXT_PUBLIC_STRIPE_ESSENTIAL_PRICE_ID!,
-    price: 9.99,
+    price: 29,
     name: "Essential",
     features: [
       "Full lesson library",
@@ -25,7 +25,7 @@ export const PLANS = {
   },
   premium: {
     priceId: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID!,
-    price: 19.99,
+    price: 49,
     name: "Premium",
     features: [
       "Everything in Essential",

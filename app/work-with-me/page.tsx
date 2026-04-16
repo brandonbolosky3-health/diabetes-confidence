@@ -62,7 +62,7 @@ const offerings = [
   {
     title: "Initial Consultation",
     duration: "75 minutes",
-    price: "$250",
+    price: "$197",
     body: "A comprehensive deep-dive into your health history, symptoms, labs, and goals. Sarina will map out your root causes and build your personalized care plan.",
     includes: [
       "Full health history review",
@@ -90,7 +90,7 @@ const offerings = [
   {
     title: "Saryn Health Membership",
     duration: "Monthly",
-    price: "From $9.99/mo",
+    price: "From $29/mo",
     badge: "Most Popular",
     body: "Everything you need between sessions — AI health coach, education curriculum, cookbook, and included live meets with Sarina every month.",
     includes: [
