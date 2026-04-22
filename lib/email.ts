@@ -22,7 +22,7 @@ function emailLayout(body: string): string {
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
         <!-- Header -->
         <tr><td style="background-color:#2a9d8f;padding:24px 32px;border-radius:12px 12px 0 0;">
-          <span style="color:#ffffff;font-size:18px;font-weight:700;">Saryn Health</span>
+          <span style="color:#ffffff;font-size:24px;font-weight:500;letter-spacing:-0.5px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;">saryn</span><span style="color:rgba(255,255,255,0.65);font-size:11px;font-weight:500;letter-spacing:2.4px;margin-left:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,system-ui,sans-serif;">HEALTH</span>
         </td></tr>
         <!-- Body -->
         <tr><td style="background-color:#ffffff;padding:32px;border-radius:0 0 12px 12px;">
