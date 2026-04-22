@@ -121,6 +121,7 @@ function DashboardContent() {
   const [showSubmittedMessage, setShowSubmittedMessage] = useState(false);
   const [trialEndsAt, setTrialEndsAt] = useState<string | null>(null);
   const [showTrialBanner, setShowTrialBanner] = useState(false);
+  const [freeConsultationUsedAt, setFreeConsultationUsedAt] = useState<string | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -170,14 +171,20 @@ function DashboardContent() {
         console.error("Failed to fetch personalized chunks:", err);
       }
 
-      // Check trial status
-      if (sub && (sub.tier === "free_trial" || sub.status === "trialing")) {
+      // Check trial status + consultation status in one round-trip
+      {
         const { data: profileData } = await supabase
           .from("profiles")
-          .select("trial_ends_at")
+          .select("trial_ends_at, free_consultation_used_at")
           .eq("id", user.id)
           .single();
-        if (profileData?.trial_ends_at) {
+        if (profileData?.free_consultation_used_at) {
+          setFreeConsultationUsedAt(profileData.free_consultation_used_at);
+        }
+        if (
+          (sub && (sub.tier === "free_trial" || sub.status === "trialing")) &&
+          profileData?.trial_ends_at
+        ) {
           setTrialEndsAt(profileData.trial_ends_at);
           const remaining = getTrialTimeRemaining(profileData.trial_ends_at);
           if (remaining.isUrgent) setShowTrialBanner(true);
@@ -437,6 +444,64 @@ function DashboardContent() {
             </span>
           </div>
         </div>
+
+        {/* Consultation card */}
+        {plan === "premium" && !freeConsultationUsedAt && (
+          <div className="mb-8 rounded-2xl bg-[color:var(--primary)] text-white p-6 sm:p-7 shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h2 className="text-[1.15rem] sm:text-[1.25rem] font-semibold">
+                  Book your complimentary consultation with Sarina
+                </h2>
+                <p className="text-[0.9rem] text-white/80 mt-1 max-w-lg">
+                  Your 1-on-1 Discovery Call is included with your Premium plan. Pick a time and we&apos;ll handle the rest.
+                </p>
+              </div>
+              <Link
+                href="/dashboard/book"
+                className="inline-flex items-center gap-2 bg-white text-[color:var(--primary)] px-5 py-2.5 rounded-full text-[0.9rem] font-semibold hover:opacity-90 transition-opacity shrink-0"
+              >
+                Book now <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        )}
+        {plan === "premium" && freeConsultationUsedAt && (
+          <div className="mb-8 rounded-2xl bg-white border border-[color:var(--border)] p-5 flex items-start gap-3">
+            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-[0.9rem] font-semibold text-[color:var(--foreground)]">
+                Your consultation is scheduled
+              </p>
+              <p className="text-[0.85rem] text-[color:var(--muted-foreground)] mt-0.5">
+                Check your email for details.
+              </p>
+            </div>
+          </div>
+        )}
+        {plan === "essential" && (
+          <div className="mb-8 rounded-2xl bg-white border border-[color:var(--border)] p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-full bg-[color:var(--primary)]/10 flex items-center justify-center shrink-0">
+                <Lock className="w-5 h-5 text-[color:var(--primary)]" />
+              </div>
+              <div>
+                <p className="text-[0.95rem] font-semibold text-[color:var(--foreground)]">
+                  Unlock a 1-on-1 with Sarina
+                </p>
+                <p className="text-[0.85rem] text-[color:var(--muted-foreground)] mt-0.5 max-w-md">
+                  Premium includes a complimentary Discovery Call plus deeper curriculum and higher AI usage.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/pricing"
+              className="inline-flex items-center gap-2 bg-[color:var(--primary)] text-white px-5 py-2.5 rounded-full text-[0.9rem] font-semibold hover:opacity-90 transition-opacity shrink-0"
+            >
+              Upgrade to Premium <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        )}
 
         {/* Content grid */}
         <div className="mb-6 flex items-center justify-between">

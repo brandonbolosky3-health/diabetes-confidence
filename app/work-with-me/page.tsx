@@ -23,7 +23,7 @@ function Navbar() {
           <Logo className="h-7 w-auto text-[color:var(--foreground)]" />
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-          <Link href="/work-with-me" className="text-[color:var(--foreground)] transition-colors" style={{ fontWeight: 500 }}>Work With Me</Link>
+          <Link href="/signup" className="text-[color:var(--foreground)] transition-colors" style={{ fontWeight: 500 }}>Work With Me</Link>
           <Link href="/#faq" className="hover:text-[color:var(--foreground)] transition-colors">FAQ</Link>
           <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
         </nav>
@@ -47,7 +47,7 @@ function Navbar() {
 
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
-          <Link href="/work-with-me" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--foreground)] font-medium py-2">Work With Me</Link>
+          <Link href="/signup" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--foreground)] font-medium py-2">Work With Me</Link>
           <Link href="/#faq" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] py-2">FAQ</Link>
           <Link href="/login" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] py-2">Log in</Link>
         </div>
