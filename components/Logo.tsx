@@ -29,7 +29,7 @@ interface LogoProps extends Omit<SVGProps<SVGSVGElement>, "children"> {
 }
 
 const FONT_STACK =
-  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, system-ui, sans-serif";
+  "var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif";
 const ACCENT_DEFAULT = "#2a9d8f";
 const TAG_DEFAULT = "#6b6b6b";
 

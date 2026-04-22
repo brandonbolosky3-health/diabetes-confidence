@@ -106,11 +106,8 @@ function Hero() {
           >
             Led by a Certified Functional Medicine Practitioner
           </span>
-          <h1
-            className="text-[2rem] md:text-[2.75rem] tracking-tight text-[color:var(--foreground)] leading-tight mb-4"
-            style={{ fontWeight: 800 }}
-          >
-            Finally Understand Why You Feel the Way You Do
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
+            Finally understand why you feel the way you do
           </h1>
           <p className="text-[1.05rem] text-[color:var(--muted-foreground)] mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">
             Personalized functional medicine coaching and education — built around your biology, your lifestyle, and your goals.
@@ -195,10 +192,7 @@ function MeetSarina() {
   return (
     <section className="py-16 md:py-24 bg-[color:var(--background)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2
-          className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)] text-center mb-12"
-          style={{ fontWeight: 700 }}
-        >
+        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-12">
           Meet Your Practitioner
         </h2>
 
@@ -358,10 +352,7 @@ function WhatYoullGet() {
     <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12">
-          <h2
-            className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
-            style={{ fontWeight: 700 }}
-          >
+          <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)]">
             Everything You Need to Take Control of Your Health
           </h2>
           <p className="mt-3 text-[color:var(--muted-foreground)] text-[1.05rem] max-w-lg mx-auto">
@@ -421,10 +412,7 @@ function HowItWorks() {
   return (
     <section id="how-it-works" className="py-16 md:py-24 bg-[color:var(--background)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
-        <h2
-          className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
-          style={{ fontWeight: 700 }}
-        >
+        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)]">
           How It Works
         </h2>
         <p className="mt-3 text-[color:var(--muted-foreground)] max-w-lg mx-auto text-[1.05rem]">
@@ -571,10 +559,7 @@ function FAQ() {
   return (
     <section id="faq" className="py-16 md:py-24 bg-[color:var(--background)]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
-        <h2
-          className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)] text-center mb-10"
-          style={{ fontWeight: 700 }}
-        >
+        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-10">
           Frequently Asked Questions
         </h2>
         <div className="bg-white rounded-2xl border border-[color:var(--border)] px-6 sm:px-8">
@@ -598,10 +583,7 @@ function FinalCTA() {
     >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <Heart className="w-10 h-10 text-white/80 mx-auto mb-4" />
-        <h2
-          className="text-[1.75rem] md:text-[2.5rem] text-white"
-          style={{ fontWeight: 700 }}
-        >
+        <h2 className="text-[1.75rem] md:text-[2.5rem] font-medium tracking-tight text-white">
           Take Control of Your Health
         </h2>
         <p className="mt-4 text-white/80 max-w-lg mx-auto text-[1.05rem] leading-relaxed">
