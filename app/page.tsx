@@ -21,6 +21,7 @@ import {
   Calendar,
   Brain,
   UtensilsCrossed,
+  Quote,
 } from "lucide-react";
 
 const SARINA_IMG = "/hero-photo.jpg";
@@ -249,6 +250,69 @@ function MeetSarina() {
               />
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Testimonials ─────────────────────────────────────
+const testimonials = [
+  {
+    quote:
+      "I am so grateful to have Sarina on my health journey. Sarina really took the time to get to know me and understand my health concerns. Because of this, she was able to make recommendations for testing and treatments including dietary changes. She focuses on the root cause of the issue instead of treating symptoms. I'm so happy to finally have the right care that improved my health!",
+    name: "Lupita Lara",
+    title: "Patient",
+  },
+  {
+    quote:
+      "I was fortunate to be one of Sarina De Haro's first patients, and I'm really glad I said yes. With subtle changes — especially adjusting supplements and when I take them — I noticed improvements in many areas. I have more natural energy, feel less bloated, sleep better, and my weight feels steady and manageable. Overall, I feel more like myself again. Her integrative approach was approachable and individualized.",
+    name: "John P. Argott",
+    title: "BSN, RN",
+  },
+];
+
+function Testimonials() {
+  return (
+    <section className="py-16 md:py-24 bg-[color:var(--background)]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12">
+          <h2
+            className="text-[1.75rem] md:text-[2.25rem] text-[color:var(--foreground)]"
+            style={{ fontWeight: 700 }}
+          >
+            What Patients Are Saying
+          </h2>
+          <p className="mt-3 text-[color:var(--muted-foreground)] text-[1.05rem] max-w-lg mx-auto">
+            Real stories from people who found answers with Sarina.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {testimonials.map((t) => (
+            <div
+              key={t.name}
+              className="bg-white rounded-2xl p-7 shadow-sm border border-[color:var(--border)] flex flex-col"
+            >
+              <Quote className="w-8 h-8 text-[color:var(--primary)]/30 mb-4" />
+              <p className="text-[0.95rem] text-[color:var(--foreground)] leading-relaxed mb-6 flex-1">
+                {t.quote}
+              </p>
+              <div className="flex items-center gap-3 pt-4 border-t border-[color:var(--border)]">
+                <div className="w-11 h-11 rounded-full bg-[color:var(--primary)]/10 flex items-center justify-center text-[color:var(--primary)]" style={{ fontWeight: 700 }}>
+                  {t.name.charAt(0)}
+                </div>
+                <div>
+                  <p className="text-[0.95rem] text-[color:var(--foreground)]" style={{ fontWeight: 600 }}>
+                    {t.name}
+                  </p>
+                  <p className="text-[0.8rem] text-[color:var(--muted-foreground)]">
+                    {t.title}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -581,6 +645,7 @@ export default function Home() {
         <Hero />
         <SocialProof />
         <MeetSarina />
+        <Testimonials />
         <WhatYoullGet />
         <HowItWorks />
         <Trust />
