@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import {
-  Heart,
   Check,
   ArrowRight,
   Menu,
@@ -11,6 +10,7 @@ import {
   Clock,
   Phone,
 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 // ─── Nav ───────────────────────────────────────────────
 function Navbar() {
@@ -19,9 +19,8 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[color:var(--border)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
-          <Heart className="w-6 h-6 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)] text-[1.1rem]">Saryn Health</span>
+        <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+          <Logo className="h-7 w-auto text-[color:var(--foreground)]" />
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
           <Link href="/work-with-me" className="text-[color:var(--foreground)] transition-colors" style={{ fontWeight: 500 }}>Work With Me</Link>
@@ -258,8 +257,7 @@ export default function WorkWithMePage() {
       <footer className="bg-[color:var(--foreground)] text-white/60 py-8 text-center text-[0.85rem]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-center gap-2 mb-3">
-            <Heart className="w-4 h-4 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-            <span className="text-white" style={{ fontWeight: 600 }}>Saryn Health</span>
+            <Logo className="h-5 w-auto text-neutral-500" />
           </div>
           <p className="mb-1">Saryn Health — Functional medicine education &amp; coaching, personalized to you.</p>
           <p>© {new Date().getFullYear()} Saryn Health. All rights reserved.</p>

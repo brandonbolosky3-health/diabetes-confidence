@@ -10,9 +10,10 @@ import {
   type KnowledgeChunk,
 } from "@/lib/onboarding";
 import {
-  Heart, ArrowLeft, ArrowRight, Clock, Droplets,
+  ArrowLeft, ArrowRight, Clock, Droplets,
   AlertTriangle, Bot, ChevronRight, BookOpen,
 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default function LearnChunkPage() {
   const params = useParams();
@@ -100,9 +101,8 @@ export default function LearnChunkPage() {
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Header */}
       <header className="sticky top-0 z-50 h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
-        <Link href="/dashboard" className="flex items-center gap-2 font-bold">
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">Saryn Health</span>
+        <Link href="/dashboard" aria-label="Saryn Health home" className="inline-flex items-center">
+          <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
         </Link>
         <button
           onClick={() => router.back()}

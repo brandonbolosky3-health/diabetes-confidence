@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Heart, BookOpen, Video, FileText, Users, Bot, LogOut, Menu, X } from "lucide-react";
+import { BookOpen, Video, FileText, Users, Bot, LogOut, Menu, X } from "lucide-react";
+import Logo from "@/components/Logo";
 
 const features = [
   { icon: BookOpen, title: "Lesson Library", desc: "Step-by-step education modules", href: "/lessons" },
@@ -60,9 +61,8 @@ export default function MemberPage() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
         <div className="h-16 flex items-center justify-between px-4 sm:px-6">
-          <Link href="/member" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
-            <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-            <span className="text-[color:var(--foreground)]">Saryn Health</span>
+          <Link href="/member" aria-label="Saryn Health home" className="inline-flex items-center">
+            <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
           </Link>
           <div className="hidden md:flex items-center gap-4">
             <Link href="/lessons" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Lessons</Link>

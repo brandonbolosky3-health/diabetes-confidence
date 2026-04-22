@@ -11,7 +11,6 @@ import {
   IMPACT_LIST,
 } from "@/types/consultation";
 import {
-  Heart,
   ArrowRight,
   ArrowLeft,
   CheckCircle2,
@@ -24,6 +23,7 @@ import {
   HeartPulse,
   X,
 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
@@ -857,9 +857,8 @@ export default function ConsultationFormPage() {
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Header */}
       <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
-        <Link href="/" className="flex items-center gap-2 font-bold">
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">Saryn Health</span>
+        <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+          <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
         </Link>
         <span className="text-[0.8rem] text-[color:var(--muted-foreground)] font-medium">
           Step {step + 1} of {TOTAL_STEPS}

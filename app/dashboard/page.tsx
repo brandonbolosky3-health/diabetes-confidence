@@ -14,10 +14,11 @@ import {
 import { getUserSubscription, isPremium, isTrialExpired, getTrialTimeRemaining, type Subscription } from "@/lib/subscription";
 import { hasSubmittedConsultationForm } from "@/lib/consultation";
 import {
-  Heart, LogOut, Menu, X, Clock, Lock, Droplets,
+  LogOut, Menu, X, Clock, Lock, Droplets,
   BookOpen, ArrowRight, Sparkles, Bot, AlertTriangle, MessageCircle,
   ClipboardList, CheckCircle2,
 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -253,9 +254,8 @@ function DashboardContent() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
         <div className="h-16 flex items-center justify-between px-4 sm:px-6">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold">
-            <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-            <span className="text-[color:var(--foreground)]">Saryn Health</span>
+          <Link href="/dashboard" aria-label="Saryn Health home" className="inline-flex items-center">
+            <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
           </Link>
           <div className="hidden md:flex items-center gap-4">
             <Link href="/dashboard" className="text-[0.875rem] text-[color:var(--primary)] font-medium">Dashboard</Link>

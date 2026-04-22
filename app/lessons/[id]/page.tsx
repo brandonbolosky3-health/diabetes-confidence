@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
-import { Heart, LogOut, Clock, ArrowLeft, ChevronRight, CheckCircle, PlayCircle, Lock } from "lucide-react";
+import { LogOut, Clock, ArrowLeft, ChevronRight, CheckCircle, PlayCircle, Lock } from "lucide-react";
+import Logo from "@/components/Logo";
 
 type Lesson = {
   id: string;
@@ -143,9 +144,8 @@ export default function LessonDetailPage() {
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Nav */}
       <header className="sticky top-0 z-50 h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
-        <Link href="/member" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">Saryn Health</span>
+        <Link href="/member" aria-label="Saryn Health home" className="inline-flex items-center">
+          <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
         </Link>
         <div className="flex items-center gap-3 sm:gap-4">
           <Link

@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { saveOnboardingProfile, type OnboardingAnswers } from "@/lib/onboarding";
 import {
-  Heart, ArrowRight, ArrowLeft, CheckCircle2,
+  ArrowRight, ArrowLeft, CheckCircle2,
   Activity, Zap, Shield, Flame, Microscope, Scale, Droplets,
   BatteryLow, Brain, Stethoscope, HelpCircle,
   Apple, Utensils, Shuffle, CircleHelp,
   BookOpen, Bot, Sparkles, Loader2,
 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 // ─── Question Data ───────────────────────────────────────────────────────────
 
@@ -321,9 +322,8 @@ export default function OnboardingPage() {
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Header */}
       <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
-        <Link href="/" className="flex items-center gap-2 font-bold">
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">Saryn Health</span>
+        <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+          <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
         </Link>
         <span className="text-[0.8rem] text-[color:var(--muted-foreground)] font-medium">
           Step {step + 1} of {QUESTIONS.length}

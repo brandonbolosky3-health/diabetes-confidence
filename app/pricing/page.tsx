@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Heart, Check, Loader2, ArrowRight, Menu, X } from "lucide-react";
+import { Check, Loader2, ArrowRight, Menu, X } from "lucide-react";
+import Logo from "@/components/Logo";
 import { createClient } from "@/lib/supabase/client";
 import { PLANS, type PlanTier } from "@/lib/plans";
 
@@ -53,9 +54,8 @@ export default function PricingPage() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
         <div className="h-16 flex items-center justify-between px-4 sm:px-6 max-w-6xl mx-auto w-full">
-          <Link href="/" className="flex items-center gap-2 font-bold">
-            <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-            <span className="text-[color:var(--foreground)]">Saryn Health</span>
+          <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+            <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
           </Link>
           <div className="hidden md:flex items-center gap-4">
             <Link href="/lessons" className="text-[0.875rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors">Lessons</Link>

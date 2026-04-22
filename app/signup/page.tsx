@@ -3,7 +3,8 @@
 import { useState, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { Heart, Check, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import { Check, Eye, EyeOff, CheckCircle2 } from "lucide-react";
+import Logo from "@/components/Logo";
 
 // ─── Validation Helpers ─────────────────────────────────────────────────────
 
@@ -200,11 +201,10 @@ export default function SignupPage() {
       <header className="h-16 flex items-center px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95">
         <Link
           href="/"
-          className="flex items-center gap-2"
-          style={{ fontWeight: 700 }}
+          aria-label="Saryn Health home"
+          className="inline-flex items-center"
         >
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">Saryn Health</span>
+          <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
         </Link>
       </header>
 

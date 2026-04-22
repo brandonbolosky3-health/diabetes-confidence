@@ -4,7 +4,7 @@ import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -30,9 +30,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
       {/* Nav */}
       <header className="h-16 flex items-center px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95">
-        <Link href="/" className="flex items-center gap-2" style={{ fontWeight: 700 }}>
-          <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-          <span className="text-[color:var(--foreground)]">Saryn Health</span>
+        <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+          <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
         </Link>
       </header>
 

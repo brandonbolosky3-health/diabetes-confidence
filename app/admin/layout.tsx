@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { Heart, ArrowLeft, Shield } from "lucide-react";
+import { ArrowLeft, Shield } from "lucide-react";
+import Logo from "@/components/Logo";
 
 export default async function AdminLayout({
   children,
@@ -30,10 +31,10 @@ export default async function AdminLayout({
           <div className="flex items-center gap-3">
             <Link
               href="/admin"
-              className="flex items-center gap-2 font-bold text-[color:var(--foreground)]"
+              aria-label="Saryn Health admin home"
+              className="inline-flex items-center"
             >
-              <Heart className="w-5 h-5 text-[color:var(--primary)] fill-[color:var(--primary)]" />
-              Saryn Health
+              <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
             </Link>
             <span className="flex items-center gap-1 bg-gray-900 text-white text-[0.65rem] font-semibold px-2 py-0.5 rounded">
               <Shield className="w-3 h-3" />
