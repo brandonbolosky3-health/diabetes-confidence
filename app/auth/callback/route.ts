@@ -78,7 +78,7 @@ export async function GET(request: Request) {
           metadata: { user_id: user.id, tier: "free_trial" },
         },
         payment_method_collection: "always",
-        success_url: `${origin}/dashboard?upgrade=success`,
+        success_url: `${origin}/welcome`,
         cancel_url: `${origin}/pricing`,
         metadata: { user_id: user.id, tier: "free_trial" },
       });

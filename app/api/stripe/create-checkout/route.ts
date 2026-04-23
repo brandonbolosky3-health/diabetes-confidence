@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     customer: stripeCustomerId,
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?upgrade=success`,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/welcome`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing`,
     metadata: { user_id: user.id, tier },
     payment_method_collection: "always",
