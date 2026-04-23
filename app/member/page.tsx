@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { BookOpen, Video, FileText, Users, Bot, LogOut, Menu, X } from "lucide-react";
 import Logo from "@/components/Logo";
+import { getUserSubscription } from "@/lib/subscription";
 
 const features = [
   { icon: BookOpen, title: "Lesson Library", desc: "Step-by-step education modules", href: "/lessons" },
@@ -30,13 +31,31 @@ export default function MemberPage() {
 
       setEmail(user.email ?? null);
 
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("plan")
-        .eq("id", user.id)
-        .single();
+      // Gate on active subscription. Same rule as /dashboard: anyone
+      // without active / trialing / past_due gets sent to /pricing to
+      // start or resume a plan. The ?upgrade=success query lets a user
+      // through right after Stripe redirects before the webhook lands.
+      const sub = await getUserSubscription(supabase, user.id);
+      const justUpgraded =
+        new URLSearchParams(window.location.search).get("upgrade") === "success";
+      const activeStatuses = new Set(["active", "trialing", "past_due"]);
+      const hasActiveSub = sub && activeStatuses.has(sub.status);
+      if (!hasActiveSub && !justUpgraded) {
+        router.push("/pricing");
+        return;
+      }
 
-      if (profile) setPlan(profile.plan);
+      // Prefer the live subscription tier over the stale profile.plan field.
+      if (sub && (sub.status === "active" || sub.status === "trialing")) {
+        setPlan(sub.tier);
+      } else {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("plan")
+          .eq("id", user.id)
+          .single();
+        if (profile) setPlan(profile.plan);
+      }
       setLoading(false);
     };
     run();
@@ -152,7 +171,7 @@ export default function MemberPage() {
               <p className="text-white/80 text-[0.875rem]">Unlock unlimited AI Coach, live Q&As, and priority support.</p>
             </div>
             <Link
-              href="/signup?plan=premium"
+              href="/pricing"
               className="shrink-0 bg-white text-[color:var(--primary)] px-6 py-2.5 rounded-full text-[0.875rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
