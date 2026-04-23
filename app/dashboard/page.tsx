@@ -135,8 +135,23 @@ function DashboardContent() {
       const sub = await getUserSubscription(supabase, user.id);
       setSubscription(sub);
 
+      // Gate: no active subscription → send to /pricing so the user can
+      // start (or resume) a plan. When the user just returned from Stripe
+      // Checkout, the webhook may not have fired yet — the ?upgrade=success
+      // query lets them through so they don't bounce on a race.
+      const justUpgraded =
+        new URLSearchParams(window.location.search).get("upgrade") === "success";
+      const activeStatuses = new Set(["active", "trialing", "past_due"]);
+      const hasActiveSub = sub && activeStatuses.has(sub.status);
+      if (!hasActiveSub && !justUpgraded) {
+        router.push("/pricing");
+        return;
+      }
+
       // Determine plan from subscription, falling back to profiles table
       if (sub && sub.status === "active") {
+        setPlan(sub.tier);
+      } else if (sub && sub.status === "trialing") {
         setPlan(sub.tier);
       } else {
         const userPlan = user.user_metadata?.plan || "essential";
