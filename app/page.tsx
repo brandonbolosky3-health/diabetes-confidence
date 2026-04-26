@@ -116,12 +116,12 @@ function Hero() {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 flex flex-col-reverse md:flex-row items-center gap-10 md:gap-16">
         <div className="flex-1 text-center md:text-left">
-          <span
-            className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1 rounded-full text-[0.8rem] mb-5"
-            style={{ fontWeight: 500 }}
+          <p
+            className="text-[0.75rem] tracking-[0.18em] uppercase text-[color:var(--primary)] mb-5"
+            style={{ fontWeight: 600 }}
           >
             Led by a Certified Functional Medicine Practitioner
-          </span>
+          </p>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
             Take the first step toward understanding your health
           </h1>
