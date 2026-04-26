@@ -111,7 +111,7 @@ export function Logo({
   // Default: horizontal lockup for nav / footer / email.
   return (
     <svg
-      viewBox="0 0 260 40"
+      viewBox="0 0 165 40"
       role="img"
       aria-label="Saryn Health"
       className={className}
@@ -132,12 +132,12 @@ export function Logo({
         n
       </text>
       <text
-        x="130"
+        x="100"
         y="24"
         fontFamily={FONT_STACK}
         fontSize="11"
         fontWeight="400"
-        letterSpacing="2.64"
+        letterSpacing="2.4"
         fill={tagColor}
       >
         {tagText}
