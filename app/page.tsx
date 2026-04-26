@@ -47,7 +47,7 @@ function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/consultation"
-            className="bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity"
+            className="bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
             style={{ fontWeight: 600 }}
           >
             Book Free Consultation
