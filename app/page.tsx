@@ -147,7 +147,7 @@ function Hero() {
         </div>
 
         <div className="flex-1 flex justify-center">
-          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-xl ring-4 ring-white">
+          <div className="relative w-72 md:w-96 lg:w-[28rem] aspect-[4/3] rounded-3xl overflow-hidden shadow-xl ring-4 ring-white">
             <Image
               src="/hero-functional.jpg"
               alt="Healthy functional medicine nutrition"
