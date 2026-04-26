@@ -345,7 +345,7 @@ export async function sendCookbookDeliveryEmail(
   firstName: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    const downloadUrl = `${appUrl}/saryn-cookbook-placeholder.pdf`;
+    const downloadUrl = `${appUrl}/saryn-cookbook.pdf`;
     await getResend().emails.send({
       from,
       to,
