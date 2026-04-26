@@ -754,30 +754,35 @@ function StepReview({
 export default function ConsultationFormPage() {
   const router = useRouter();
   const [userId, setUserId] = useState<string | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [submittedAnonymously, setSubmittedAnonymously] = useState(false);
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<"forward" | "back">("forward");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(getInitialFormState);
 
-  // Auth check
+  // Resolve auth state once on mount. Both authenticated members and
+  // anonymous free-consultation leads can fill the form — the difference
+  // is just where the data goes on submit.
   useEffect(() => {
     (async () => {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-      setUserId(user.id);
-      // Pre-fill email
-      if (user.email) {
-        setForm((prev) => ({ ...prev, email: user.email ?? "" }));
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (user) {
+          setUserId(user.id);
+          if (user.email) {
+            setForm((prev) => ({ ...prev, email: user.email ?? "" }));
+          }
+        }
+      } finally {
+        setAuthChecked(true);
       }
     })();
-  }, [router]);
+  }, []);
 
   const goToStep = useCallback(
     (target: number) => {
@@ -816,17 +821,34 @@ export default function ConsultationFormPage() {
       return;
     }
 
-    // Submit
-    if (!userId) return;
     setSaving(true);
     setSaveError(null);
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { consent_agreed, signature, ...formData } = form;
+
     try {
-      const supabase = createClient();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { consent_agreed, signature, ...formData } = form;
-      await saveConsultationForm(supabase, userId, formData);
-      router.push("/dashboard?consultation=submitted");
+      if (userId) {
+        // Authenticated member — write directly via the auth'd client so
+        // the row is owned by their account and visible in the dashboard.
+        const supabase = createClient();
+        await saveConsultationForm(supabase, userId, formData);
+        router.push("/dashboard?consultation=submitted");
+      } else {
+        // Anonymous free-consultation lead — POST through the public API
+        // route, which uses the service role to insert with member_id null.
+        const res = await fetch("/api/consultation/form", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...formData, signature }),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || "Failed to submit form");
+        }
+        setSubmittedAnonymously(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     } catch (err) {
       setSaveError(
         err instanceof Error ? err.message : "Something went wrong. Please try again."
@@ -843,10 +865,40 @@ export default function ConsultationFormPage() {
     }
   }, [step]);
 
-  if (!userId) {
+  if (!authChecked) {
     return (
       <div className="min-h-screen bg-[color:var(--background)] flex items-center justify-center">
         <div className="w-8 h-8 rounded-full border-2 border-[color:var(--primary)] border-t-transparent animate-spin" />
+      </div>
+    );
+  }
+
+  if (submittedAnonymously) {
+    return (
+      <div className="min-h-screen bg-[color:var(--background)] flex flex-col">
+        <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-[color:var(--border)] bg-white/95 backdrop-blur">
+          <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+            <Logo className="h-6 w-auto text-[color:var(--foreground)]" />
+          </Link>
+        </header>
+        <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-12">
+          <div className="bg-white rounded-2xl border-2 border-[color:var(--primary)] p-8 sm:p-10 text-center max-w-lg w-full">
+            <CheckCircle2 className="w-14 h-14 text-[color:var(--primary)] mx-auto mb-4" />
+            <h1 className="text-3xl sm:text-4xl font-medium tracking-tight text-[color:var(--foreground)] mb-3">
+              Thank you — your form is in.
+            </h1>
+            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-6">
+              Sarina will review your responses before your call so she can make
+              the most of your time together.
+            </p>
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-6 py-3 rounded-full text-[0.95rem] font-semibold hover:opacity-90 transition-opacity"
+            >
+              Back to home <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </main>
       </div>
     );
   }

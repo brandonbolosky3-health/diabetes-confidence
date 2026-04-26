@@ -38,7 +38,6 @@ export async function proxy(request: NextRequest) {
     (isMemberRoute ||
       pathname.startsWith("/dashboard") ||
       pathname.startsWith("/onboarding") ||
-      pathname.startsWith("/consultation-form") ||
       pathname.startsWith("/lessons") ||
       pathname.startsWith("/learn") ||
       pathname.startsWith("/ai") ||

@@ -216,6 +216,22 @@ export default function ConsultationPage() {
               clientEmail={email}
               showConfirmButton={false}
             />
+
+            <div className="mt-10 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
+              <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
+                Optional: complete your pre-consultation form
+              </h3>
+              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+                A short health-history form helps Sarina prepare so you can
+                spend the call on what matters most. Takes about 5 minutes.
+              </p>
+              <Link
+                href="/consultation-form"
+                className="inline-flex items-center gap-2 text-[0.9rem] font-semibold text-[color:var(--primary)] hover:opacity-80 transition-opacity"
+              >
+                Fill out the form <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         )}
       </main>

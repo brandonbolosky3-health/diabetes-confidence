@@ -335,6 +335,149 @@ export async function sendIntakeNotificationEmail(
   }
 }
 
+// ─── Consultation pre-call form ─────────────────────────────────────────────
+
+export interface ConsultationFormSubmittedParams {
+  fullName: string;
+  email: string;
+  phone: string | null;
+  formId: string;
+  symptoms: string[];
+  suffer: string[];
+  impact: string[];
+  painScale: number | null;
+  worstSymptom: string | null;
+  duration: string | null;
+  frequency: string | null;
+  whatHasNotHelped: string | null;
+  lifeIn3YearsIfWorse: string | null;
+  lifeIfResolved: string | null;
+  otherJointPain: string | null;
+  otherConditions: string | null;
+  signatureName: string;
+  signatureDate: string;
+}
+
+const SYMPTOM_LABELS: Record<string, string> = {
+  headache: "Headache",
+  knee_pain: "Knee pain / degenerative disease",
+  back_neck_pain: "Lower back or neck pain",
+  arthritis: "Arthritis",
+  digestion: "Digestion symptoms",
+  cardiovascular: "Cardiovascular problems",
+  hypertension: "Hypertension",
+  anxiety_depression: "Anxiety and/or depression",
+  diabetes: "Diabetes",
+  memory_decline: "Forgetfulness or memory decline",
+  fatigue: "Fatigue",
+  breathing: "Breathing problems",
+  sleep: "Sleep problems",
+  nerve_pain_neuropathy: "Nerve pain or neuropathy",
+  skin_issue: "Skin-related issue",
+};
+
+const SUFFER_LABELS: Record<string, string> = {
+  irritability: "Irritability or anger",
+  interrupted_sleep: "Interrupted sleep",
+  restricted_activity: "Restricted daily activity",
+  mood_disorder: "Feeling frustrated or mood disorder",
+  fatigue: "Fatigue",
+  decline_in_activity: "Decline in physical activity",
+};
+
+const IMPACT_LABELS: Record<string, string> = {
+  family_social: "Holds them back from enjoying family or friends",
+  work_income: "Affects ability to work / provide income",
+  productivity_household: "Restricts productivity or household duties",
+  exercise_sports: "Prevents exercising or practicing sports",
+  hobbies: "Interferes with enjoying hobbies",
+};
+
+function bullets(items: string[], labels: Record<string, string>): string {
+  if (!items.length) return "<em>(none selected)</em>";
+  return `<ul style="margin:0 0 16px;padding-left:20px;">${items
+    .map(
+      (k) =>
+        `<li style="color:#1e3a3a;font-size:14px;padding:2px 0;">${escapeHtml(
+          labels[k] || k
+        )}</li>`
+    )
+    .join("")}</ul>`;
+}
+
+function field(label: string, value: string | null): string {
+  if (!value) return "";
+  return p(
+    `<strong>${escapeHtml(label)}:</strong><br>${escapeHtml(value).replace(
+      /\n/g,
+      "<br>"
+    )}`
+  );
+}
+
+/**
+ * Notifies Sarina that a client has completed the long pre-consultation
+ * intake form. Includes the full submission so she can read it before the
+ * call without logging into Supabase.
+ */
+export async function sendConsultationFormSubmittedEmail(
+  params: ConsultationFormSubmittedParams
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const {
+      fullName,
+      email,
+      phone,
+      symptoms,
+      suffer,
+      impact,
+      painScale,
+      worstSymptom,
+      duration,
+      frequency,
+      whatHasNotHelped,
+      lifeIn3YearsIfWorse,
+      lifeIfResolved,
+      otherJointPain,
+      otherConditions,
+      signatureName,
+      signatureDate,
+    } = params;
+    await getResend().emails.send({
+      from,
+      to: adminNotifyTo,
+      replyTo: email,
+      subject: `New pre-consultation form — ${fullName}`,
+      html: emailLayout(`
+        ${p(`<strong>Pre-consultation form submitted</strong>`)}
+        ${p(`<strong>Name:</strong> ${escapeHtml(fullName)}`)}
+        ${p(`<strong>Email:</strong> ${escapeHtml(email)}`)}
+        ${phone ? p(`<strong>Phone:</strong> ${escapeHtml(phone)}`) : ""}
+        ${p(`<strong>Conditions reported:</strong>`)}
+        ${bullets(symptoms, SYMPTOM_LABELS)}
+        ${field("Other joint pain", otherJointPain)}
+        ${field("Other conditions", otherConditions)}
+        ${field("Worst symptom", worstSymptom)}
+        ${field("How long suffering", duration)}
+        ${field("How often", frequency)}
+        ${painScale != null ? p(`<strong>Pain scale (1–10):</strong> ${painScale}`) : ""}
+        ${field("What has not helped", whatHasNotHelped)}
+        ${field("Life in 3 years if worse", lifeIn3YearsIfWorse)}
+        ${field("Life if resolved", lifeIfResolved)}
+        ${p(`<strong>Suffering from:</strong>`)}
+        ${bullets(suffer, SUFFER_LABELS)}
+        ${p(`<strong>Life impact:</strong>`)}
+        ${bullets(impact, IMPACT_LABELS)}
+        ${p(`<strong>Acknowledgment signed by:</strong> ${escapeHtml(signatureName)} on ${escapeHtml(signatureDate)}`)}
+        ${p(`Reply directly to this email to reach ${escapeHtml(fullName)}.`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
 /**
  * Sends the cookbook download link to the requester. We send a link to the
  * hosted PDF (rather than an attachment) so it works across email clients
