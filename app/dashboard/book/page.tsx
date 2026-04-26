@@ -52,10 +52,10 @@ export default async function BookConsultationPage() {
 
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-10 sm:py-14">
         <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
-          Book your consultation with Sarina
+          Book a session with Sarina
         </h1>
         <p className="text-[1.05rem] text-[color:var(--muted-foreground)] leading-relaxed mb-10 max-w-2xl">
-          Your complimentary 1-on-1 Discovery Call is included with your Premium trial. Choose a time that works for you.
+          As a Premium member, you can schedule a 1-on-1 follow-up with Sarina here. Your initial discovery call is the free public consultation — this page is for ongoing sessions after that first conversation.
         </p>
 
         {!premium && (
@@ -84,10 +84,10 @@ export default async function BookConsultationPage() {
               <CheckCircle2 className="w-6 h-6 text-green-600" />
             </div>
             <h2 className="text-[1.25rem] font-semibold text-[color:var(--foreground)] mb-2">
-              You&apos;ve booked your complimentary consultation
+              Your session is booked
             </h2>
             <p className="text-[0.95rem] text-[color:var(--muted-foreground)] max-w-lg">
-              Check your email for details. To schedule additional sessions, reach out to Sarina directly after your first appointment.
+              Check your email for the calendar invite. To book another session, reach out to Sarina directly after your appointment.
             </p>
           </div>
         )}

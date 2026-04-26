@@ -9,6 +9,12 @@ function getResend(): Resend {
 }
 const from = process.env.RESEND_FROM_EMAIL || "Saryn Health <hello@sarynhealth.com>";
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+// Where intake notifications go. Falls back to RESEND_FROM_EMAIL so we
+// never silently drop the message if the env var is unset.
+const adminNotifyTo =
+  process.env.ADMIN_NOTIFICATION_EMAIL ||
+  process.env.RESEND_FROM_EMAIL ||
+  "hello@sarynhealth.com";
 
 // ─── Shared Layout ─────────────────────────────────────────────────────────
 
@@ -268,6 +274,89 @@ export async function sendPreConsultationReminderEmail(
         ${p(`Your upcoming consultation is approaching! To make the most of your time together, please complete your pre-consultation form so your practitioner can review your health history beforehand.`)}
         ${ctaButton(`${appUrl}/consultation-form`, "Complete Your Form")}
         ${p(`Taking a few minutes to fill this out will help us personalize your session and focus on what matters most to you.`)}
+        ${p(`— The Saryn Health Team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+// ─── Public funnel emails (consultation + cookbook) ─────────────────────────
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+export interface IntakeNotificationParams {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone?: string | null;
+  healthGoals: string;
+  quizSummary?: string | null;
+}
+
+/**
+ * Notifies Sarina (or whoever ADMIN_NOTIFICATION_EMAIL points to) that a new
+ * free-consultation intake has come in. Includes the goals and any quiz
+ * context so she can prep before the Practice Better call.
+ */
+export async function sendIntakeNotificationEmail(
+  params: IntakeNotificationParams
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { firstName, lastName, email, phone, healthGoals, quizSummary } = params;
+    const fullName = `${firstName} ${lastName}`.trim();
+    await getResend().emails.send({
+      from,
+      to: adminNotifyTo,
+      replyTo: email,
+      subject: `New free consultation intake — ${fullName}`,
+      html: emailLayout(`
+        ${p(`<strong>New consultation intake</strong>`)}
+        ${p(`<strong>Name:</strong> ${escapeHtml(fullName)}`)}
+        ${p(`<strong>Email:</strong> ${escapeHtml(email)}`)}
+        ${phone ? p(`<strong>Phone:</strong> ${escapeHtml(phone)}`) : ""}
+        ${p(`<strong>Top health goals:</strong><br>${escapeHtml(healthGoals).replace(/\n/g, "<br>")}`)}
+        ${quizSummary ? p(`<strong>Quiz answers:</strong><br>${escapeHtml(quizSummary).replace(/\n/g, "<br>")}`) : ""}
+        ${p(`Reply directly to this email to reach ${escapeHtml(firstName)}.`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
+/**
+ * Sends the cookbook download link to the requester. We send a link to the
+ * hosted PDF (rather than an attachment) so it works across email clients
+ * without size or attachment-stripping issues.
+ */
+export async function sendCookbookDeliveryEmail(
+  to: string,
+  firstName: string
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const downloadUrl = `${appUrl}/saryn-cookbook-placeholder.pdf`;
+    await getResend().emails.send({
+      from,
+      to,
+      subject: "Your Saryn Health functional wellness cookbook",
+      html: emailLayout(`
+        ${p(`Hi ${escapeHtml(firstName)},`)}
+        ${p(`Thanks for requesting our functional wellness cookbook — your download is ready below.`)}
+        ${ctaButton(downloadUrl, "Download the Cookbook")}
+        ${p(`Inside you'll find anti-inflammatory recipes and meal plans designed to support gut health, blood sugar balance, and energy.`)}
+        ${p(`When you're ready for the next step, a free consultation with Sarina is the easiest way to figure out the right path for your situation.`)}
+        ${ctaButton(`${appUrl}/consultation`, "Book a Free Consultation")}
         ${p(`— The Saryn Health Team`)}
       `),
     });

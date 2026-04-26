@@ -7,9 +7,19 @@ import { useRouter } from "next/navigation";
 interface BookingWidgetProps {
   clientName?: string;
   clientEmail?: string;
+  /**
+   * Renders the post-booking confirm button used by the gated Premium
+   * consultation flow. Public flows (e.g. /consultation) pass false because
+   * there's nothing on the user's account to stamp.
+   */
+  showConfirmButton?: boolean;
 }
 
-export default function BookingWidget({ clientName, clientEmail }: BookingWidgetProps) {
+export default function BookingWidget({
+  clientName,
+  clientEmail,
+  showConfirmButton = true,
+}: BookingWidgetProps) {
   const [confirming, setConfirming] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,20 +68,22 @@ export default function BookingWidget({ clientName, clientEmail }: BookingWidget
         {/* Practice Better Booking Widget: end */}
       </div>
 
-      <div className="mt-6 rounded-lg border border-neutral-200 bg-neutral-50 p-4 md:p-6">
-        <p className="text-sm text-neutral-700">
-          Once you&apos;ve booked your session above, confirm below so we can mark your complimentary consultation as used.
-        </p>
-        <button
-          type="button"
-          onClick={handleConfirm}
-          disabled={confirming || confirmed}
-          className="mt-4 inline-flex items-center justify-center rounded-md bg-[#2a9d8f] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#248577] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {confirmed ? "Confirmed ✓" : confirming ? "Confirming..." : "I've booked my session — confirm"}
-        </button>
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-      </div>
+      {showConfirmButton && (
+        <div className="mt-6 rounded-lg border border-neutral-200 bg-neutral-50 p-4 md:p-6">
+          <p className="text-sm text-neutral-700">
+            Once you&apos;ve booked your session above, confirm below so we can mark your complimentary consultation as used.
+          </p>
+          <button
+            type="button"
+            onClick={handleConfirm}
+            disabled={confirming || confirmed}
+            className="mt-4 inline-flex items-center justify-center rounded-md bg-[#2a9d8f] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#248577] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {confirmed ? "Confirmed ✓" : confirming ? "Confirming..." : "I've booked my session — confirm"}
+          </button>
+          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+        </div>
+      )}
     </div>
   );
 }

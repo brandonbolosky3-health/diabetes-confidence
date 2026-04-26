@@ -28,11 +28,14 @@ export async function proxy(request: NextRequest) {
   // Refresh session — keeps the user logged in across tab navigations
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Protect member routes — redirect unauthenticated users to /login
+  // Protect member routes — redirect unauthenticated users to /login.
+  // The /member check is intentionally exact-or-subpath so it does NOT
+  // match the public /membership marketing page.
   const pathname = request.nextUrl.pathname;
+  const isMemberRoute = pathname === "/member" || pathname.startsWith("/member/");
   if (
     !user &&
-    (pathname.startsWith("/member") ||
+    (isMemberRoute ||
       pathname.startsWith("/dashboard") ||
       pathname.startsWith("/onboarding") ||
       pathname.startsWith("/consultation-form") ||

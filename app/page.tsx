@@ -24,6 +24,7 @@ import {
   Quote,
 } from "lucide-react";
 import Logo from "@/components/Logo";
+import HomepageQuiz from "@/components/HomepageQuiz";
 
 const SARINA_IMG = "/hero-photo.jpg";
 
@@ -38,17 +39,18 @@ function Navbar() {
           <Logo className="h-7 w-auto text-[color:var(--foreground)]" />
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-          <Link href="/signup" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
+          <Link href="/consultation" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
+          <Link href="/membership" className="hover:text-[color:var(--foreground)] transition-colors">Membership</Link>
           <a href="#faq" className="hover:text-[color:var(--foreground)] transition-colors">FAQ</a>
           <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
         </nav>
         <div className="flex items-center gap-3">
           <Link
-            href="/signup"
+            href="/consultation"
             className="bg-[color:var(--primary)] text-white text-[0.9rem] px-5 py-2 rounded-full hover:opacity-90 transition-opacity"
             style={{ fontWeight: 600 }}
           >
-            Try Free for 7 Days
+            Book Free Consultation
           </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -63,11 +65,18 @@ function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
           <Link
-            href="/signup"
+            href="/consultation"
             onClick={() => setMobileOpen(false)}
             className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
           >
             Work With Me
+          </Link>
+          <Link
+            href="/membership"
+            onClick={() => setMobileOpen(false)}
+            className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
+          >
+            Membership
           </Link>
           <a
             href="#faq"
@@ -107,26 +116,26 @@ function Hero() {
             Led by a Certified Functional Medicine Practitioner
           </span>
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
-            Finally understand why you feel the way you do
+            Take the first step toward understanding your health
           </h1>
           <p className="text-[1.05rem] text-[color:var(--muted-foreground)] mb-8 max-w-lg mx-auto md:mx-0 leading-relaxed">
-            Personalized functional medicine coaching and education — built around your biology, your lifestyle, and your goals.
+            Start with a free consultation and our functional wellness cookbook — no commitment, no credit card.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <Link
-              href="/signup"
+              href="/consultation"
               className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-7 py-3 rounded-full text-[0.95rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
-              Try It Free for 7 Days <ArrowRight className="w-4 h-4" />
+              Book a Free Consultation <ArrowRight className="w-4 h-4" />
             </Link>
-            <a
-              href="#how-it-works"
+            <Link
+              href="/cookbook"
               className="inline-flex items-center justify-center gap-2 border-2 border-[color:var(--primary)] text-[color:var(--primary)] px-7 py-3 rounded-full text-[0.95rem] hover:bg-[color:var(--primary)]/5 transition-colors"
               style={{ fontWeight: 600 }}
             >
-              See How It Works
-            </a>
+              Download the Free Cookbook
+            </Link>
           </div>
         </div>
 
@@ -391,20 +400,20 @@ const steps = [
   {
     icon: UserPlus,
     num: "1",
-    title: "Sign up free",
-    desc: "Start your 7-day free trial — no credit card required.",
+    title: "Book your free consultation",
+    desc: "Tell us about your health goals and schedule a 1-on-1 call with Sarina. No login, no commitment.",
   },
   {
     icon: GraduationCap,
     num: "2",
-    title: "Get personalized",
-    desc: "Complete a short questionnaire and get a tailored education plan.",
+    title: "Get a personalized plan",
+    desc: "On your call, Sarina reviews your goals and recommends the right next step — coaching, education, or specialized care.",
   },
   {
     icon: Heart,
     num: "3",
-    title: "Start healing",
-    desc: "Learn, coach with Sarina, and build lasting health habits.",
+    title: "Start your journey",
+    desc: "Whether that's our membership platform, ongoing 1:1 coaching, or a referral to clinical care, you'll have a clear path forward.",
   },
 ];
 
@@ -584,18 +593,17 @@ function FinalCTA() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
         <Heart className="w-10 h-10 text-white/80 mx-auto mb-4" />
         <h2 className="text-[1.75rem] md:text-[2.5rem] font-medium tracking-tight text-white">
-          Take Control of Your Health
+          Take the first step.
         </h2>
         <p className="mt-4 text-white/80 max-w-lg mx-auto text-[1.05rem] leading-relaxed">
-          Join a growing community of people discovering the root causes behind
-          their symptoms with personalized functional medicine coaching.
+          A free consultation with Sarina is the easiest way to start.
         </p>
         <Link
-          href="/signup"
+          href="/consultation"
           className="inline-flex items-center gap-2 mt-8 bg-white text-[color:var(--primary)] px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >
-          Start Free for 7 Days <ArrowRight className="w-4 h-4" />
+          Book Your Free Consultation <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </section>
@@ -625,6 +633,7 @@ export default function Home() {
       <main>
         <Hero />
         <SocialProof />
+        <HomepageQuiz />
         <MeetSarina />
         <Testimonials />
         <WhatYoullGet />
