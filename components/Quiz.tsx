@@ -263,6 +263,7 @@ function Result({
   onReset: () => void;
 }) {
   const rec = getRecommendation(answers);
+  const cookbookIsPrimary = rec.primaryCta.href === "/cookbook";
   return (
     <div className="bg-white rounded-2xl border-2 border-[color:var(--primary)] p-7 sm:p-9 shadow-sm">
       <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-3">
@@ -274,6 +275,8 @@ function Result({
       <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed mt-3 mb-7 max-w-prose">
         {rec.body}
       </p>
+
+      {cookbookIsPrimary && <CookbookPreview />}
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <Link
@@ -297,6 +300,50 @@ function Result({
       >
         <RotateCcw className="w-3.5 h-3.5" /> Retake the quiz
       </button>
+    </div>
+  );
+}
+
+const COOKBOOK_INSIDE = [
+  "30-day meal plan to build healthier eating habits",
+  "Anti-inflammatory recipes designed for blood sugar balance",
+  "Gut-friendly meals that support steady energy",
+  "Practical shopping lists and prep tips",
+];
+
+function CookbookPreview() {
+  return (
+    <div className="mb-7 rounded-xl bg-[color:var(--primary)]/5 border border-[color:var(--primary)]/15 p-5 sm:p-6">
+      <div className="flex flex-col sm:flex-row gap-5 sm:gap-6">
+        <div className="shrink-0 mx-auto sm:mx-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/saryn-cookbook-cover.jpg"
+            alt="The Healthy Cookbook & 30 Day Meal Plan cover"
+            className="w-32 sm:w-36 rounded-lg shadow-sm border border-[color:var(--border)]"
+          />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[0.7rem] font-semibold tracking-wide uppercase text-[color:var(--primary)]">
+              What&apos;s inside
+            </span>
+            <span className="text-[0.7rem] text-[color:var(--muted-foreground)]">
+              · Free PDF
+            </span>
+          </div>
+          <ul className="space-y-2">
+            {COOKBOOK_INSIDE.map((item) => (
+              <li key={item} className="flex items-start gap-2.5">
+                <Check className="w-4 h-4 text-[color:var(--primary)] mt-0.5 shrink-0" />
+                <span className="text-[0.875rem] text-[color:var(--foreground)] leading-snug">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
