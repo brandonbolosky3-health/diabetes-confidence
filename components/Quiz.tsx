@@ -263,7 +263,8 @@ function Result({
   onReset: () => void;
 }) {
   const rec = getRecommendation(answers);
-  const cookbookIsPrimary = rec.primaryCta.href === "/cookbook";
+  const cookbookOffered =
+    rec.primaryCta.href === "/cookbook" || rec.secondaryCta.href === "/cookbook";
   return (
     <div className="bg-white rounded-2xl border-2 border-[color:var(--primary)] p-7 sm:p-9 shadow-sm">
       <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-3">
@@ -276,7 +277,7 @@ function Result({
         {rec.body}
       </p>
 
-      {cookbookIsPrimary && <CookbookPreview />}
+      {cookbookOffered && <CookbookPreview />}
 
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
         <Link
