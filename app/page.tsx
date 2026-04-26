@@ -47,7 +47,7 @@ function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/consultation"
-            className="bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
+            className="hidden md:inline-flex items-center bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
             style={{ fontWeight: 600 }}
           >
             Book Free Consultation
@@ -64,6 +64,13 @@ function Navbar() {
 
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
+          <Link
+            href="/consultation"
+            onClick={() => setMobileOpen(false)}
+            className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity"
+          >
+            Book Free Consultation
+          </Link>
           <Link
             href="/consultation"
             onClick={() => setMobileOpen(false)}
@@ -200,59 +207,58 @@ function SocialProof() {
 function MeetSarina() {
   return (
     <section className="py-16 md:py-24 bg-[color:var(--background)]">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-10">
           Meet Your Practitioner
         </h2>
 
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          <div className="flex-1">
-            <span
-              className="inline-block bg-[color:var(--primary)]/10 text-[color:var(--primary)] px-4 py-1.5 rounded-full text-[0.8rem] mb-5"
-              style={{ fontWeight: 600 }}
-            >
-              Sarina Deharo — Certified Functional Medicine Practitioner
-            </span>
-            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
-              My name is Sarina Deharo and I am a Certified Functional Medicine Practitioner and Registered Nurse with over 20 years of clinical experience. My clinical focus is on diabetes management.
-            </p>
-            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
-              I have additional training in functional nutrition, lifestyle medicine, and therapeutic nutrition protocols including anti-inflammatory and root-cause-based dietary approaches.
-            </p>
-            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
-              I am very passionate about helping patients with chronic conditions — especially diabetes including pre-diabetes — to make meaningful dietary and lifestyle changes that help reduce inflammation, restore function, and lower the risk of progressive chronic disease.
-            </p>
-            <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-6">
-              My approach goes beyond symptom management. I use nutrient therapy and personalized care plans to understand why your body is struggling — and build a path to lasting health that is tailored specifically to your body&apos;s own needs.
-            </p>
-
-            <div className="space-y-3">
-              {[
-                "Registered Nurse (RN) — 20+ years clinical practice",
-                "Certified Functional Medicine Practitioner",
-                "Specialized in diabetes & pre-diabetes management",
-                "Trained in functional nutrition & lifestyle medicine",
-              ].map((item) => (
-                <div key={item} className="flex items-start gap-2.5">
-                  <Check className="w-5 h-5 text-[color:var(--primary)] mt-0.5 shrink-0" />
-                  <span className="text-[0.95rem] text-[color:var(--foreground)]" style={{ fontWeight: 500 }}>
-                    {item}
-                  </span>
-                </div>
-              ))}
-            </div>
+        <div className="flex justify-center mb-10">
+          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-lg" style={{ boxShadow: "0 8px 32px rgba(42, 157, 143, 0.15)" }}>
+            <Image
+              src={SARINA_IMG}
+              alt="Sarina Deharo"
+              fill
+              className="object-cover"
+            />
           </div>
+        </div>
 
-          <div className="flex-shrink-0">
-            <div className="relative w-72 h-72 md:w-80 md:h-80 rounded-3xl overflow-hidden shadow-lg" style={{ boxShadow: "0 8px 32px rgba(42, 157, 143, 0.15)" }}>
-              <Image
-                src={SARINA_IMG}
-                alt="Sarina"
-                fill
-                className="object-cover"
-              />
+        <div className="text-center mb-8">
+          <p className="text-[1.35rem] md:text-[1.5rem] font-medium tracking-tight text-[color:var(--foreground)]">
+            Sarina Deharo
+          </p>
+          <p className="mt-1 text-[0.9rem] text-[color:var(--muted-foreground)]">
+            Certified Functional Medicine Practitioner
+          </p>
+        </div>
+
+        <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+          My name is Sarina Deharo and I am a Certified Functional Medicine Practitioner and Registered Nurse with over 20 years of clinical experience. My clinical focus is on diabetes management.
+        </p>
+        <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+          I have additional training in functional nutrition, lifestyle medicine, and therapeutic nutrition protocols including anti-inflammatory and root-cause-based dietary approaches.
+        </p>
+        <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+          I am very passionate about helping patients with chronic conditions — especially diabetes including pre-diabetes — to make meaningful dietary and lifestyle changes that help reduce inflammation, restore function, and lower the risk of progressive chronic disease.
+        </p>
+        <p className="text-[1rem] text-[color:var(--muted-foreground)] leading-relaxed mb-8">
+          My approach goes beyond symptom management. I use nutrient therapy and personalized care plans to understand why your body is struggling — and build a path to lasting health that is tailored specifically to your body&apos;s own needs.
+        </p>
+
+        <div className="space-y-3">
+          {[
+            "Registered Nurse (RN) — 20+ years clinical practice",
+            "Certified Functional Medicine Practitioner",
+            "Specialized in diabetes & pre-diabetes management",
+            "Trained in functional nutrition & lifestyle medicine",
+          ].map((item) => (
+            <div key={item} className="flex items-start gap-2.5">
+              <Check className="w-5 h-5 text-[color:var(--primary)] mt-0.5 shrink-0" />
+              <span className="text-[0.95rem] text-[color:var(--foreground)]" style={{ fontWeight: 500 }}>
+                {item}
+              </span>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
