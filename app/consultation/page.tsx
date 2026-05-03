@@ -18,6 +18,8 @@ export default function ConsultationPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [duplicateWarning, setDuplicateWarning] = useState(false);
+  const [bookingFinalized, setBookingFinalized] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null);
 
   useEffect(() => {
@@ -36,9 +38,7 @@ export default function ConsultationPage() {
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
     healthGoals.trim() !== "";
 
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!valid || submitting) return;
+  async function submitIntake(allowDuplicate: boolean) {
     setSubmitting(true);
     setError(null);
     try {
@@ -52,18 +52,30 @@ export default function ConsultationPage() {
           phone: phone.trim() || null,
           health_goals: healthGoals.trim(),
           quiz_answers: quizAnswers,
+          allow_duplicate: allowDuplicate,
         }),
       });
+      const body = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
         throw new Error(body.error || "Failed to submit intake");
       }
+      if (body.duplicate) {
+        setDuplicateWarning(true);
+        return;
+      }
+      setDuplicateWarning(false);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!valid || submitting) return;
+    await submitIntake(false);
   }
 
   const inputClass =
@@ -175,6 +187,34 @@ export default function ConsultationPage() {
               <p className="mt-4 text-[0.85rem] text-red-600">{error}</p>
             )}
 
+            {duplicateWarning && (
+              <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
+                <p className="text-[0.9rem] text-amber-900 leading-relaxed">
+                  <strong>Heads up —</strong> we already have a consultation
+                  intake on file for <strong>{email.trim()}</strong>. If this
+                  is a new request (or you didn&apos;t finish booking last
+                  time), you can submit again.
+                </p>
+                <div className="mt-3 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => submitIntake(true)}
+                    disabled={submitting}
+                    className="inline-flex items-center justify-center bg-amber-600 text-white px-4 py-2 rounded-full text-[0.85rem] font-semibold hover:opacity-90 transition-opacity disabled:opacity-40"
+                  >
+                    {submitting ? "Submitting…" : "Submit anyway"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDuplicateWarning(false)}
+                    className="text-[0.85rem] font-semibold text-amber-900 hover:opacity-80"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <p className="text-[0.8rem] text-[color:var(--muted-foreground)]">
                 We&apos;ll never share your details. Your information is only used to prepare for your call.
@@ -217,48 +257,91 @@ export default function ConsultationPage() {
               showConfirmButton={false}
             />
 
-            <div className="mt-8 rounded-2xl border border-[color:var(--primary)]/30 bg-[color:var(--primary)]/5 p-6 sm:p-7">
-              <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
-                After you book
-              </h3>
-              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
-                You&apos;ll get a confirmation email from Sarina with a calendar
-                invite (.ics) attached. Open it on your phone or computer to
-                add the consultation to <strong>Apple Calendar</strong>,{" "}
-                <strong>Google Calendar</strong>, or <strong>Outlook</strong>.
-                A reminder will go out before your call.
-              </p>
-            </div>
+            {!bookingFinalized && (
+              <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7 text-center">
+                <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+                  Once you&apos;ve picked a time above and seen the confirmation,
+                  tap below to see what happens next.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBookingFinalized(true);
+                    setTimeout(() => {
+                      document
+                        .getElementById("post-booking")
+                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }, 50);
+                  }}
+                  className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-6 py-3 rounded-full text-[0.95rem] font-semibold hover:opacity-90 transition-opacity"
+                >
+                  I&apos;ve picked my time — what&apos;s next?{" "}
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
 
-            <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
-              <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
-                Your secure client portal
-              </h3>
-              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
-                You&apos;ll also get an invite to set up your{" "}
-                <strong>Saryn Health client portal</strong>, powered by{" "}
-                <strong>Practice Better</strong> — a HIPAA-compliant platform
-                where you&apos;ll message Sarina, join your video sessions, and
-                keep your health records and notes in one place. Available on
-                the web and as a mobile app.
-              </p>
-            </div>
+            {bookingFinalized && (
+              <div id="post-booking">
+                <div className="mt-8 rounded-2xl border-2 border-[color:var(--primary)] bg-[color:var(--primary)]/5 p-6 sm:p-7">
+                  <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
+                    Request sent
+                  </p>
+                  <h2 className="text-[1.4rem] sm:text-[1.6rem] font-medium tracking-tight text-[color:var(--foreground)] mb-2">
+                    You&apos;re all set, {firstName.trim() || "there"}
+                  </h2>
+                  <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed">
+                    Sarina will confirm your session shortly. Here&apos;s what
+                    to expect over the next few minutes.
+                  </p>
+                </div>
 
-            <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
-              <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
-                Optional: complete your pre-consultation form
-              </h3>
-              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
-                A short health-history form helps Sarina prepare so you can
-                spend the call on what matters most. Takes about 5 minutes.
-              </p>
-              <Link
-                href="/consultation-form"
-                className="inline-flex items-center gap-2 text-[0.9rem] font-semibold text-[color:var(--primary)] hover:opacity-80 transition-opacity"
-              >
-                Fill out the form <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+                <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
+                  <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
+                    After you book
+                  </h3>
+                  <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
+                    You&apos;ll get a confirmation email from Sarina with a
+                    calendar invite (.ics) attached. Open it on your phone or
+                    computer to add the consultation to{" "}
+                    <strong>Apple Calendar</strong>,{" "}
+                    <strong>Google Calendar</strong>, or{" "}
+                    <strong>Outlook</strong>. A reminder will go out before
+                    your call.
+                  </p>
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
+                  <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
+                    Your secure client portal
+                  </h3>
+                  <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
+                    You&apos;ll also get an invite to set up your{" "}
+                    <strong>Saryn Health client portal</strong>, powered by{" "}
+                    <strong>Practice Better</strong> — a HIPAA-compliant
+                    platform where you&apos;ll message Sarina, join your video
+                    sessions, and keep your health records and notes in one
+                    place. Available on the web and as a mobile app.
+                  </p>
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
+                  <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
+                    Optional: complete your pre-consultation form
+                  </h3>
+                  <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+                    A short health-history form helps Sarina prepare so you can
+                    spend the call on what matters most. Takes about 5 minutes.
+                  </p>
+                  <Link
+                    href="/consultation-form"
+                    className="inline-flex items-center gap-2 text-[0.9rem] font-semibold text-[color:var(--primary)] hover:opacity-80 transition-opacity"
+                  >
+                    Fill out the form <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         )}
       </main>

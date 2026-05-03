@@ -22,6 +22,7 @@ interface IntakeBody {
   phone?: unknown;
   health_goals?: unknown;
   quiz_answers?: unknown;
+  allow_duplicate?: unknown;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -74,6 +75,22 @@ export async function POST(request: NextRequest) {
   }
 
   const supabase = getAdminClient();
+
+  const allowDuplicate = body.allow_duplicate === true;
+  if (!allowDuplicate) {
+    const { count, error: dupErr } = await supabase
+      .from("consultation_intakes")
+      .select("id", { count: "exact", head: true })
+      .ilike("email", email);
+    if (dupErr) {
+      console.error("consultation_intakes duplicate check failed:", dupErr);
+    } else if ((count ?? 0) > 0) {
+      return NextResponse.json(
+        { duplicate: true, previous_count: count },
+        { status: 200 }
+      );
+    }
+  }
 
   const { data, error } = await supabase
     .from("consultation_intakes")
