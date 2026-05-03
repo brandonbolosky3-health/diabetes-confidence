@@ -232,6 +232,20 @@ export default function ConsultationPage() {
 
             <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
               <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
+                Your secure client portal
+              </h3>
+              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
+                You&apos;ll also get an invite to set up your{" "}
+                <strong>Saryn Health client portal</strong>, powered by{" "}
+                <strong>Practice Better</strong> — a HIPAA-compliant platform
+                where you&apos;ll message Sarina, join your video sessions, and
+                keep your health records and notes in one place. Available on
+                the web and as a mobile app.
+              </p>
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
+              <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
                 Optional: complete your pre-consultation form
               </h3>
               <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
