@@ -217,7 +217,20 @@ export default function ConsultationPage() {
               showConfirmButton={false}
             />
 
-            <div className="mt-10 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
+            <div className="mt-8 rounded-2xl border border-[color:var(--primary)]/30 bg-[color:var(--primary)]/5 p-6 sm:p-7">
+              <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
+                After you book
+              </h3>
+              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">
+                You&apos;ll get a confirmation email from Sarina with a calendar
+                invite (.ics) attached. Open it on your phone or computer to
+                add the consultation to <strong>Apple Calendar</strong>,{" "}
+                <strong>Google Calendar</strong>, or <strong>Outlook</strong>.
+                A reminder will go out before your call.
+              </p>
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7">
               <h3 className="text-[1.05rem] font-medium tracking-tight text-[color:var(--foreground)] mb-1.5">
                 Optional: complete your pre-consultation form
               </h3>
