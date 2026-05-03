@@ -240,45 +240,47 @@ export default function ConsultationPage() {
 
         {submitted && (
           <div>
-            <div className="rounded-2xl border-2 border-[color:var(--primary)] bg-white p-6 sm:p-7 mb-8">
-              <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
-                Step 2 of 2
-              </p>
-              <h2 className="text-[1.4rem] sm:text-[1.6rem] font-medium tracking-tight text-[color:var(--foreground)] mb-2">
-                Pick a time that works for you
-              </h2>
-              <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed">
-                Sarina has your intake — now choose a slot below. You&apos;ll get a calendar invite as soon as you book.
-              </p>
-            </div>
-            <BookingWidget
-              clientName={`${firstName} ${lastName}`.trim()}
-              clientEmail={email}
-              showConfirmButton={false}
-            />
-
             {!bookingFinalized && (
-              <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7 text-center">
-                <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
-                  Once you&apos;ve picked a time above and seen the confirmation,
-                  tap below to see what happens next.
-                </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setBookingFinalized(true);
-                    setTimeout(() => {
-                      document
-                        .getElementById("post-booking")
-                        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }, 50);
-                  }}
-                  className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-6 py-3 rounded-full text-[0.95rem] font-semibold hover:opacity-90 transition-opacity"
-                >
-                  I&apos;ve picked my time — what&apos;s next?{" "}
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+              <>
+                <div className="rounded-2xl border-2 border-[color:var(--primary)] bg-white p-6 sm:p-7 mb-8">
+                  <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
+                    Step 2 of 2
+                  </p>
+                  <h2 className="text-[1.4rem] sm:text-[1.6rem] font-medium tracking-tight text-[color:var(--foreground)] mb-2">
+                    Pick a time that works for you
+                  </h2>
+                  <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed">
+                    Sarina has your intake — now choose a slot below. You&apos;ll get a calendar invite as soon as you book.
+                  </p>
+                </div>
+                <BookingWidget
+                  clientName={`${firstName} ${lastName}`.trim()}
+                  clientEmail={email}
+                  showConfirmButton={false}
+                />
+
+                <div className="mt-6 rounded-2xl border border-[color:var(--border)] bg-white p-6 sm:p-7 text-center">
+                  <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4">
+                    Once you&apos;ve picked a time above and seen the confirmation,
+                    tap below to see what happens next.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setBookingFinalized(true);
+                      setTimeout(() => {
+                        document
+                          .getElementById("post-booking")
+                          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }, 50);
+                    }}
+                    className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-6 py-3 rounded-full text-[0.95rem] font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    I&apos;ve picked my time — what&apos;s next?{" "}
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </>
             )}
 
             {bookingFinalized && (
