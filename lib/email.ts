@@ -308,6 +308,40 @@ export interface IntakeNotificationParams {
  * free-consultation intake has come in. Includes the goals and any quiz
  * context so she can prep before the Practice Better call.
  */
+/**
+ * Confirms to a free-consultation lead that their booking request was
+ * received and explains the wait + what to look out for from Sarina.
+ * Fires the moment the lead clicks "I've picked my time" on /consultation,
+ * so they don't sit in silence between Practice Better's iframe submit and
+ * Sarina's manual approval.
+ */
+export async function sendConsultationLeadConfirmationEmail(params: {
+  email: string;
+  firstName: string;
+}): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { email, firstName } = params;
+    await getResend().emails.send({
+      from,
+      to: email,
+      subject: "We got your free consultation request 🎉",
+      html: emailLayout(`
+        ${p(`Hi ${escapeHtml(firstName)},`)}
+        ${p(`Thanks for sending your free consultation request to <strong>Sarina</strong> — we received it and your details are in good hands.`)}
+        ${p(`<strong>What happens next:</strong>`)}
+        ${p(`<strong>1.</strong> Sarina will personally review your request, usually within 1–2 business days, and confirm your time slot.`)}
+        ${p(`<strong>2.</strong> You'll get a confirmation email from <strong>Practice Better</strong> with a calendar invite (.ics). Open it on your phone or computer to add the consultation to <strong>Apple Calendar</strong>, <strong>Google Calendar</strong>, or <strong>Outlook</strong>.`)}
+        ${p(`<strong>3.</strong> You'll also get an invite to set up your <strong>Saryn Health client portal</strong> (powered by Practice Better) — a HIPAA-compliant platform where you'll message Sarina, join your video session, and complete a short health-history form before our call.`)}
+        ${p(`If you don't see Sarina's confirmation within 2 business days, check your spam folder or reply to this email and we'll sort it out.`)}
+        ${p(`Looking forward to our conversation,<br>The Saryn Health team`)}
+      `),
+    });
+    return { success: true };
+  } catch (err) {
+    return { success: false, error: (err as Error).message };
+  }
+}
+
 export async function sendIntakeNotificationEmail(
   params: IntakeNotificationParams
 ): Promise<{ success: boolean; error?: string }> {

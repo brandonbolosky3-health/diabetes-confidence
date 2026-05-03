@@ -268,6 +268,17 @@ export default function ConsultationPage() {
                     type="button"
                     onClick={() => {
                       setBookingFinalized(true);
+                      // Fire-and-forget: confirmation email is non-critical to
+                      // the UI flow, and Sarina still gets the original intake
+                      // notification, so a send failure shouldn't block reveal.
+                      fetch("/api/consultation/booking-sent", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          email: email.trim(),
+                          first_name: firstName.trim(),
+                        }),
+                      }).catch(() => {});
                       setTimeout(() => {
                         document
                           .getElementById("post-booking")
