@@ -29,6 +29,24 @@ export default function ConsultationPage() {
     } catch {
       // ignore
     }
+    try {
+      const prefill = sessionStorage.getItem("intake_prefill");
+      if (prefill) {
+        const { first_name, last_name, email: prefillEmail, phone: prefillPhone } = JSON.parse(prefill) as {
+          first_name?: string;
+          last_name?: string;
+          email?: string;
+          phone?: string;
+        };
+        if (first_name) setFirstName(first_name);
+        if (last_name) setLastName(last_name);
+        if (prefillEmail) setEmail(prefillEmail);
+        if (prefillPhone) setPhone(prefillPhone);
+        sessionStorage.removeItem("intake_prefill");
+      }
+    } catch {
+      // ignore
+    }
   }, []);
 
   const goalsRemaining = MAX_GOALS - healthGoals.length;
@@ -99,10 +117,10 @@ export default function ConsultationPage() {
 
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-12 sm:py-16">
         <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
-          Book your free consultation with Sarina
+          Almost there — confirm your details
         </h1>
         <p className="text-[1.05rem] text-[color:var(--muted-foreground)] leading-relaxed mb-10 max-w-2xl">
-          A 1-on-1 conversation about your health goals. No commitment, no credit card.
+          We&apos;ve got your health intake. Just confirm your contact info below and we&apos;ll get you to the scheduler.
         </p>
 
         {!submitted && (

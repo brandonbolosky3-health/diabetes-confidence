@@ -120,7 +120,7 @@ export default function MembershipPage() {
             Start with a free 1-on-1 call with Sarina. She&apos;ll help you figure out whether membership, ongoing coaching, or specialized care is the right next step.
           </p>
           <Link
-            href="/consultation"
+            href="/consultation-form"
             className="inline-flex items-center gap-2 border-2 border-[color:var(--primary)] text-[color:var(--primary)] px-6 py-2.5 rounded-full text-[0.9rem] font-semibold hover:bg-[color:var(--primary)]/5 transition-colors"
           >
             Book a Free Consultation <ArrowRight className="w-4 h-4" />

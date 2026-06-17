@@ -846,8 +846,22 @@ export default function ConsultationFormPage() {
           const body = await res.json().catch(() => ({}));
           throw new Error(body.error || "Failed to submit form");
         }
-        setSubmittedAnonymously(true);
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Pass name/email to the booking page so it can pre-fill the form
+        try {
+          const nameParts = formData.full_name.trim().split(/\s+/);
+          sessionStorage.setItem(
+            "intake_prefill",
+            JSON.stringify({
+              first_name: nameParts[0] ?? "",
+              last_name: nameParts.slice(1).join(" "),
+              email: formData.email,
+              phone: formData.phone,
+            })
+          );
+        } catch {
+          // ignore
+        }
+        router.push("/consultation");
       }
     } catch (err) {
       setSaveError(

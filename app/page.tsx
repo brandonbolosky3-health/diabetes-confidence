@@ -46,7 +46,7 @@ function Navbar() {
         </nav>
         <div className="flex items-center gap-3">
           <Link
-            href="/consultation"
+            href="/consultation-form"
             className="hidden md:inline-flex items-center bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap"
             style={{ fontWeight: 600 }}
           >
@@ -65,7 +65,7 @@ function Navbar() {
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
           <Link
-            href="/consultation"
+            href="/consultation-form"
             onClick={() => setMobileOpen(false)}
             className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity"
           >
@@ -130,7 +130,7 @@ function Hero() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
             <Link
-              href="/consultation"
+              href="/consultation-form"
               className="inline-flex items-center justify-center gap-2 bg-[color:var(--primary)] text-white px-7 py-3 rounded-full text-[0.95rem] hover:opacity-90 transition-opacity"
               style={{ fontWeight: 600 }}
             >
@@ -605,7 +605,7 @@ function FinalCTA() {
           A free consultation with Sarina is the easiest way to start.
         </p>
         <Link
-          href="/consultation"
+          href="/consultation-form"
           className="inline-flex items-center gap-2 mt-8 bg-white text-[color:var(--primary)] px-8 py-3.5 rounded-full hover:opacity-90 transition-opacity"
           style={{ fontWeight: 600 }}
         >

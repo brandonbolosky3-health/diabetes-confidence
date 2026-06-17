@@ -152,7 +152,7 @@ export default function CookbookPage() {
                 Want a personalized plan to go with the recipes? A free 1-on-1 call with Sarina is the fastest way to figure out what&apos;s right for you.
               </p>
               <Link
-                href="/consultation"
+                href="/consultation-form"
                 className="inline-flex items-center gap-2 bg-[color:var(--primary)] text-white px-6 py-3 rounded-full text-[0.95rem] font-semibold hover:opacity-90 transition-opacity"
               >
                 Book a free consultation <ArrowRight className="w-4 h-4" />
