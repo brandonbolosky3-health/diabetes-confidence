@@ -3,6 +3,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { ArrowLeft, Shield } from "lucide-react";
 import Logo from "@/components/Logo";
+import AdminNav from "./AdminNav";
 
 export default async function AdminLayout({
   children,
@@ -40,6 +41,7 @@ export default async function AdminLayout({
               <Shield className="w-3 h-3" />
               Admin
             </span>
+            <AdminNav />
           </div>
           <Link
             href="/dashboard"
