@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
     lastName,
     email,
     phone,
-    healthGoals,
+    healthGoals: healthGoals ?? "",
     quizSummary: summarizeQuiz(body.quiz_answers),
   }).catch((e) => console.warn("Intake notification email failed:", e));
 
