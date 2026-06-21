@@ -25,7 +25,7 @@ export async function PATCH(request: NextRequest) {
 
   const supabase = createAdminClient();
   const { error } = await supabase
-    .from("consultation_forms")
+    .from("consultation_intakes")
     .update({ reviewed })
     .eq("id", id);
 
