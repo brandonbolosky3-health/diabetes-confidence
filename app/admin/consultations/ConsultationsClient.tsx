@@ -97,6 +97,7 @@ export default function ConsultationsClient({ initialRows }: { initialRows: Inta
   const [page, setPage] = useState(0);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [toggling, setToggling] = useState<string | null>(null);
+  const [bulkArchiving, setBulkArchiving] = useState(false);
 
   async function toggleReviewed(row: IntakeRow) {
     setToggling(row.id);
@@ -114,6 +115,32 @@ export default function ConsultationsClient({ initialRows }: { initialRows: Inta
       // ignore
     } finally {
       setToggling(null);
+    }
+  }
+
+  async function archiveAll() {
+    setBulkArchiving(true);
+    const toArchive = filtered.filter((r) => !r.reviewed);
+    try {
+      await Promise.all(
+        toArchive.map((row) =>
+          fetch("/api/admin/consultations", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: row.id, reviewed: true }),
+          })
+        )
+      );
+      setRows((prev) =>
+        prev.map((r) =>
+          toArchive.some((a) => a.id === r.id) ? { ...r, reviewed: true } : r
+        )
+      );
+      setExpanded(null);
+    } catch {
+      // ignore
+    } finally {
+      setBulkArchiving(false);
     }
   }
 
@@ -146,7 +173,7 @@ export default function ConsultationsClient({ initialRows }: { initialRows: Inta
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 mb-5">
+      <div className="flex items-center justify-between gap-2 mb-5 flex-wrap">
         <button
           onClick={() => { setTab("active"); setPage(0); setSearch(""); }}
           className={`flex items-center gap-2 px-4 py-2 rounded-full text-[0.85rem] font-semibold transition-colors ${tab === "active" ? "bg-[color:var(--primary)] text-white" : "bg-white border border-[color:var(--border)] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]"}`}
@@ -164,6 +191,22 @@ export default function ConsultationsClient({ initialRows }: { initialRows: Inta
           <span className={`text-[0.7rem] font-bold px-1.5 py-0.5 rounded-full ${tab === "archived" ? "bg-white/20 text-white" : "bg-gray-100 text-gray-600"}`}>{archivedCount}</span>
         </button>
       </div>
+      {tab === "active" && filtered.filter((r) => !r.reviewed).length > 0 && (
+        <div className="flex justify-end mb-3">
+          <button
+            onClick={archiveAll}
+            disabled={bulkArchiving}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full text-[0.8rem] font-semibold border border-[color:var(--border)] bg-white text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] hover:border-[color:var(--primary)] transition-colors disabled:opacity-40"
+          >
+            {bulkArchiving ? (
+              <div className="w-3.5 h-3.5 rounded-full border-2 border-current border-t-transparent animate-spin" />
+            ) : (
+              <CheckCircle2 className="w-3.5 h-3.5" />
+            )}
+            {bulkArchiving ? "Archiving…" : `Archive all (${filtered.filter((r) => !r.reviewed).length})`}
+          </button>
+        </div>
+      )}
 
       {/* Search */}
       <div className="mb-4 relative max-w-sm">
