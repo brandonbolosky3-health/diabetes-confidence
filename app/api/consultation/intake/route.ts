@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
   const healthGoals = asString(body.health_goals, MAX_GOALS);
   const phone = asString(body.phone);
 
-  if (!firstName || !lastName || !email || !healthGoals) {
+  if (!firstName || !lastName || !email) {
     return NextResponse.json({ error: "missing required fields" }, { status: 400 });
   }
   if (!EMAIL_RE.test(email)) {
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
       last_name: lastName,
       email,
       phone: phone ?? null,
-      health_goals: healthGoals,
+      health_goals: healthGoals ?? null,
       quiz_answers: body.quiz_answers ?? null,
     })
     .select("id")
