@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Script from "next/script";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +23,29 @@ export default function BookingWidget({
   const [confirming, setConfirming] = useState(false);
   const [confirmed, setConfirmed] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [widgetHeight, setWidgetHeight] = useState(800);
   const router = useRouter();
+
+  // Collapse the iframe when Practice Better signals the booking is submitted
+  useEffect(() => {
+    const handler = (e: MessageEvent) => {
+      try {
+        const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+        if (
+          data?.type === "booking_submitted" ||
+          data?.event === "booking_submitted" ||
+          data?.status === "submitted" ||
+          JSON.stringify(data).toLowerCase().includes("submitted")
+        ) {
+          setWidgetHeight(160);
+        }
+      } catch {
+        // ignore non-JSON messages
+      }
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
 
   async function handleConfirm() {
     setConfirming(true);
@@ -58,7 +80,7 @@ export default function BookingWidget({
           data-theme-accent="1a1a1a"
           data-client-name={clientName}
           data-client-email={clientEmail}
-          style={{ width: "100%", maxWidth: "800px", height: "800px" }}
+          style={{ width: "100%", maxWidth: "800px", height: `${widgetHeight}px`, transition: "height 0.4s ease" }}
           data-scrollbar-visible="false"
         />
         <Script
