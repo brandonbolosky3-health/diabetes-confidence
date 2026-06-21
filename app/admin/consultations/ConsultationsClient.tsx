@@ -1,7 +1,16 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Search, ChevronLeft, ChevronRight, ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Search,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle2,
+  Circle,
+  ArchiveRestore,
+} from "lucide-react";
 
 const SYMPTOM_KEYS = [
   { key: "symptom_headache", label: "Headache" },
@@ -35,6 +44,7 @@ export interface FormRow {
   how_did_you_hear: string | null;
   is_pregnant: boolean | null;
   member_id: string | null;
+  reviewed: boolean;
   worst_symptom: string | null;
   condition_duration: string | null;
   condition_frequency: string | null;
@@ -140,33 +150,101 @@ function ExpandedRow({ row }: { row: FormRow }) {
   );
 }
 
-export default function ConsultationsClient({ rows }: { rows: FormRow[] }) {
+export default function ConsultationsClient({ initialRows }: { initialRows: FormRow[] }) {
+  const [rows, setRows] = useState<FormRow[]>(initialRows);
+  const [tab, setTab] = useState<"active" | "archived">("active");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [toggling, setToggling] = useState<string | null>(null);
+
+  async function toggleReviewed(row: FormRow) {
+    setToggling(row.id);
+    const newValue = !row.reviewed;
+    try {
+      const res = await fetch("/api/admin/consultations", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: row.id, reviewed: newValue }),
+      });
+      if (!res.ok) throw new Error("Failed");
+      setRows((prev) =>
+        prev.map((r) => (r.id === row.id ? { ...r, reviewed: newValue } : r))
+      );
+      // Collapse if moving to other tab
+      setExpanded(null);
+    } catch {
+      // silently ignore — state stays unchanged
+    } finally {
+      setToggling(null);
+    }
+  }
+
+  const tabRows = useMemo(
+    () => rows.filter((r) => (tab === "active" ? !r.reviewed : r.reviewed)),
+    [rows, tab]
+  );
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
-    if (!q) return rows;
-    return rows.filter(
+    if (!q) return tabRows;
+    return tabRows.filter(
       (r) =>
         (r.full_name || "").toLowerCase().includes(q) ||
         (r.email || "").toLowerCase().includes(q) ||
         (r.worst_symptom || "").toLowerCase().includes(q)
     );
-  }, [rows, search]);
+  }, [tabRows, search]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paged = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  const activeCount = rows.filter((r) => !r.reviewed).length;
+  const archivedCount = rows.filter((r) => r.reviewed).length;
+
   const toggle = (id: string) => setExpanded((prev) => (prev === id ? null : id));
 
   return (
     <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 py-8">
+      {/* Header */}
       <div className="mb-6">
         <h1 className="text-[1.5rem] font-bold text-[color:var(--foreground)]">Consultation Intakes</h1>
         <p className="text-[0.85rem] text-[color:var(--muted-foreground)] mt-0.5">{rows.length} total submission{rows.length !== 1 ? "s" : ""}</p>
       </div>
 
+      {/* Tabs */}
+      <div className="flex items-center gap-2 mb-5">
+        <button
+          onClick={() => { setTab("active"); setPage(0); setSearch(""); }}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-[0.85rem] font-semibold transition-colors ${
+            tab === "active"
+              ? "bg-[color:var(--primary)] text-white"
+              : "bg-white border border-[color:var(--border)] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]"
+          }`}
+        >
+          <Circle className="w-3.5 h-3.5" />
+          Active
+          <span className={`text-[0.7rem] font-bold px-1.5 py-0.5 rounded-full ${tab === "active" ? "bg-white/20 text-white" : "bg-gray-100 text-gray-600"}`}>
+            {activeCount}
+          </span>
+        </button>
+        <button
+          onClick={() => { setTab("archived"); setPage(0); setSearch(""); }}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full text-[0.85rem] font-semibold transition-colors ${
+            tab === "archived"
+              ? "bg-[color:var(--primary)] text-white"
+              : "bg-white border border-[color:var(--border)] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)]"
+          }`}
+        >
+          <ArchiveRestore className="w-3.5 h-3.5" />
+          Archived
+          <span className={`text-[0.7rem] font-bold px-1.5 py-0.5 rounded-full ${tab === "archived" ? "bg-white/20 text-white" : "bg-gray-100 text-gray-600"}`}>
+            {archivedCount}
+          </span>
+        </button>
+      </div>
+
+      {/* Search */}
       <div className="mb-4 relative max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[color:var(--muted-foreground)]" />
         <input
@@ -178,39 +256,75 @@ export default function ConsultationsClient({ rows }: { rows: FormRow[] }) {
         />
       </div>
 
+      {/* List */}
       <div className="bg-white rounded-xl border border-[color:var(--border)] overflow-hidden">
         {paged.length === 0 ? (
-          <p className="text-center text-[color:var(--muted-foreground)] py-12 text-[0.9rem]">No submissions found.</p>
+          <p className="text-center text-[color:var(--muted-foreground)] py-12 text-[0.9rem]">
+            {tab === "active" ? "No active submissions." : "No archived submissions yet."}
+          </p>
         ) : (
           paged.map((row) => (
             <div key={row.id} className="border-b border-[color:var(--border)] last:border-0">
-              <button
-                type="button"
-                onClick={() => toggle(row.id)}
-                className="w-full text-left px-5 py-4 hover:bg-gray-50/60 transition-colors flex items-center gap-4"
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-0.5">
-                    <span className="font-semibold text-[0.9rem] text-[color:var(--foreground)] truncate">
-                      {row.full_name || "Unknown"}
-                    </span>
-                    <span className={`text-[0.65rem] font-semibold px-2 py-0.5 rounded-full shrink-0 ${row.member_id ? "bg-teal-100 text-teal-700" : "bg-gray-100 text-gray-600"}`}>
-                      {row.member_id ? "Member" : "Guest"}
-                    </span>
+              <div className="flex items-center gap-2 pr-4">
+                {/* Archive / Unarchive button */}
+                <button
+                  type="button"
+                  onClick={() => toggleReviewed(row)}
+                  disabled={toggling === row.id}
+                  title={row.reviewed ? "Move back to active" : "Mark as reviewed & archive"}
+                  className={`ml-4 shrink-0 transition-all disabled:opacity-40 ${
+                    row.reviewed
+                      ? "text-[color:var(--primary)]"
+                      : "text-gray-300 hover:text-[color:var(--primary)]"
+                  }`}
+                >
+                  {toggling === row.id ? (
+                    <div className="w-5 h-5 rounded-full border-2 border-[color:var(--primary)] border-t-transparent animate-spin" />
+                  ) : row.reviewed ? (
+                    <CheckCircle2 className="w-5 h-5" />
+                  ) : (
+                    <Circle className="w-5 h-5" />
+                  )}
+                </button>
+
+                {/* Row content */}
+                <button
+                  type="button"
+                  onClick={() => toggle(row.id)}
+                  className="flex-1 text-left px-3 py-4 hover:bg-gray-50/60 transition-colors flex items-center gap-4"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <span className="font-semibold text-[0.9rem] text-[color:var(--foreground)] truncate">
+                        {row.full_name || "Unknown"}
+                      </span>
+                      <span className={`text-[0.65rem] font-semibold px-2 py-0.5 rounded-full shrink-0 ${row.member_id ? "bg-teal-100 text-teal-700" : "bg-gray-100 text-gray-600"}`}>
+                        {row.member_id ? "Member" : "Guest"}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-3 text-[0.78rem] text-[color:var(--muted-foreground)]">
+                      <span>{row.email || "—"}</span>
+                      {row.pain_scale && (
+                        <span className="shrink-0">Pain: <strong className="text-[color:var(--foreground)]">{row.pain_scale}/10</strong></span>
+                      )}
+                      {row.worst_symptom && (
+                        <span className="truncate hidden sm:block">{row.worst_symptom}</span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3 text-[0.78rem] text-[color:var(--muted-foreground)]">
-                    <span>{row.email || "—"}</span>
-                    {row.pain_scale && <span className="shrink-0">Pain: <strong className="text-[color:var(--foreground)]">{row.pain_scale}/10</strong></span>}
-                    {row.worst_symptom && <span className="truncate hidden sm:block">{row.worst_symptom}</span>}
+                  <div className="flex items-center gap-3 shrink-0">
+                    <span className="text-[0.75rem] text-[color:var(--muted-foreground)]">
+                      {new Date(row.submitted_at).toLocaleDateString("en-US", {
+                        month: "short", day: "numeric", year: "numeric",
+                      })}
+                    </span>
+                    {expanded === row.id
+                      ? <ChevronUp className="w-4 h-4 text-[color:var(--muted-foreground)]" />
+                      : <ChevronDown className="w-4 h-4 text-[color:var(--muted-foreground)]" />}
                   </div>
-                </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-[0.75rem] text-[color:var(--muted-foreground)]">
-                    {new Date(row.submitted_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                  </span>
-                  {expanded === row.id ? <ChevronUp className="w-4 h-4 text-[color:var(--muted-foreground)]" /> : <ChevronDown className="w-4 h-4 text-[color:var(--muted-foreground)]" />}
-                </div>
-              </button>
+                </button>
+              </div>
+
               {expanded === row.id && <ExpandedRow row={row} />}
             </div>
           ))

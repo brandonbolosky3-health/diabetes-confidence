@@ -8,5 +8,5 @@ export default async function ConsultationsAdminPage() {
     .select("*")
     .order("submitted_at", { ascending: false });
 
-  return <ConsultationsClient rows={(data ?? []) as FormRow[]} />;
+  return <ConsultationsClient initialRows={(data ?? []) as FormRow[]} />;
 }
