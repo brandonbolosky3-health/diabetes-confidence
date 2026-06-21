@@ -157,11 +157,14 @@ export default function ConsultationPage() {
       </header>
 
       <main className="flex-1 max-w-3xl mx-auto w-full px-4 sm:px-6 py-12 sm:py-16">
+        <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
+          Free Consultation — Step 2 of 2
+        </p>
         <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
-          Almost there — confirm your details
+          Confirm your details
         </h1>
         <p className="text-[1.05rem] text-[color:var(--muted-foreground)] leading-relaxed mb-10 max-w-2xl">
-          We&apos;ve got your health intake. Just confirm your contact info below and we&apos;ll get you to the scheduler.
+          Almost there — add your contact info below and we&apos;ll get you to the scheduler.
         </p>
 
         {!submitted && (

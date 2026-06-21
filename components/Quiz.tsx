@@ -21,8 +21,10 @@ const MAX_Q2 = 3;
 
 export default function Quiz({
   className = "",
+  onComplete,
 }: {
   className?: string;
+  onComplete?: (answers: QuizAnswers) => void;
 }) {
   const [step, setStep] = useState<Step>(1);
   const [q1, setQ1] = useState<Q1Answer | null>(null);
@@ -74,7 +76,11 @@ export default function Quiz({
     setQ3(answer);
     const final: QuizAnswers = { q1, q2, q3: answer };
     persistAnswers(final);
-    setStep("result");
+    if (onComplete) {
+      onComplete(final);
+    } else {
+      setStep("result");
+    }
   }
 
   return (
