@@ -6,7 +6,8 @@
 export type Q1Answer =
   | "managing_diabetes"
   | "prediabetic"
-  | "optimize";
+  | "optimize"
+  | "other_wellness";
 
 export type Q2Answer =
   | "blood_sugar"
@@ -43,6 +44,7 @@ export const Q1_OPTIONS: { id: Q1Answer; label: string }[] = [
   { id: "managing_diabetes", label: "Currently managing diabetes" },
   { id: "prediabetic", label: "Prediabetic or at risk" },
   { id: "optimize", label: "Generally healthy, want to optimize" },
+  { id: "other_wellness", label: "Other wellness concerns" },
 ];
 
 export const Q2_OPTIONS: { id: Q2Answer; label: string }[] = [
