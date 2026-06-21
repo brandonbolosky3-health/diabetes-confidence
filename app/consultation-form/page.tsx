@@ -846,7 +846,7 @@ export default function ConsultationFormPage() {
           const body = await res.json().catch(() => ({}));
           throw new Error(body.error || "Failed to submit form");
         }
-        // Pass name/email to the booking page so it can pre-fill the form
+        // Pass name/email to the booking page and mark intake as complete
         try {
           const nameParts = formData.full_name.trim().split(/\s+/);
           sessionStorage.setItem(
@@ -858,6 +858,7 @@ export default function ConsultationFormPage() {
               phone: formData.phone,
             })
           );
+          sessionStorage.setItem("intake_complete", "true");
         } catch {
           // ignore
         }
