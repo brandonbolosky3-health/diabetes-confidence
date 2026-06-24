@@ -1,17 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, CalendarCheck } from "lucide-react";
 import Logo from "@/components/Logo";
 import Quiz from "@/components/Quiz";
+import BookingWidget from "@/components/BookingWidget";
 import { type QuizAnswers, QUIZ_SESSION_KEY } from "@/lib/quiz";
 
-type Stage = "quiz" | "contact";
+type Stage = "quiz" | "contact" | "booking";
 
 export default function ConsultationFormPage() {
-  const router = useRouter();
   const [stage, setStage] = useState<Stage>("quiz");
   const [quizAnswers, setQuizAnswers] = useState<QuizAnswers | null>(null);
 
@@ -22,11 +21,20 @@ export default function ConsultationFormPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const bookingRef = useRef<HTMLDivElement>(null);
+
   function handleQuizComplete(answers: QuizAnswers) {
     try { sessionStorage.setItem(QUIZ_SESSION_KEY, JSON.stringify(answers)); } catch { /* ignore */ }
     setQuizAnswers(answers);
     setStage("contact");
   }
+
+  // Scroll to booking widget when it appears
+  useEffect(() => {
+    if (stage === "booking" && bookingRef.current) {
+      bookingRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [stage]);
 
   const valid =
     firstName.trim() !== "" &&
@@ -52,12 +60,13 @@ export default function ConsultationFormPage() {
         }),
       });
       const body = await res.json().catch(() => ({}));
-      // Allow duplicate silently — if they already have a record just proceed
+      // Allow duplicate silently — proceed to booking regardless
       if (!res.ok && !body.duplicate) {
         throw new Error(body.error || "Failed to save your info");
       }
-      sessionStorage.setItem("intake_complete", "true");
-      router.push("/consultation");
+      // Mark intake complete in case user navigates to /consultation directly later
+      try { sessionStorage.setItem("intake_complete", "true"); } catch { /* ignore */ }
+      setStage("booking");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
@@ -87,7 +96,7 @@ export default function ConsultationFormPage() {
           <>
             <div className="mb-10">
               <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
-                Free Consultation — Step 1 of 2
+                Free Consultation — Step 1 of 3
               </p>
               <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
                 Consultation intake form
@@ -104,10 +113,10 @@ export default function ConsultationFormPage() {
           <>
             <div className="mb-10">
               <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
-                Free Consultation — Step 1 of 2
+                Free Consultation — Step 2 of 3
               </p>
               <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
-                Last thing — who are we booking for?
+                Who are we booking for?
               </h1>
               <p className="text-[1.05rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-2xl">
                 So Sarina knows who to expect on the call.
@@ -174,11 +183,40 @@ export default function ConsultationFormPage() {
                 >
                   {submitting
                     ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</>
-                    : <>Continue to scheduling <ArrowRight className="w-4 h-4" /></>}
+                    : <>Pick your time slot <ArrowRight className="w-4 h-4" /></>}
                 </button>
               </div>
             </form>
           </>
+        )}
+
+        {stage === "booking" && (
+          <div ref={bookingRef}>
+            <div className="mb-10">
+              <p className="text-[0.75rem] font-semibold tracking-wide uppercase text-[color:var(--primary)] mb-2">
+                Free Consultation — Step 3 of 3
+              </p>
+              <h1 className="text-4xl md:text-5xl font-medium tracking-tight leading-[1.05] text-[color:var(--foreground)] mb-4">
+                Pick a time that works for you
+              </h1>
+              <p className="text-[1.05rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-2xl">
+                Choose a slot below and Sarina will see you then.
+              </p>
+            </div>
+
+            <div className="mb-6 flex items-center gap-3 bg-teal-50 border border-teal-200 rounded-xl px-5 py-4">
+              <CalendarCheck className="w-5 h-5 text-teal-600 shrink-0" />
+              <p className="text-[0.9rem] text-teal-800">
+                Your intake form was saved — just pick a time below to complete your booking.
+              </p>
+            </div>
+
+            <BookingWidget
+              clientName={`${firstName} ${lastName}`}
+              clientEmail={email}
+              showConfirmButton={false}
+            />
+          </div>
         )}
       </main>
     </div>
