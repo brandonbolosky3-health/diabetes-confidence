@@ -18,6 +18,7 @@ export default function ConsultationFormPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -54,7 +55,7 @@ export default function ConsultationFormPage() {
           first_name: firstName.trim(),
           last_name: lastName.trim(),
           email: email.trim(),
-          health_goals: "",
+          health_goals: notes.trim(),
           quiz_answers: quizAnswers,
           allow_duplicate: false,
         }),
@@ -163,6 +164,19 @@ export default function ConsultationFormPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
+                />
+              </div>
+
+              <div className="mt-4">
+                <label className="block text-[0.85rem] font-semibold text-[color:var(--foreground)] mb-1.5">
+                  Anything specific Sarina should know? <span className="font-normal text-[color:var(--muted-foreground)]">(optional)</span>
+                </label>
+                <textarea
+                  className={`${inputClass} resize-none`}
+                  rows={3}
+                  placeholder="e.g. medications, recent diagnosis, specific questions…"
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
                 />
               </div>
 
