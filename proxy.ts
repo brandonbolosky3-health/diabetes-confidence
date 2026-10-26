@@ -4,8 +4,8 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // Read inline so edge runtime picks up the live env var, not a build-time bake
-  if (process.env.SITE_MODE === "iv") {
+  // NEXT_PUBLIC_SITE_MODE is injected by next.config.ts from SITE_MODE at build time
+  if (process.env.NEXT_PUBLIC_SITE_MODE === "iv") {
     const allowed =
       pathname === "/iv" || pathname.startsWith("/iv/") ||
       pathname === "/about" || pathname.startsWith("/about/") ||
