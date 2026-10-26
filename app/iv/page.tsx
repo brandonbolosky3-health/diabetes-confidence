@@ -235,29 +235,88 @@ function DripMenu() {
 const BAG_ITEMS = [
   {
     label: "Normal saline",
-    body: "Sterile salt water that matches your body's fluid. It's the base of every drip and the whole point of the Hydration drip.",
+    does: "Sterile water with the same salt concentration as your blood. It restores fluid volume directly, which is why it's the base of every drip. If you're dehydrated from heat, travel, exercise, illness, or a long night, this is the part doing the heavy lifting.",
+    why: "Every drip starts with 500 mL. The Hydration drip is saline only; the +500 mL add-on doubles it.",
+    side: "Coolness at the IV site, mild bloating, or needing the bathroom sooner than usual. Rarely, swelling at the site if the IV shifts.",
   },
   {
     label: "B vitamins (B1, B2, B3, B5, B6)",
-    body: "The group your body uses to turn food into energy. Clients often choose these when they feel run down or burned out.",
+    does: "The B-vitamin family is what your cells use to turn food into usable energy. B1 (thiamine) helps convert carbohydrates into energy and supports nerve and muscle function. B2 (riboflavin) helps break down fats, proteins, and carbs. B3 (niacin) is involved in circulation, skin health, and brain function. B5 (pantothenic acid) is needed to make coenzyme A, a core piece of metabolism. B6 (pyridoxine) is involved in mood regulation, immune function, and brain health. They're water-soluble, so your body uses what it needs and clears the rest.",
+    why: "Energy, Complete Recovery, and Total Wellness all include the full B complex. Clients commonly choose these when they feel run down, burned out, or depleted after travel or a demanding stretch, and many report feeling more alert and less fatigued afterward.",
+    side: "Mild flushing, headache, nausea, dizziness, or temporary discomfort at the IV site. Bright yellow urine for a day is normal (that's riboflavin). Allergic reactions are rare.",
   },
   {
-    label: "Vitamin C",
-    body: "A common pick around travel, stress, or when you're feeling under the weather. Also known for its role in skin and collagen.",
+    label: "Vitamin C (ascorbic acid)",
+    does: "An antioxidant your body can't make on its own. It's required for collagen production (skin, joints, connective tissue), supports normal immune function, helps with iron absorption, and helps neutralize oxidative stress. Your body stores very little of it, so levels drop quickly during illness, stress, or heavy training.",
+    why: "Super Immunity and Complete Recovery each carry a high dose. It's the one people reach for around travel, when they feel something coming on, or after a stretch of poor sleep and stress. Clients often describe feeling less run down and notice their skin looks brighter.",
+    side: "Mild irritation at the IV site, nausea, headache, dizziness, or flushing. High doses can occasionally contribute to kidney stones in people prone to them; tell your provider if you have a history. Your reviewing provider screens for G6PD deficiency, a rare condition that makes high-dose vitamin C unsafe.",
   },
   {
-    label: "Minerals (magnesium, zinc, manganese, copper)",
-    body: "Trace minerals that are easy to run low on. Magnesium is the one people ask about for muscle tension and sleep.",
+    label: "Magnesium chloride",
+    does: "A mineral involved in over 300 enzyme reactions. It's central to muscle relaxation, nerve signaling, heart rhythm, blood sugar regulation, and sleep. It's one of the most common deficiencies, because stress, alcohol, sweating, and many medications all deplete it.",
+    why: "Immunity, Super Immunity, and Total Wellness all include it. It's the ingredient people ask about most for muscle tension, cramps, tension headaches, and sleep. Clients often describe feeling calmer and sleeping better the night of their drip.",
+    side: "A warm, flushed feeling as it runs in is common and passes quickly. Lightheadedness, nausea, tingling, or mild irritation at the site can occur. Your nurse controls the rate to keep this comfortable. At very high doses, muscle weakness or heart rhythm changes are possible, which is why dosing is provider-ordered.",
   },
   {
-    label: "B12 add-on",
-    body: "Given as a quick push, not in the bag. Often chosen alongside Energy or Total Wellness.",
+    label: "Zinc",
+    does: "A trace mineral that supports normal immune function, wound healing, skin integrity, hormone balance, and taste and smell. Your body doesn't store it, so intake has to be steady.",
+    why: "Part of the mineral blend in Immunity, Super Immunity, and Total Wellness. Commonly chosen when recovering from being sick, for skin concerns, or for frequent travelers.",
+    side: "Mild nausea, a metallic taste, headache, or irritation at the IV site. Dizziness and allergic reactions are rare.",
   },
   {
-    label: "Anti-nausea add-on",
-    body: "A prescription medication your provider can include when it's appropriate — the usual add-on for a rough morning.",
+    label: "Manganese",
+    does: "A trace mineral your body uses in small amounts for bone formation, connective tissue, blood clotting, and antioxidant enzymes that protect cells.",
+    why: "A small amount is included in the mineral blend to round out trace-mineral support.",
+    side: "Uncommon at the amounts used. Mild nausea or site irritation are the most likely.",
+  },
+  {
+    label: "Copper",
+    does: "Works alongside iron to form red blood cells, supports nerve health and immune balance, and helps your body absorb iron. Stress, digestive issues, and high zinc intake can deplete it, so it's paired with zinc to keep the two in balance.",
+    why: "Included in the mineral blend specifically to balance the zinc.",
+    side: "Mild nausea, metallic taste, headache, flushing, or site irritation. Dizziness and allergic reactions are rare.",
+  },
+  {
+    label: "B12 (hydroxocobalamin) — add-on",
+    does: "Essential for red blood cell formation, nerve function, and turning fats and carbohydrates into energy. Many people absorb it poorly from food (especially with age, certain medications, or digestive conditions), which is why the injectable form is popular.",
+    why: "Given as a quick push through the IV line, not mixed into the bag. The usual pairing with Energy or Total Wellness. Clients often choose it for fatigue, focus, or endurance.",
+    side: "Pain or redness at the site, itching, mild diarrhea, or a temporary sensation of body swelling. Less commonly, changes in blood pressure or potassium levels. Your urine may run pink or red for a day; that's the hydroxocobalamin, not blood.",
+  },
+  {
+    label: "Anti-nausea medication (ondansetron) — add-on",
+    does: "A prescription medication that blocks the serotonin receptors in the brain and gut that trigger nausea and vomiting. It's non-sedating and works within minutes.",
+    why: "Given as a push at the start when your provider approves it. The obvious choice for a rough morning or a queasy stomach that makes it hard to keep fluids down.",
+    side: "Mild headache, dizziness, constipation, fatigue, or flushing. Because it's a prescription, it's only included when your reviewing provider decides it's appropriate for you.",
   },
 ];
+
+function BagItem({ label, does, why, side }: { label: string; does: string; why: string; side: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-[color:var(--border)] last:border-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between py-5 text-left gap-4 px-6 sm:px-8"
+      >
+        <span className="text-[0.95rem] font-semibold text-[color:var(--foreground)]">{label}</span>
+        <ChevronDown className={`w-5 h-5 text-[color:var(--muted-foreground)] shrink-0 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="pb-6 px-6 sm:px-8 space-y-4 pr-10">
+          {[
+            { heading: "What it does", text: does },
+            { heading: "Why it's in the drip", text: why },
+            { heading: "Possible side effects", text: side },
+          ].map(({ heading, text }) => (
+            <div key={heading}>
+              <p className="text-[0.8rem] font-semibold text-[color:var(--foreground)] uppercase tracking-wide mb-1">{heading}</p>
+              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">{text}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function WhatsInTheBag() {
   return (
@@ -271,16 +330,13 @@ function WhatsInTheBag() {
             Plain-English notes on each ingredient. Your provider decides what&apos;s right for you.
           </p>
         </div>
-        <div className="bg-white rounded-2xl border border-[color:var(--border)] divide-y divide-[color:var(--border)]">
-          {BAG_ITEMS.map(({ label, body }) => (
-            <div key={label} className="px-6 sm:px-8 py-5">
-              <p className="text-[0.9rem] font-semibold text-[color:var(--foreground)] mb-1">{label}</p>
-              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">{body}</p>
-            </div>
+        <div className="bg-white rounded-2xl border border-[color:var(--border)]">
+          {BAG_ITEMS.map((item) => (
+            <BagItem key={item.label} {...item} />
           ))}
         </div>
         <p className="mt-6 text-[0.82rem] text-[color:var(--muted-foreground)] text-center leading-relaxed">
-          IV therapy replenishes fluids and nutrients. It doesn&apos;t treat or cure medical conditions, and it isn&apos;t a substitute for seeing your doctor.
+          Doses are set by your reviewing provider based on your health questionnaire. IV therapy replenishes fluids and nutrients. It doesn&apos;t treat or cure medical conditions, and it isn&apos;t a substitute for seeing your doctor.
         </p>
       </div>
     </section>
