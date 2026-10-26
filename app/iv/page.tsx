@@ -29,6 +29,8 @@ function Navbar() {
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
           <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
+          <a href="#pricing" className="hover:text-[color:var(--foreground)] transition-colors">Pricing</a>
+          <a href="#faq" className="hover:text-[color:var(--foreground)] transition-colors">FAQ</a>
           <Link href="/about" className="hover:text-[color:var(--foreground)] transition-colors">About Sarina</Link>
         </nav>
         <div className="flex items-center gap-3">
@@ -48,12 +50,14 @@ function Navbar() {
         </div>
       </div>
       {mobileOpen && (
-        <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
-          <a href="#request" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity">
+        <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-1">
+          <a href="#request" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity mb-2">
             Request appointment
           </a>
-          <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
-          <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">About Sarina</Link>
+          <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2.5 border-b border-[color:var(--border)]">IV hydration</Link>
+          <a href="#pricing" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2.5 border-b border-[color:var(--border)]">Pricing</a>
+          <a href="#faq" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2.5 border-b border-[color:var(--border)]">FAQ</a>
+          <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2.5">About Sarina</Link>
         </div>
       )}
     </header>
@@ -163,7 +167,7 @@ const DRIPS = [
 
 function DripMenu() {
   return (
-    <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
+    <section id="pricing" className="py-16 md:py-24 bg-[color:var(--secondary)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-3">
           <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)]">
@@ -715,7 +719,7 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 function FAQ() {
   return (
-    <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
+    <section id="faq" className="py-16 md:py-24 bg-[color:var(--secondary)]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-10">
           Frequently asked questions
