@@ -71,8 +71,10 @@ export async function POST(request: NextRequest) {
     const from = process.env.RESEND_FROM_EMAIL || "Saryn Health <hello@sarynhealth.com>";
     const notifyTo = [
       "sarina@sarynhealth.com",
+      "sarinadeharo3@gmail.com",
+      "brandonbolosky3@gmail.com",
       process.env.ADMIN_NOTIFICATION_EMAIL || "boloskys@gmail.com",
-    ].filter(Boolean) as string[];
+    ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i) as string[];
 
     await resend.emails.send({
       from,
