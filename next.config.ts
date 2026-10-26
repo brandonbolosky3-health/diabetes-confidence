@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-const IV_MODE = process.env.SITE_MODE === "iv";
+const IV_MODE = process.env.SITE_MODE === "iv" || process.env.NEXT_PUBLIC_SITE_MODE === "iv";
 
 // All marketing/app routes to redirect to /iv when in iv mode.
 // /login, /api/*, /auth/*, /iv, /about are always allowed.
@@ -35,7 +35,7 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     if (!IV_MODE) return [];
-    return [
+return [
       // Exact routes
       ...IV_REDIRECT_SOURCES.map((source) => ({
         source,
