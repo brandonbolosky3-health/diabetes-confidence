@@ -100,7 +100,7 @@ export default function AboutPage() {
                 Sarina Deharo
               </p>
               <p className="mt-1 text-[0.9rem] text-[color:var(--muted-foreground)]">
-                Registered Nurse · Certified Functional Medicine Practitioner
+                <span className="font-semibold text-[color:var(--foreground)]">BSN, RN, CDCES</span> · Certified Functional Medicine Practitioner
               </p>
             </div>
 
