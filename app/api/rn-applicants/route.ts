@@ -78,10 +78,16 @@ export async function POST(request: NextRequest) {
       "brandonbolosky3@gmail.com",
     ] as string[];
 
+    const ts = new Date().toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles",
+      month: "short", day: "numeric",
+      hour: "numeric", minute: "2-digit", hour12: true,
+    }).replace(" at ", " ");
+
     await resend.emails.send({
       from,
       to: notifyTo,
-      subject: `RN applicant — ${firstName} ${lastName}, ${zip}`,
+      subject: `RN applicant — ${firstName} ${lastName}, ${zip} · ${ts}`,
       html: `
 <div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
   <h2 style="color:#2a9d8f;margin-bottom:16px;">New RN applicant</h2>

@@ -80,9 +80,15 @@ export async function POST(request: NextRequest) {
     ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i) as string[];
 
     const isCoachingOnly = drip === "coaching-only";
+    const now = new Date();
+    const ts = now.toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles",
+      month: "short", day: "numeric",
+      hour: "numeric", minute: "2-digit", hour12: true,
+    }).replace(" at ", " ");
     const emailSubject = isCoachingOnly
-      ? `Coaching waitlist — ${firstName}`
-      : `New IV request — ${firstName}, ${zip}`;
+      ? `Coaching waitlist — ${firstName} · ${ts}`
+      : `New IV request — ${firstName}, ${zip} · ${ts}`;
 
     await resend.emails.send({
       from,
