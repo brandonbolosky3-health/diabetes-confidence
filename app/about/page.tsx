@@ -128,6 +128,10 @@ export default function AboutPage() {
               ))}
             </div>
 
+            <p className="text-[0.8rem] text-[color:var(--muted-foreground)] leading-relaxed mb-8 italic">
+              This site is not a treatment plan or a diagnostic plan. Content here is for general information only and does not create a provider-patient relationship. Always consult a licensed healthcare provider about your own health.
+            </p>
+
             <div className="text-center">
               <Link
                 href="/iv#request"

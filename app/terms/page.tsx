@@ -79,7 +79,7 @@ export default function TermsPage() {
           {[
             {
               heading: "The Site is informational",
-              body: "Content on the Site is for general information only. It is not medical advice, and using the Site does not create a nurse-patient or provider-patient relationship with Sarina Deharo or Saryn Health. Always consult a licensed healthcare provider about your own situation. If you are experiencing a medical emergency, call 911.",
+              body: "Content on the Site is for general information only. It is not medical advice, and it is not a treatment plan or a diagnostic plan. Using the Site does not create a nurse-patient or provider-patient relationship with Sarina Deharo or Saryn Health. Always consult a licensed healthcare provider about your own situation. If you are experiencing a medical emergency, call 911.",
             },
             {
               heading: "IV hydration services",
