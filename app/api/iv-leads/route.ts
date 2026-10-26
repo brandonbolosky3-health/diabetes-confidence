@@ -79,27 +79,33 @@ export async function POST(request: NextRequest) {
       process.env.ADMIN_NOTIFICATION_EMAIL || "boloskys@gmail.com",
     ].filter((v, i, a) => Boolean(v) && a.indexOf(v) === i) as string[];
 
+    const isCoachingOnly = drip === "coaching-only";
+    const emailSubject = isCoachingOnly
+      ? `Coaching waitlist — ${firstName}`
+      : `New IV request — ${firstName}, ${zip}`;
+
     await resend.emails.send({
       from,
       to: notifyTo,
-      subject: `New IV request — ${firstName}, ${zip}`,
+      subject: emailSubject,
       html: `
 <div style="font-family:system-ui,sans-serif;max-width:600px;margin:0 auto;padding:24px;">
-  <h2 style="color:#2a9d8f;margin-bottom:16px;">New IV hydration request</h2>
+  <h2 style="color:#2a9d8f;margin-bottom:16px;">${isCoachingOnly ? "Coaching waitlist signup" : "New IV hydration request"}</h2>
   <table style="width:100%;border-collapse:collapse;font-size:14px;">
     <tr><td style="padding:8px 0;color:#6b7280;width:140px;">Name</td><td style="padding:8px 0;font-weight:600;">${firstName}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Phone</td><td style="padding:8px 0;"><a href="tel:${phone}">${phone}</a></td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Email</td><td style="padding:8px 0;">${email}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">ZIP</td><td style="padding:8px 0;">${zip}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Drip</td><td style="padding:8px 0;">${drip}</td></tr>
-    <tr><td style="padding:8px 0;color:#6b7280;">Timing</td><td style="padding:8px 0;">${timing}</td></tr>
+    ${!isCoachingOnly ? `<tr><td style="padding:8px 0;color:#6b7280;">Timing</td><td style="padding:8px 0;">${timing}</td></tr>` : ""}
     <tr><td style="padding:8px 0;color:#6b7280;">Source</td><td style="padding:8px 0;">${source}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Coaching interest</td><td style="padding:8px 0;">${coachingInterest ? "✅ Yes" : "No"}</td></tr>
   </table>
+  ${!isCoachingOnly ? `
   <div style="margin-top:24px;background:#f0faf9;border:1px solid #a7d7d2;border-radius:8px;padding:16px;">
     <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:#2a9d8f;">Suggested first text</p>
     <p style="margin:0;font-size:14px;color:#111827;line-height:1.6;">Hey ${firstName}, it's Sarina from TikTok — got your request for the ${drip} drip. What days/times work for you this week, and what's the address? Once we pick a time I'll send your booking link.</p>
-  </div>
+  </div>` : ""}
 </div>`,
     });
   } catch (emailErr) {

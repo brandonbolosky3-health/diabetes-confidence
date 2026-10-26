@@ -374,6 +374,7 @@ const DRIP_OPTIONS = [
   { value: "Complete Recovery", label: "Complete Recovery — $279" },
   { value: "Total Wellness",    label: "Total Wellness — $279" },
   { value: "Help me choose",    label: "Help me choose" },
+  { value: "coaching-only",    label: "No IV — just the diabetes/coaching waitlist" },
 ];
 
 const LS_KEY = "iv_request_submitted";
@@ -407,13 +408,15 @@ function RequestForm() {
     } catch { /* ignore */ }
   }, []);
 
+  const isCoachingOnly = drip === "coaching-only";
+
   const valid =
     firstName.trim() &&
     phone.trim() &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
     /^\d{5}$/.test(zip.trim()) &&
     drip &&
-    timing &&
+    (isCoachingOnly || timing) &&
     source &&
     consent;
 
@@ -476,6 +479,23 @@ function RequestForm() {
                 Got it — thank you!
               </h3>
             </div>
+            {submittedDrip === "coaching-only" ? (
+              <div className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-md mx-auto space-y-3">
+                <p>You&apos;re on the list. Sarina will email you when diabetes education and coaching open up. In the meantime, if you ever want a drip, you know where to find her.</p>
+                <p className="pt-2 text-[0.8rem]">
+                  <button
+                    onClick={() => {
+                      try { localStorage.removeItem(LS_KEY); localStorage.removeItem(LS_DRIP_KEY); } catch { /* ignore */ }
+                      setSubmitted(false);
+                      setSubmittedDrip("");
+                    }}
+                    className="underline underline-offset-2 hover:text-[color:var(--foreground)] transition-colors"
+                  >
+                    Submit another request
+                  </button>
+                </p>
+              </div>
+            ) : (
             <div className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-md mx-auto space-y-3">
               <p>Hi, it&apos;s Sarina.</p>
               <p>I&apos;ll text you within 48 hours from my cell to set up your <span className="font-medium text-[color:var(--foreground)]">{dripLabel(submittedDrip)}</span> drip. To make it quick, have two things ready when I reach out:</p>
@@ -499,6 +519,7 @@ function RequestForm() {
                 </button>
               </p>
             </div>
+            )}
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[color:var(--border)] p-6 sm:p-8 shadow-sm space-y-5">
@@ -564,7 +585,10 @@ function RequestForm() {
               <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">
                 Which drip? <span className="text-red-500">*</span>
               </label>
-              <select required value={drip} onChange={(e) => setDrip(e.target.value)} className={selectClass}>
+              <select required value={drip} onChange={(e) => {
+                setDrip(e.target.value);
+                if (e.target.value === "coaching-only") setCoachingInterest(true);
+              }} className={selectClass}>
                 <option value="">Select a drip…</option>
                 {DRIP_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
               </select>
@@ -582,11 +606,12 @@ function RequestForm() {
             </label>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {!isCoachingOnly && (
               <div>
                 <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">
                   Preferred timing <span className="text-red-500">*</span>
                 </label>
-                <select required value={timing} onChange={(e) => setTiming(e.target.value)} className={selectClass}>
+                <select required={!isCoachingOnly} value={timing} onChange={(e) => setTiming(e.target.value)} className={selectClass}>
                   <option value="">Select…</option>
                   <option>ASAP</option>
                   <option>This week</option>
@@ -594,6 +619,7 @@ function RequestForm() {
                   <option>Flexible</option>
                 </select>
               </div>
+              )}
               <div>
                 <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">
                   How did you hear about us? <span className="text-red-500">*</span>
@@ -697,7 +723,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How do I join the team?",
-    a: "Sarina is building a per-diem team of IV-certified RNs in LA County. Email sarina@sarynhealth.com with your license number and availability. Not a nurse? We're not hiring other roles yet.",
+    a: "Sarina is building a per-diem team of IV-certified RNs in LA County. Fill out the short form at the bottom of this page.",
   },
 ];
 
@@ -727,6 +753,162 @@ function FAQ() {
         <div className="bg-white rounded-2xl border border-[color:var(--border)] px-6 sm:px-8">
           {FAQ_ITEMS.map((item) => <FAQItem key={item.q} q={item.q} a={item.a} />)}
         </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Nurse Form ───────────────────────────────────────────────────────────
+const AVAIL_OPTIONS = ["Weekdays", "Evenings", "Weekends"] as const;
+
+function NurseForm() {
+  const [submitted, setSubmitted] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [ivExp, setIvExp] = useState("");
+  const [avail, setAvail] = useState<string[]>([]);
+  const [zip, setZip] = useState("");
+  const [licenseConfirm, setLicenseConfirm] = useState(false);
+  const [contactConsent, setContactConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const valid =
+    firstName.trim() && lastName.trim() && phone.trim() &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
+    ivExp && avail.length > 0 && /^\d{5}$/.test(zip.trim()) &&
+    licenseConfirm && contactConsent;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!valid || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/rn-applicants", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          iv_experience: ivExp,
+          availability: avail,
+          zip: zip.trim(),
+          license_confirm: licenseConfirm,
+          contact_consent: contactConsent,
+        }),
+      });
+      if (!res.ok) {
+        const b = await res.json().catch(() => ({}));
+        throw new Error((b as { error?: string }).error || "Something went wrong");
+      }
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const inputClass =
+    "w-full px-4 py-3 rounded-xl border border-[color:var(--border)] bg-white text-[color:var(--foreground)] text-[0.95rem] outline-none focus:ring-2 focus:ring-[color:var(--primary)]/30 transition";
+  const selectClass = inputClass + " appearance-none";
+
+  return (
+    <section id="nurses" className="py-16 md:py-24 bg-[color:var(--background)]">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] mb-3">
+            Nurses: join the team
+          </h2>
+          <p className="text-[0.95rem] text-[color:var(--muted-foreground)]">
+            Per-diem IV work across LA County. Active California RN license required.
+          </p>
+        </div>
+
+        {submitted ? (
+          <div className="bg-[color:var(--primary)]/5 border border-[color:var(--primary)]/20 rounded-2xl p-8 text-center">
+            <p className="text-[1.1rem] font-medium text-[color:var(--foreground)] mb-2">Thanks — Sarina will reach out within a week.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[color:var(--border)] p-6 sm:p-8 shadow-sm space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">First name <span className="text-red-500">*</span></label>
+                <input type="text" required value={firstName} onChange={(e) => setFirstName(e.target.value)} className={inputClass} placeholder="Sarina" />
+              </div>
+              <div>
+                <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">Last name <span className="text-red-500">*</span></label>
+                <input type="text" required value={lastName} onChange={(e) => setLastName(e.target.value)} className={inputClass} placeholder="Deharo" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">Phone <span className="text-red-500">*</span></label>
+                <input type="tel" required value={phone} onChange={(e) => setPhone(e.target.value)} className={inputClass} placeholder="(310) 555-0100" />
+              </div>
+              <div>
+                <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">Email <span className="text-red-500">*</span></label>
+                <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={inputClass} placeholder="you@email.com" />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div>
+                <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">IV experience <span className="text-red-500">*</span></label>
+                <select required value={ivExp} onChange={(e) => setIvExp(e.target.value)} className={selectClass}>
+                  <option value="">Select…</option>
+                  <option>Under 1 year</option>
+                  <option>1–3 years</option>
+                  <option>3+ years</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">Current home ZIP <span className="text-red-500">*</span></label>
+                <input type="text" required value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, "").slice(0, 5))} className={inputClass} placeholder="90210" pattern="\d{5}" maxLength={5} />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-2">Availability <span className="text-red-500">*</span></label>
+              <div className="flex flex-wrap gap-3">
+                {AVAIL_OPTIONS.map((opt) => (
+                  <label key={opt} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={avail.includes(opt)}
+                      onChange={(e) => setAvail(e.target.checked ? [...avail, opt] : avail.filter((v) => v !== opt))}
+                      className="w-4 h-4 accent-[#2a9d8f]"
+                    />
+                    <span className="text-[0.9rem] text-[color:var(--foreground)]">{opt}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" required checked={licenseConfirm} onChange={(e) => setLicenseConfirm(e.target.checked)} className="mt-1 w-4 h-4 accent-[#2a9d8f] shrink-0" />
+              <span className="text-[0.85rem] text-[color:var(--muted-foreground)] leading-snug">
+                I hold an active California RN license. <span className="text-red-500">*</span>
+              </span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" required checked={contactConsent} onChange={(e) => setContactConsent(e.target.checked)} className="mt-1 w-4 h-4 accent-[#2a9d8f] shrink-0" />
+              <span className="text-[0.85rem] text-[color:var(--muted-foreground)] leading-snug">
+                I agree to be contacted about per-diem work. <span className="text-red-500">*</span>
+              </span>
+            </label>
+            {error && <p className="text-red-500 text-[0.85rem]">{error}</p>}
+            <button
+              type="submit"
+              disabled={!valid || loading}
+              className="w-full bg-[color:var(--primary)] text-white py-3.5 rounded-full font-semibold text-[1rem] hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? "Sending…" : "Submit"}
+            </button>
+          </form>
+        )}
       </div>
     </section>
   );
@@ -767,6 +949,7 @@ export default function IVPage() {
         <WhySarina />
         <RequestForm />
         <FAQ />
+        <NurseForm />
       </main>
       <Footer />
     </>
