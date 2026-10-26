@@ -92,6 +92,10 @@ export async function POST(request: NextRequest) {
     <tr><td style="padding:8px 0;color:#6b7280;">Timing</td><td style="padding:8px 0;">${timing}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Source</td><td style="padding:8px 0;">${source}</td></tr>
   </table>
+  <div style="margin-top:24px;background:#f0faf9;border:1px solid #a7d7d2;border-radius:8px;padding:16px;">
+    <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:#2a9d8f;">Suggested first text</p>
+    <p style="margin:0;font-size:14px;color:#111827;line-height:1.6;">Hey ${firstName}, it's Sarina from TikTok — got your request for the ${drip} drip. What days/times work for you this week, and what's the address? Once we pick a time I'll send your booking link.</p>
+  </div>
 </div>`,
     });
   } catch (emailErr) {

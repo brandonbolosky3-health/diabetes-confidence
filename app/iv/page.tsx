@@ -317,9 +317,15 @@ const DRIP_OPTIONS = [
 ];
 
 const LS_KEY = "iv_request_submitted";
+const LS_DRIP_KEY = "iv_request_drip";
+
+function dripLabel(value: string): string {
+  return value === "Help me choose" ? "your drip" : value;
+}
 
 function RequestForm() {
   const [submitted, setSubmitted] = useState(false);
+  const [submittedDrip, setSubmittedDrip] = useState("");
   const [firstName, setFirstName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -333,7 +339,10 @@ function RequestForm() {
 
   useEffect(() => {
     try {
-      if (localStorage.getItem(LS_KEY) === "1") setSubmitted(true);
+      if (localStorage.getItem(LS_KEY) === "1") {
+        setSubmitted(true);
+        setSubmittedDrip(localStorage.getItem(LS_DRIP_KEY) || "");
+      }
     } catch { /* ignore */ }
   }, []);
 
@@ -371,7 +380,11 @@ function RequestForm() {
         const b = await res.json().catch(() => ({}));
         throw new Error((b as { error?: string }).error || "Something went wrong");
       }
-      try { localStorage.setItem(LS_KEY, "1"); } catch { /* ignore */ }
+      try {
+        localStorage.setItem(LS_KEY, "1");
+        localStorage.setItem(LS_DRIP_KEY, drip);
+      } catch { /* ignore */ }
+      setSubmittedDrip(drip);
       setSubmitted(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -392,16 +405,26 @@ function RequestForm() {
         </h2>
 
         {submitted ? (
-          <div className="bg-[color:var(--primary)]/5 border border-[color:var(--primary)]/20 rounded-2xl p-8 text-center">
-            <div className="w-14 h-14 rounded-full bg-[color:var(--primary)] text-white flex items-center justify-center mx-auto mb-5">
-              <Check className="w-7 h-7" />
+          <div className="bg-[color:var(--primary)]/5 border border-[color:var(--primary)]/20 rounded-2xl p-8">
+            <div className="flex flex-col items-center mb-6">
+              <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-[color:var(--primary)]/30 mb-4">
+                <Image src="/hero-photo.jpg" alt="Sarina Deharo, RN" fill className="object-cover" />
+              </div>
+              <h3 className="text-[1.35rem] font-medium tracking-tight text-[color:var(--foreground)]">
+                Got it — thank you!
+              </h3>
             </div>
-            <h3 className="text-[1.35rem] font-medium tracking-tight text-[color:var(--foreground)] mb-4">
-              Got it — you're on the list
-            </h3>
-            <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-md mx-auto">
-              Sarina will text you within 24 hours with your personal booking link. That link takes you to a quick health questionnaire, which a licensed provider reviews before your visit. New clients get 20% off with code <span className="font-mono font-semibold text-[color:var(--foreground)]">WELCOMEHOME</span> at booking.
-            </p>
+            <div className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-md mx-auto space-y-3">
+              <p>Hi, it&apos;s Sarina.</p>
+              <p>I&apos;ll text you within 48 hours from my cell to set up your <span className="font-medium text-[color:var(--foreground)]">{dripLabel(submittedDrip)}</span> drip. To make it quick, have two things ready when I reach out:</p>
+              <ol className="list-decimal list-inside space-y-1 pl-1">
+                <li>A couple of days and times that work for you</li>
+                <li>The address where you&apos;d like the IV</li>
+              </ol>
+              <p>Once we lock in a time, I&apos;ll send your personal booking link. It takes you to a short health questionnaire that a licensed provider reviews before your visit, and that&apos;s where you&apos;ll pay.</p>
+              <p>New clients get <span className="font-medium text-[color:var(--foreground)]">20% off</span> with code <span className="font-mono font-semibold text-[color:var(--foreground)]">WELCOMEHOME</span>.</p>
+              <p className="pt-1">Talk soon,<br /><span className="font-medium text-[color:var(--foreground)]">Sarina</span></p>
+            </div>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[color:var(--border)] p-6 sm:p-8 shadow-sm space-y-5">
