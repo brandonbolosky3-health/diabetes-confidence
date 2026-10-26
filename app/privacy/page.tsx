@@ -63,7 +63,7 @@ function Footer() {
   );
 }
 
-const ENTITY = "Saryn Health";
+const ENTITY = "Saryn Health LLC";
 const EMAIL = "sarina@sarynhealth.com";
 
 export default function PrivacyPage() {
