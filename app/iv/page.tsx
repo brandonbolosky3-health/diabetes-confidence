@@ -531,9 +531,12 @@ function RequestForm() {
   return (
     <section id="request" className="py-16 md:py-24 bg-[color:var(--background)]">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
-        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-10">
+        <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] text-center mb-3">
           Request an appointment
         </h2>
+        <p className="text-[color:var(--muted-foreground)] text-[0.9rem] max-w-lg mx-auto text-center mb-10">
+          This isn&apos;t the booking yet — it&apos;s how Sarina gets your info. Fill it out and she&apos;ll text you within 48 hours to pick a day and time, then send your booking link and health form. Takes 30 seconds.
+        </p>
 
         {submitted ? (
           <div className="bg-[color:var(--primary)]/5 border border-[color:var(--primary)]/20 rounded-2xl p-8">
