@@ -128,8 +128,11 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <p className="text-[0.8rem] text-[color:var(--muted-foreground)] leading-relaxed mb-8 italic">
+            <p className="text-[0.8rem] text-[color:var(--muted-foreground)] leading-relaxed mb-4 italic">
               This site is not a treatment plan or a diagnostic plan. Content here is for general information only and does not create a provider-patient relationship. Always consult a licensed healthcare provider about your own health.
+            </p>
+            <p className="text-[0.78rem] text-[color:var(--muted-foreground)]/70 leading-relaxed mb-8 border border-[color:var(--border)] rounded-xl p-4">
+              <span className="font-semibold not-italic text-[color:var(--muted-foreground)]">Scope of services:</span> The provider is a Registered Nurse (RN), not a physician or other independently authorized diagnosing and prescribing practitioner, unless separately licensed and acting in that capacity. Services are provided within the provider&apos;s applicable legal scope of practice and professional qualifications. This does not independently establish a medical diagnosis or replace an evaluation by a licensed healthcare practitioner authorized to diagnose and treat medical conditions.
             </p>
 
             <div className="text-center">

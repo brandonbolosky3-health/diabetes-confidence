@@ -78,6 +78,10 @@ export default function TermsPage() {
 
           {[
             {
+              heading: "Scope of services",
+              body: "The provider is a Registered Nurse (RN), not a physician or other independently authorized diagnosing and prescribing practitioner, unless separately licensed and acting in that capacity. Services are provided within the provider's applicable legal scope of practice and professional qualifications. This does not independently establish a medical diagnosis or replace an evaluation by a licensed healthcare practitioner authorized to diagnose and treat medical conditions.",
+            },
+            {
               heading: "The Site is informational",
               body: "Content on the Site is for general information only. It is not medical advice, and it is not a treatment plan or a diagnostic plan. Using the Site does not create a nurse-patient or provider-patient relationship with Sarina Deharo or Saryn Health. Always consult a licensed healthcare provider about your own situation. If you are experiencing a medical emergency, call 911.",
             },

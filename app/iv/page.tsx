@@ -494,6 +494,9 @@ function RequestForm() {
                     Submit another request
                   </button>
                 </p>
+                <p className="pt-4 text-[0.72rem] text-[color:var(--muted-foreground)]/60 leading-relaxed border-t border-[color:var(--primary)]/10 mt-2">
+                  <span className="font-semibold">Scope of services:</span> The provider is a Registered Nurse (RN), not a physician or other independently authorized diagnosing and prescribing practitioner. Services are provided within the provider&apos;s applicable legal scope of practice. This does not establish a medical diagnosis or replace an evaluation by a licensed healthcare practitioner.
+                </p>
               </div>
             ) : (
             <div className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-md mx-auto space-y-3">
@@ -517,6 +520,9 @@ function RequestForm() {
                 >
                   Submit another request
                 </button>
+              </p>
+              <p className="pt-4 text-[0.72rem] text-[color:var(--muted-foreground)]/60 leading-relaxed border-t border-[color:var(--primary)]/10 mt-2">
+                <span className="font-semibold">Scope of services:</span> The provider is a Registered Nurse (RN), not a physician or other independently authorized diagnosing and prescribing practitioner. Services are provided within the provider&apos;s applicable legal scope of practice. This does not establish a medical diagnosis or replace an evaluation by a licensed healthcare practitioner.
               </p>
             </div>
             )}
