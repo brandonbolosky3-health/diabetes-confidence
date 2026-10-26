@@ -40,6 +40,7 @@ function Navbar() {
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
           <Link href="/consultation-form" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
+          <Link href="/iv" className="hover:text-[color:var(--foreground)] transition-colors">IV hydration</Link>
           <Link href="/membership" className="hover:text-[color:var(--foreground)] transition-colors">Membership</Link>
           <a href="#faq" className="hover:text-[color:var(--foreground)] transition-colors">FAQ</a>
           <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
@@ -77,6 +78,13 @@ function Navbar() {
             className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
           >
             Work With Me
+          </Link>
+          <Link
+            href="/iv"
+            onClick={() => setMobileOpen(false)}
+            className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2"
+          >
+            IV hydration
           </Link>
           <Link
             href="/membership"
