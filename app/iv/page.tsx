@@ -14,7 +14,6 @@ import {
   Shield,
   Star,
   ArrowRight,
-  ExternalLink,
 } from "lucide-react";
 import Logo from "@/components/Logo";
 
@@ -250,7 +249,7 @@ const STEPS = [
   {
     num: "2",
     title: "Book and get cleared",
-    desc: "You'll book through June Skin, complete a short health-history review, and a licensed provider approves your drip. Card on file at booking; you're charged after your visit.",
+    desc: "Sarina texts you a booking link. You pick an open slot, fill out a short health questionnaire, and a licensed provider approves your drip — usually within 24 hours.",
     icon: <Check className="w-6 h-6" />,
   },
   {
@@ -403,20 +402,11 @@ function RequestForm() {
             <div className="w-14 h-14 rounded-full bg-[color:var(--primary)] text-white flex items-center justify-center mx-auto mb-5">
               <Check className="w-7 h-7" />
             </div>
-            <h3 className="text-[1.35rem] font-medium tracking-tight text-[color:var(--foreground)] mb-2">
-              Got it — Sarina will text you shortly.
+            <h3 className="text-[1.35rem] font-medium tracking-tight text-[color:var(--foreground)] mb-4">
+              Got it — you're on the list
             </h3>
-            <p className="text-[color:var(--muted-foreground)] mb-7">Want to lock in a time now?</p>
-            <a
-              href="https://app.bookjune.com/s/QYZTSGjW"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-[color:var(--primary)] text-white px-8 py-3.5 rounded-full text-[1rem] font-semibold hover:opacity-90 transition-opacity"
-            >
-              Book with Sarina on June Skin <ExternalLink className="w-4 h-4" />
-            </a>
-            <p className="mt-4 text-[0.82rem] text-[color:var(--muted-foreground)]">
-              Use code <span className="font-mono font-semibold">WELCOMEHOME</span> for 20% off your first drip.
+            <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed max-w-md mx-auto">
+              Sarina will text you within 24 hours with your personal booking link. That link takes you to a quick health questionnaire, which a licensed provider reviews before your visit. New clients get 20% off with code <span className="font-mono font-semibold text-[color:var(--foreground)]">WELCOMEHOME</span> at booking.
             </p>
           </div>
         ) : (
