@@ -130,6 +130,7 @@ const DRIPS = [
     newClient: 239,
     ingredients: "Saline + B-vitamin complex (B1, B2, B3, B5, B6)",
     desc: "A B-vitamin-focused drip for nutrient replenishment. Many clients choose it when they feel run down.",
+    tag: "The classic \"banana bag\"",
   },
   {
     name: "Immunity",
@@ -154,6 +155,7 @@ const DRIPS = [
     newClient: 279,
     ingredients: "Saline + vitamin C + B-vitamin complex",
     desc: "Vitamin C and B vitamins — a common pick after travel, a hard week, or a big weekend.",
+    tag: "Most requested after a big night",
   },
   {
     name: "Total Wellness",
@@ -197,6 +199,11 @@ function DripMenu() {
                     {tier.label}
                   </span>
                 </div>
+                {"tag" in d && d.tag && (
+                  <span className="inline-block mb-3 text-[0.72rem] font-medium px-2.5 py-0.5 rounded-full bg-[color:var(--primary)]/10 text-[color:var(--primary)]">
+                    {d.tag}
+                  </span>
+                )}
                 <div className="flex items-baseline gap-2 mb-3">
                   <span className="text-[1.35rem] font-semibold text-[color:var(--foreground)]">${d.newClient}</span>
                   <span className="text-[0.82rem] text-[color:var(--muted-foreground)] line-through">${d.list}</span>
@@ -222,6 +229,9 @@ function DripMenu() {
           <span className="text-[color:var(--muted-foreground)]">Anti-nausea medication (when clinically appropriate) <span className="font-medium text-[color:var(--foreground)]">$30</span></span>
           <span className="text-[color:var(--muted-foreground)] hidden sm:inline">·</span>
           <span className="text-[color:var(--muted-foreground)]">+500 mL hydration <span className="font-medium text-[color:var(--foreground)]">$30</span></span>
+        </div>
+        <div className="mt-4 bg-[color:var(--primary)]/8 border border-[color:var(--primary)]/20 rounded-xl px-5 py-3 text-[0.85rem] text-[color:var(--foreground)] text-center leading-relaxed">
+          <span className="font-medium">Rough morning?</span> Most people go Complete Recovery + anti-nausea + extra 500 mL. Pick Complete Recovery on the form and mention it to Sarina.
         </div>
         <p className="mt-4 text-center text-[0.82rem] text-[color:var(--muted-foreground)]">
           Not sure which one? Pick "Help me choose" on the form and Sarina will walk you through it.
