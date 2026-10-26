@@ -75,8 +75,8 @@ function Footer() {
 const CREDENTIALS = [
   "Registered Nurse (RN) — 20+ years clinical practice",
   "Certified Functional Medicine Practitioner",
-  "Specialized in diabetes & pre-diabetes management",
-  "Trained in functional nutrition & lifestyle medicine",
+  "Serving all of Los Angeles County",
+  "Every drip provider-ordered after a health review",
 ];
 
 export default function AboutPage() {
@@ -108,24 +108,15 @@ export default function AboutPage() {
               <p>
                 With 20+ years as an RN and Certified Functional Medicine Practitioner, Sarina helps patients move beyond symptoms to discover the root causes behind their chronic health struggles.
               </p>
-              {IV_MODE ? (
-                <p>She currently offers at-home IV hydration across Los Angeles County.</p>
-              ) : (
-                <>
-                  <p>
-                    My name is Sarina Deharo and I am a Certified Functional Medicine Practitioner and Registered Nurse with over 20 years of clinical experience. My clinical focus is on diabetes management.
-                  </p>
-                  <p>
-                    I have additional training in functional nutrition, lifestyle medicine, and therapeutic nutrition protocols including anti-inflammatory and root-cause-based dietary approaches.
-                  </p>
-                  <p>
-                    I am very passionate about helping patients with chronic conditions — especially diabetes including pre-diabetes — to make meaningful dietary and lifestyle changes that help reduce inflammation, restore function, and lower the risk of progressive chronic disease.
-                  </p>
-                  <p>
-                    My approach goes beyond symptom management. I use nutrient therapy and personalized care plans to understand why your body is struggling — and build a path to lasting health that is tailored specifically to your body's own needs.
-                  </p>
-                </>
-              )}
+              <p>
+                I&apos;m Sarina Deharo, a registered nurse with over 20 years of clinical experience and a Certified Functional Medicine Practitioner. Right now I&apos;m focused on one thing: bringing safe, comfortable IV hydration to people anywhere in Los Angeles County — at home, at work, or wherever you are.
+              </p>
+              <p>
+                Every drip I give is ordered by a licensed provider after a health review, and I&apos;m the one who shows up, places the IV, and stays with you for the visit. You&apos;ll never be handed off to someone you haven&apos;t met.
+              </p>
+              <p>
+                My background is in chronic-condition care, and I&apos;ll be bringing that work back later. For now, if you&apos;re in LA and could use a drip, I&apos;d love to come see you.
+              </p>
             </div>
 
             <div className="space-y-3 mb-12">
