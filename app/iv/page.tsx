@@ -421,7 +421,7 @@ function RequestForm() {
                 <li>A couple of days and times that work for you</li>
                 <li>The address where you&apos;d like the IV</li>
               </ol>
-              <p>Once we lock in a time, I&apos;ll send your personal booking link. It takes you to a short health questionnaire that a licensed provider reviews before your visit, and that&apos;s where you&apos;ll pay.</p>
+              <p>Once we lock in a time, I&apos;ll send your personal booking link. It takes you to a short health questionnaire that a licensed provider reviews before your visit. You&apos;ll put your card down there — it&apos;s only charged upon completion of your service.</p>
               <p>New clients get <span className="font-medium text-[color:var(--foreground)]">20% off</span> with code <span className="font-mono font-semibold text-[color:var(--foreground)]">WELCOMEHOME</span>.</p>
               <p className="pt-1">Talk soon,<br /><span className="font-medium text-[color:var(--foreground)]">Sarina</span></p>
             </div>
