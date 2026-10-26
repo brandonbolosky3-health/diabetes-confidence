@@ -1,25 +1,20 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const IV_MODE = process.env.SITE_MODE === "iv";
-
-// Paths that are always allowed through in iv mode (everything else → /iv)
-function isIVPassthrough(pathname: string): boolean {
-  if (pathname === "/iv" || pathname.startsWith("/iv/")) return true;
-  if (pathname === "/about" || pathname.startsWith("/about/")) return true;
-  if (pathname === "/login") return true;
-  if (pathname.startsWith("/api/")) return true;
-  if (pathname.startsWith("/auth/")) return true;
-  return false;
-}
-
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
-  // In iv mode, redirect everything except allowed paths to /iv
-  if (IV_MODE && !isIVPassthrough(pathname)) {
-    const dest = new URL("/iv", request.url);
-    return NextResponse.redirect(dest, 301);
+  // Read inline so edge runtime picks up the live env var, not a build-time bake
+  if (process.env.SITE_MODE === "iv") {
+    const allowed =
+      pathname === "/iv" || pathname.startsWith("/iv/") ||
+      pathname === "/about" || pathname.startsWith("/about/") ||
+      pathname === "/login" ||
+      pathname.startsWith("/api/") ||
+      pathname.startsWith("/auth/");
+    if (!allowed) {
+      return NextResponse.redirect(new URL("/iv", request.url), 301);
+    }
   }
 
   let supabaseResponse = NextResponse.next({ request });
