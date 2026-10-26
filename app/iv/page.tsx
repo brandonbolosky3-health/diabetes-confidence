@@ -84,7 +84,7 @@ function Hero() {
             </a>
           </div>
           <p className="mt-4 text-[0.82rem] text-[color:var(--muted-foreground)]">
-            Serving all of Los Angeles County · 30–60 min visits · New clients save 20%
+            Serving all of Los Angeles County · No travel fee · New clients save 20%
           </p>
         </div>
         <div className="flex-1 flex justify-center">
@@ -227,6 +227,62 @@ function DripMenu() {
   );
 }
 
+// ─── What's in the Bag ────────────────────────────────────────────────────
+const BAG_ITEMS = [
+  {
+    label: "Normal saline",
+    body: "Sterile salt water that matches your body's fluid. It's the base of every drip and the whole point of the Hydration drip.",
+  },
+  {
+    label: "B vitamins (B1, B2, B3, B5, B6)",
+    body: "The group your body uses to turn food into energy. Clients often choose these when they feel run down or burned out.",
+  },
+  {
+    label: "Vitamin C",
+    body: "A common pick around travel, stress, or when you're feeling under the weather. Also known for its role in skin and collagen.",
+  },
+  {
+    label: "Minerals (magnesium, zinc, manganese, copper)",
+    body: "Trace minerals that are easy to run low on. Magnesium is the one people ask about for muscle tension and sleep.",
+  },
+  {
+    label: "B12 add-on",
+    body: "Given as a quick push, not in the bag. Often chosen alongside Energy or Total Wellness.",
+  },
+  {
+    label: "Anti-nausea add-on",
+    body: "A prescription medication your provider can include when it's appropriate — the usual add-on for a rough morning.",
+  },
+];
+
+function WhatsInTheBag() {
+  return (
+    <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10">
+          <h2 className="text-[1.75rem] md:text-[2.25rem] font-medium tracking-tight text-[color:var(--foreground)] mb-3">
+            What&apos;s in the bag
+          </h2>
+          <p className="text-[0.95rem] text-[color:var(--muted-foreground)] leading-relaxed">
+            Plain-English notes on each ingredient. Your provider decides what&apos;s right for you.
+          </p>
+        </div>
+        <div className="bg-white rounded-2xl border border-[color:var(--border)] divide-y divide-[color:var(--border)]">
+          {BAG_ITEMS.map(({ label, body }) => (
+            <div key={label} className="px-6 sm:px-8 py-5">
+              <p className="text-[0.9rem] font-semibold text-[color:var(--foreground)] mb-1">{label}</p>
+              <p className="text-[0.9rem] text-[color:var(--muted-foreground)] leading-relaxed">{body}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 text-[0.82rem] text-[color:var(--muted-foreground)] text-center leading-relaxed">
+          IV therapy replenishes fluids and nutrients. It doesn&apos;t treat or cure medical conditions, and it isn&apos;t a substitute for seeing your doctor.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 // ─── How It Works ─────────────────────────────────────────────────────────
 const STEPS = [
   {
@@ -334,6 +390,7 @@ function RequestForm() {
   const [timing, setTiming] = useState("");
   const [source, setSource] = useState("");
   const [consent, setConsent] = useState(false);
+  const [coachingInterest, setCoachingInterest] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -374,6 +431,7 @@ function RequestForm() {
           timing,
           source,
           consent,
+          coaching_interest: coachingInterest,
         }),
       });
       if (!res.ok) {
@@ -507,6 +565,18 @@ function RequestForm() {
                 {DRIP_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
               </select>
             </div>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={coachingInterest}
+                onChange={(e) => setCoachingInterest(e.target.checked)}
+                className="mt-1 w-4 h-4 accent-[#2a9d8f] shrink-0"
+              />
+              <span className="text-[0.85rem] text-[color:var(--muted-foreground)] leading-snug">
+                Keep me posted when diabetes education and functional medicine coaching launch.
+              </span>
+            </label>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div>
                 <label className="block text-[0.82rem] font-medium text-[color:var(--foreground)] mb-1.5">
@@ -570,28 +640,60 @@ function RequestForm() {
 // ─── FAQ ──────────────────────────────────────────────────────────────────
 const FAQ_ITEMS = [
   {
+    q: "Which drips do you offer?",
+    a: "The six on this page, plus three add-ons. That's the full menu right now. If you want something you don't see, pick \"Help me choose\" and ask Sarina.",
+  },
+  {
+    q: "Do you do a \"banana bag\" for hangovers?",
+    a: "\"Banana bag\" is the nickname for saline plus B vitamins, which is our Energy drip ($239 new client). Complete Recovery ($279) adds vitamin C. If your stomach's rough, ask about the anti-nausea add-on — your provider decides whether it's appropriate.",
+  },
+  {
+    q: "Do you offer iron, NAD+, glutathione, or vitamin D?",
+    a: "Not currently. The menu above is everything available right now. If that changes, it'll show up here first.",
+  },
+  {
     q: "Where do you go?",
-    a: "Anywhere in Los Angeles County — home, office, hotel, event.",
+    a: "Anywhere in Los Angeles County — home, office, hotel, Airbnb, backyard. Outside LA County? Submit a request anyway; if there's enough interest in your area, you'll be the first to hear.",
+  },
+  {
+    q: "How much does it cost, and is there a travel fee?",
+    a: "Prices are listed above and include the visit — no travel fee, no hidden charges. Add-ons are $30 each. New clients get 20% off with code WELCOMEHOME. Prices are set by June Skin and may change.",
+  },
+  {
+    q: "How do I pay? Do you take insurance?",
+    a: "Card only, through the June Skin booking link. Your card goes on file when you book and you're charged after your visit. IV hydration isn't covered by insurance.",
   },
   {
     q: "How long does it take?",
-    a: "Most visits are 30–60 minutes including setup.",
+    a: "Most visits are 30–60 minutes including setup. Plan to sit or lie down comfortably.",
   },
   {
     q: "Who decides if I can get an IV?",
-    a: "A licensed provider on the June Skin platform reviews your health history and approves your drip before Sarina arrives. IV therapy isn't right for everyone; if you have a medical condition or take medications, note it in that review.",
+    a: "A licensed provider (physician or nurse practitioner) on the June Skin platform reviews your health questionnaire before your visit and approves your drip. IV therapy isn't right for everyone — if you have a medical condition, are pregnant or breastfeeding, or take medications, note it in that questionnaire.",
   },
   {
-    q: "Can I ask about my medical condition in the comments or DMs?",
-    a: "We can't give medical advice over social media. Submit a request and raise it during the health review.",
+    q: "I have a medical condition. Can I ask about it in the comments or DMs?",
+    a: "We can't give medical advice over social media. Submit a request, and bring it up in the health questionnaire — that goes straight to the reviewing provider.",
   },
   {
     q: "Does it hurt?",
-    a: "A quick pinch when the IV goes in, then it's comfortable.",
+    a: "A quick pinch when the IV goes in, then it's comfortable. Sarina has been placing IVs for over 20 years.",
   },
   {
-    q: "Can I book for a group or an event?",
-    a: "Yes — submit a request and put \"Flexible\" for timing, and mention the group when Sarina texts you.",
+    q: "How often can I get one?",
+    a: "That depends on you and what your provider recommends. Some clients book monthly, some only after travel or a big weekend.",
+  },
+  {
+    q: "Can I book for a group, party, or event?",
+    a: "Yes. Submit a request, choose \"Flexible\" for timing, and mention the group when Sarina texts you.",
+  },
+  {
+    q: "Sarina is a diabetes educator — can she help me with that?",
+    a: "Right now she's focused on IV hydration. Diabetes education and functional medicine coaching are coming back later. Tick the \"keep me posted\" box on the request form and you'll be the first to know.",
+  },
+  {
+    q: "How do I join the team?",
+    a: "Sarina is building a per-diem team of IV-certified RNs in LA County. Email sarina@sarynhealth.com with your license number and availability. Not a nurse? We're not hiring other roles yet.",
   },
 ];
 
@@ -626,18 +728,6 @@ function FAQ() {
   );
 }
 
-// ─── Nurses Callout ───────────────────────────────────────────────────────
-function NursesCallout() {
-  return (
-    <div className="bg-[color:var(--primary)]/5 border-t border-[color:var(--primary)]/10 py-5 text-center text-[0.85rem] text-[color:var(--muted-foreground)]">
-      Are you an RN in LA interested in per-diem IV work?{" "}
-      <a href="mailto:sarina@sarynhealth.com" className="text-[color:var(--primary)] underline underline-offset-2 hover:opacity-80 transition-opacity">
-        Email sarina@sarynhealth.com
-      </a>
-    </div>
-  );
-}
-
 // ─── Footer ───────────────────────────────────────────────────────────────
 function Footer() {
   return (
@@ -668,11 +758,11 @@ export default function IVPage() {
       <main>
         <Hero />
         <DripMenu />
+        <WhatsInTheBag />
         <HowItWorks />
         <WhySarina />
         <RequestForm />
         <FAQ />
-        <NursesCallout />
       </main>
       <Footer />
     </>

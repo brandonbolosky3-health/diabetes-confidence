@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
   const drip      = asString(body.drip);
   const timing    = asString(body.timing);
   const source    = asString(body.source);
-  const consent   = body.consent === true;
+  const consent          = body.consent === true;
+  const coachingInterest = body.coaching_interest === true;
 
   if (!firstName || !phone || !email || !zip || !drip || !timing || !source) {
     return NextResponse.json({ error: "missing required fields" }, { status: 400 });
@@ -59,6 +60,7 @@ export async function POST(request: NextRequest) {
     source,
     consent,
     consent_at: new Date().toISOString(),
+    coaching_interest: coachingInterest,
   });
 
   if (dbError) {
@@ -92,6 +94,7 @@ export async function POST(request: NextRequest) {
     <tr><td style="padding:8px 0;color:#6b7280;">Drip</td><td style="padding:8px 0;">${drip}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Timing</td><td style="padding:8px 0;">${timing}</td></tr>
     <tr><td style="padding:8px 0;color:#6b7280;">Source</td><td style="padding:8px 0;">${source}</td></tr>
+    <tr><td style="padding:8px 0;color:#6b7280;">Coaching interest</td><td style="padding:8px 0;">${coachingInterest ? "✅ Yes" : "No"}</td></tr>
   </table>
   <div style="margin-top:24px;background:#f0faf9;border:1px solid #a7d7d2;border-radius:8px;padding:16px;">
     <p style="margin:0 0 8px;font-size:13px;font-weight:600;color:#2a9d8f;">Suggested first text</p>
