@@ -289,12 +289,11 @@ const BAG_ITEMS = [
   },
 ];
 
-function BagItem({ label, does, why, side }: { label: string; does: string; why: string; side: string }) {
-  const [open, setOpen] = useState(false);
+function BagItem({ label, does, why, side, open, onToggle }: { label: string; does: string; why: string; side: string; open: boolean; onToggle: () => void }) {
   return (
     <div className="border-b border-[color:var(--border)] last:border-0">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={onToggle}
         className="w-full flex items-center justify-between py-5 text-left gap-4 px-6 sm:px-8"
       >
         <span className="text-[0.95rem] font-semibold text-[color:var(--foreground)]">{label}</span>
@@ -319,6 +318,7 @@ function BagItem({ label, does, why, side }: { label: string; does: string; why:
 }
 
 function WhatsInTheBag() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   return (
     <section className="py-16 md:py-24 bg-[color:var(--secondary)]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
@@ -331,8 +331,8 @@ function WhatsInTheBag() {
           </p>
         </div>
         <div className="bg-white rounded-2xl border border-[color:var(--border)]">
-          {BAG_ITEMS.map((item) => (
-            <BagItem key={item.label} {...item} />
+          {BAG_ITEMS.map((item, i) => (
+            <BagItem key={item.label} {...item} open={openIndex === i} onToggle={() => setOpenIndex(openIndex === i ? null : i)} />
           ))}
         </div>
         <p className="mt-6 text-[0.82rem] text-[color:var(--muted-foreground)] text-center leading-relaxed">
