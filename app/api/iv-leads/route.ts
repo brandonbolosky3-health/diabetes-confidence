@@ -58,6 +58,7 @@ export async function POST(request: NextRequest) {
     timing,
     source,
     consent,
+    consent_at: new Date().toISOString(),
   });
 
   if (dbError) {

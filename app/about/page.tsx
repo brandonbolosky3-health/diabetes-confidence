@@ -57,18 +57,14 @@ function Footer() {
         <div className="flex items-center justify-center mb-3">
           <Logo className="h-5 w-auto text-neutral-500" />
         </div>
-        {IV_MODE ? (
-          <>
-            <p className="mb-2 max-w-2xl mx-auto text-white/40 text-[0.75rem] leading-relaxed">
-              Sarina Deharo, RN, provides IV therapy as an independent provider on the June Skin platform. Treatments are ordered by June Skin's affiliated medical practice after a health-history review and administered by licensed nurses. Pricing is set by June Skin and subject to change. Saryn Health is not a medical practice and is not affiliated with June Skin. This page is for general information and is not medical advice; results vary.
-            </p>
-            <p className="mb-1">
-              <Link href="/about" className="hover:text-white/80 transition-colors">About Sarina</Link>
-            </p>
-          </>
-        ) : (
-          <p className="mb-1">Saryn Health — Functional medicine education &amp; coaching, personalized to you.</p>
-        )}
+        <p className="mb-2 max-w-2xl mx-auto text-white/40 text-[0.75rem] leading-relaxed">
+          Sarina Deharo, RN, provides IV therapy as an independent provider on the June Skin platform. Treatments are ordered by June Skin's affiliated medical practice after a health-history review and administered by licensed nurses. Pricing is set by June Skin and subject to change. Saryn Health is not a medical practice and is not affiliated with June Skin. This page is for general information and is not medical advice; results vary.
+        </p>
+        <p className="mb-2 flex items-center justify-center gap-4 flex-wrap">
+          <Link href="/about" className="hover:text-white/80 transition-colors">About Sarina</Link>
+          <Link href="/privacy" className="hover:text-white/80 transition-colors">Privacy Policy</Link>
+          <Link href="/terms" className="hover:text-white/80 transition-colors">Terms of Use</Link>
+        </p>
         <p>© {new Date().getFullYear()} Saryn Health. All rights reserved.</p>
       </div>
     </footer>
