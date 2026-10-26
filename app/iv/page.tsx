@@ -424,6 +424,18 @@ function RequestForm() {
               <p>Once we lock in a time, I&apos;ll send your personal booking link. It takes you to a short health questionnaire that a licensed provider reviews before your visit. You&apos;ll put your card down there — it&apos;s only charged upon completion of your service.</p>
               <p>New clients get <span className="font-medium text-[color:var(--foreground)]">20% off</span> with code <span className="font-mono font-semibold text-[color:var(--foreground)]">WELCOMEHOME</span>.</p>
               <p className="pt-1">Talk soon,<br /><span className="font-medium text-[color:var(--foreground)]">Sarina</span></p>
+              <p className="pt-4 text-[0.8rem]">
+                <button
+                  onClick={() => {
+                    try { localStorage.removeItem(LS_KEY); localStorage.removeItem(LS_DRIP_KEY); } catch { /* ignore */ }
+                    setSubmitted(false);
+                    setSubmittedDrip("");
+                  }}
+                  className="underline underline-offset-2 hover:text-[color:var(--foreground)] transition-colors"
+                >
+                  Submit another request
+                </button>
+              </p>
             </div>
           </div>
         ) : (
