@@ -27,20 +27,10 @@ function Navbar() {
         <Link href={IV_MODE ? "/iv" : "/"} aria-label="Saryn Health home" className="inline-flex items-center">
           <Logo className="h-7 w-auto text-[color:var(--foreground)]" />
         </Link>
-        {IV_MODE ? (
-          <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-            <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
-            <Link href="/about" className="hover:text-[color:var(--foreground)] transition-colors">About Sarina</Link>
-          </nav>
-        ) : (
-          <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-            <Link href="/consultation-form" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
-            <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
-            <Link href="/about" className="hover:text-[color:var(--foreground)] transition-colors">About Sarina</Link>
-            <Link href="/membership" className="hover:text-[color:var(--foreground)] transition-colors">Membership</Link>
-            <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
-          </nav>
-        )}
+        <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
+          <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
+          <Link href="/about" className="hover:text-[color:var(--foreground)] transition-colors">About Sarina</Link>
+        </nav>
         <div className="flex items-center gap-3">
           <a
             href="#request"
@@ -62,20 +52,8 @@ function Navbar() {
           <a href="#request" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity">
             Request appointment
           </a>
-          {IV_MODE ? (
-            <>
-              <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
-              <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">About Sarina</Link>
-            </>
-          ) : (
-            <>
-              <Link href="/consultation-form" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Work With Me</Link>
-              <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
-              <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">About Sarina</Link>
-              <Link href="/membership" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Membership</Link>
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Log in</Link>
-            </>
-          )}
+          <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
+          <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">About Sarina</Link>
         </div>
       )}
     </header>

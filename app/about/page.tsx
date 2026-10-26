@@ -19,65 +19,30 @@ function Navbar() {
           <Logo className="h-7 w-auto text-[color:var(--foreground)]" />
         </Link>
 
-        {IV_MODE ? (
-          <>
-            <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-              <Link href="/iv" className="hover:text-[color:var(--foreground)] transition-colors">IV hydration</Link>
-              <Link href="/about" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">About Sarina</Link>
-            </nav>
-            <div className="flex items-center gap-3">
-              <Link
-                href="/iv#request"
-                className="hidden md:inline-flex items-center bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap font-semibold"
-              >
-                Request appointment
-              </Link>
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-[color:var(--foreground)] p-1" aria-label="Toggle menu">
-                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </>
-        ) : (
-          <>
-            <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-              <Link href="/consultation-form" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
-              <Link href="/iv" className="hover:text-[color:var(--foreground)] transition-colors">IV hydration</Link>
-              <Link href="/about" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">About Sarina</Link>
-              <Link href="/membership" className="hover:text-[color:var(--foreground)] transition-colors">Membership</Link>
-              <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
-            </nav>
-            <div className="flex items-center gap-3">
-              <Link href="/consultation-form" className="hidden md:inline-flex items-center bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap font-semibold">
-                Book Free Consultation
-              </Link>
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-[color:var(--foreground)] p-1" aria-label="Toggle menu">
-                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-              </button>
-            </div>
-          </>
-        )}
+        <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
+          <Link href="/iv" className="hover:text-[color:var(--foreground)] transition-colors">IV hydration</Link>
+          <Link href="/about" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">About Sarina</Link>
+        </nav>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/iv#request"
+            className="hidden md:inline-flex items-center bg-[color:var(--primary)] text-white text-[0.8rem] px-4 py-1.5 rounded-full hover:opacity-90 transition-opacity whitespace-nowrap font-semibold"
+          >
+            Request appointment
+          </Link>
+          <button onClick={() => setMobileOpen(!mobileOpen)} className="md:hidden text-[color:var(--foreground)] p-1" aria-label="Toggle menu">
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
-          {IV_MODE ? (
-            <>
-              <Link href="/iv#request" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity">
-                Request appointment
-              </Link>
-              <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">IV hydration</Link>
-              <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">About Sarina</Link>
-            </>
-          ) : (
-            <>
-              <Link href="/consultation-form" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity">Book Free Consultation</Link>
-              <Link href="/consultation-form" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Work With Me</Link>
-              <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">IV hydration</Link>
-              <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">About Sarina</Link>
-              <Link href="/membership" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Membership</Link>
-              <Link href="/login" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Log in</Link>
-            </>
-          )}
+          <Link href="/iv#request" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity">
+            Request appointment
+          </Link>
+          <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">IV hydration</Link>
+          <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">About Sarina</Link>
         </div>
       )}
     </header>
