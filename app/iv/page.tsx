@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import type { Metadata } from "next";
 import {
   Menu,
   X,
@@ -17,9 +16,7 @@ import {
 } from "lucide-react";
 import Logo from "@/components/Logo";
 
-// ─── SEO (server metadata is separate; client page can't export metadata)
-// See /app/iv/metadata.ts below — but we inline the title via useEffect for
-// the client component approach.
+const IV_MODE = process.env.NEXT_PUBLIC_SITE_MODE === "iv";
 
 // ─── Nav ──────────────────────────────────────────────────────────────────
 function Navbar() {
@@ -27,15 +24,23 @@ function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-[color:var(--border)]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-        <Link href="/" aria-label="Saryn Health home" className="inline-flex items-center">
+        <Link href={IV_MODE ? "/iv" : "/"} aria-label="Saryn Health home" className="inline-flex items-center">
           <Logo className="h-7 w-auto text-[color:var(--foreground)]" />
         </Link>
-        <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
-          <Link href="/consultation-form" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
-          <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
-          <Link href="/membership" className="hover:text-[color:var(--foreground)] transition-colors">Membership</Link>
-          <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
-        </nav>
+        {IV_MODE ? (
+          <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
+            <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
+            <Link href="/about" className="hover:text-[color:var(--foreground)] transition-colors">About Sarina</Link>
+          </nav>
+        ) : (
+          <nav className="hidden md:flex items-center gap-6 text-[0.9rem] text-[color:var(--muted-foreground)]">
+            <Link href="/consultation-form" className="hover:text-[color:var(--foreground)] transition-colors">Work With Me</Link>
+            <Link href="/iv" className="text-[color:var(--primary)] font-medium hover:opacity-80 transition-opacity">IV hydration</Link>
+            <Link href="/about" className="hover:text-[color:var(--foreground)] transition-colors">About Sarina</Link>
+            <Link href="/membership" className="hover:text-[color:var(--foreground)] transition-colors">Membership</Link>
+            <Link href="/login" className="hover:text-[color:var(--foreground)] transition-colors">Log in</Link>
+          </nav>
+        )}
         <div className="flex items-center gap-3">
           <a
             href="#request"
@@ -54,17 +59,23 @@ function Navbar() {
       </div>
       {mobileOpen && (
         <div className="md:hidden border-t border-[color:var(--border)] bg-white px-4 py-4 flex flex-col gap-3">
-          <a
-            href="#request"
-            onClick={() => setMobileOpen(false)}
-            className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity"
-          >
+          <a href="#request" onClick={() => setMobileOpen(false)} className="bg-[color:var(--primary)] text-white text-[0.9rem] font-semibold text-center py-2.5 rounded-full hover:opacity-90 transition-opacity">
             Request appointment
           </a>
-          <Link href="/consultation-form" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Work With Me</Link>
-          <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
-          <Link href="/membership" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Membership</Link>
-          <Link href="/login" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Log in</Link>
+          {IV_MODE ? (
+            <>
+              <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
+              <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">About Sarina</Link>
+            </>
+          ) : (
+            <>
+              <Link href="/consultation-form" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Work With Me</Link>
+              <Link href="/iv" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--primary)] font-medium py-2">IV hydration</Link>
+              <Link href="/about" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">About Sarina</Link>
+              <Link href="/membership" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Membership</Link>
+              <Link href="/login" onClick={() => setMobileOpen(false)} className="text-[0.95rem] text-[color:var(--muted-foreground)] hover:text-[color:var(--foreground)] transition-colors py-2">Log in</Link>
+            </>
+          )}
         </div>
       )}
     </header>
@@ -305,6 +316,11 @@ function WhySarina() {
               <p className="text-[0.95rem] text-[color:var(--foreground)] font-medium">{w.text}</p>
             </div>
           ))}
+        </div>
+        <div className="mt-8 text-center">
+          <Link href="/about" className="text-[0.88rem] text-[color:var(--primary)] underline underline-offset-2 hover:opacity-80 transition-opacity">
+            About Sarina →
+          </Link>
         </div>
       </div>
     </section>
@@ -618,7 +634,13 @@ function Footer() {
         <p className="mb-2 max-w-2xl mx-auto text-white/40 text-[0.75rem] leading-relaxed">
           Sarina Deharo, RN, provides IV therapy as an independent provider on the June Skin platform. Treatments are ordered by June Skin's affiliated medical practice after a health-history review and administered by licensed nurses. Pricing is set by June Skin and subject to change. Saryn Health is not a medical practice and is not affiliated with June Skin. This page is for general information and is not medical advice; results vary.
         </p>
-        <p className="mb-1">Saryn Health — Functional medicine education &amp; coaching, personalized to you.</p>
+        {IV_MODE ? (
+          <p className="mb-1">
+            <Link href="/about" className="hover:text-white/80 transition-colors">About Sarina</Link>
+          </p>
+        ) : (
+          <p className="mb-1">Saryn Health — Functional medicine education &amp; coaching, personalized to you.</p>
+        )}
         <p>© {new Date().getFullYear()} Saryn Health. All rights reserved.</p>
       </div>
     </footer>

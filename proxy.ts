@@ -1,7 +1,27 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+const IV_MODE = process.env.SITE_MODE === "iv";
+
+// Paths that are always allowed through in iv mode (everything else → /iv)
+function isIVPassthrough(pathname: string): boolean {
+  if (pathname === "/iv" || pathname.startsWith("/iv/")) return true;
+  if (pathname === "/about" || pathname.startsWith("/about/")) return true;
+  if (pathname === "/login") return true;
+  if (pathname.startsWith("/api/")) return true;
+  if (pathname.startsWith("/auth/")) return true;
+  return false;
+}
+
 export async function proxy(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+
+  // In iv mode, redirect everything except allowed paths to /iv
+  if (IV_MODE && !isIVPassthrough(pathname)) {
+    const dest = new URL("/iv", request.url);
+    return NextResponse.redirect(dest, 301);
+  }
+
   let supabaseResponse = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -31,7 +51,6 @@ export async function proxy(request: NextRequest) {
   // Protect member routes — redirect unauthenticated users to /login.
   // The /member check is intentionally exact-or-subpath so it does NOT
   // match the public /membership marketing page.
-  const pathname = request.nextUrl.pathname;
   const isMemberRoute = pathname === "/member" || pathname.startsWith("/member/");
   if (
     !user &&

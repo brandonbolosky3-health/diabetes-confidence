@@ -18,7 +18,11 @@ const inter = Inter({
   display: "swap",
 });
 
+const IV_MODE = process.env.SITE_MODE === "iv";
+
 export const metadata: Metadata = {
+  // In iv mode, noindex everything by default; /iv and /about override this via their own layouts.
+  ...(IV_MODE ? { robots: { index: false, follow: false } } : {}),
   title: "Saryn Health — Personalized Functional Medicine Coaching",
   description:
     "AI-powered functional medicine coaching and education that goes beyond symptoms to address root causes — personalized to you.",
