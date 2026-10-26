@@ -313,13 +313,13 @@ function WhySarina() {
 
 // ─── Request Form ─────────────────────────────────────────────────────────
 const DRIP_OPTIONS = [
-  "Hydration",
-  "Energy",
-  "Immunity",
-  "Super Immunity",
-  "Complete Recovery",
-  "Total Wellness",
-  "Help me choose",
+  { value: "Hydration",         label: "Hydration — $199" },
+  { value: "Energy",            label: "Energy — $239" },
+  { value: "Immunity",          label: "Immunity — $239" },
+  { value: "Super Immunity",    label: "Super Immunity — $279" },
+  { value: "Complete Recovery", label: "Complete Recovery — $279" },
+  { value: "Total Wellness",    label: "Total Wellness — $279" },
+  { value: "Help me choose",    label: "Help me choose" },
 ];
 
 const LS_KEY = "iv_request_submitted";
@@ -475,7 +475,7 @@ function RequestForm() {
               </label>
               <select required value={drip} onChange={(e) => setDrip(e.target.value)} className={selectClass}>
                 <option value="">Select a drip…</option>
-                {DRIP_OPTIONS.map((d) => <option key={d} value={d}>{d}</option>)}
+                {DRIP_OPTIONS.map((d) => <option key={d.value} value={d.value}>{d.label}</option>)}
               </select>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
